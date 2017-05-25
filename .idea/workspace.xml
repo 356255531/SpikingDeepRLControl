@@ -2,223 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f04ea920-fe65-4e1d-88b5-b5a1a87a5a5d" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/favicon.ico" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/SpikingDeepRLControl.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/code/ann_network.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/code/mnist_single_layer.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/code/snn_network.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/mnist/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/mnist/batch_generator.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/mnist/network.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo/communication_channel.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo/integrator.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo/learning.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo/node.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo/process.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo/representation/2D-representation.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo/representation/2_neurons.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo/representation/combination.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo/representation/combination.py.cfg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo/representation/multiple_neurons.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo/representation/single_neuron.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo/setuo_nengo.py.cfg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo/square_learning.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo/transformation.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/.gitignore" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/.jscs.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/.travis.yml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/CHANGES.rst" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/CONTRIBUTORS.rst" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/LICENSE.rst" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/MANIFEST.in" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/README.rst" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/docs/codeflow.rst" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/docs/dev_guide.rst" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/docs/getting_started.rst" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/docs/index.rst" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/docs/workflow.rst" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/examples/2d.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/examples/basic.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/examples/lines.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/examples/net.ipynb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/examples/net.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/examples/spa.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/ez_setup.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/components/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/components/ace_editor.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/components/component.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/components/editor.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/components/htmlview.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/components/netgraph.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/components/pointer.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/components/raster.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/components/sim_control.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/components/slider.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/components/spa_plot.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/components/spa_similarity.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/components/spike_grid.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/components/value.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/components/voltage.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/components/xyvalue.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/config.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/conftest.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/basics/2d_representation.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/basics/addition.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/basics/combining.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/basics/communication_channel.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/basics/ensemble_array.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/basics/html.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/basics/inhibitory_gating.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/basics/many_neurons.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/basics/multiplication.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/basics/single_neuron.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/basics/squaring.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/basics/two_neurons.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/default.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/hbb_tutorials/chapter1/singleneuron.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/hbb_tutorials/chapter2/1-scalars.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/hbb_tutorials/chapter2/2-vectors.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/hbb_tutorials/chapter3/1-addition.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/hbb_tutorials/chapter3/2-arbitrary_linear.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/hbb_tutorials/chapter3/3-non_linear.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/hbb_tutorials/chapter4/1-structure.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/hbb_tutorials/chapter4/2-spa_structure.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/hbb_tutorials/chapter5/1-question.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/hbb_tutorials/chapter5/2-spa_question.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/hbb_tutorials/chapter5/3-question-memory.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/hbb_tutorials/chapter5/4-spa_question-memory.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/hbb_tutorials/chapter5/5-question-control.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/hbb_tutorials/chapter5/6-spa_question-control.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/hbb_tutorials/chapter6/learn.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/hbb_tutorials/chapter7/1-spa_sequence.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/hbb_tutorials/chapter7/2-spa_sequencerouted.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/hbb_tutorials/chapter7/3-spa_sequencerouted_cleanup.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/hbb_tutorials/chapter7/4-spa_sequencerouted_cleanupAll.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/hbb_tutorials/chapter8/2D_decision_integrator.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/hbb_tutorials/read_me.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/recurrent/controlled_integrator.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/recurrent/controlled_oscillator.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/recurrent/integrator.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/recurrent/lorenz_attractor.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/recurrent/oscillator.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/recurrent/template_integrator.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/00-intro.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/01-one-neuron.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/02-two-neurons.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/03-many-neurons.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/04-connecting-neurons.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/05-computing.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/06-adding.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/07-multiple-dimensions.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/08-combining.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/09-multiplication.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/10-transforms.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/11-memory.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/12-differential-eqns.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/13-oscillators.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/14-controlled-oscillator.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/15-lorenz.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/16-ensemble-properties.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/17-neuron-models.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/18-networks.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/19-spa.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/20-spa-actions.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/21-spa-sequence.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/22-spa-sequence-controlled.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/23-spa-binding.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/24-spa-unbinding.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/25-spa-parse.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/exec_env.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/grandalf/LICENSE" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/grandalf/README.rst" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/grandalf/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/grandalf/graphs.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/grandalf/layouts.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/grandalf/nx.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/grandalf/routing.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/grandalf/utils.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/gui.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/guibackend.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/ipython.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/layout.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/main.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/modal_js.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/namefinder.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/page.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/password.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/seed_generation.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/server.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/ace.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/ace.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/2d_axes.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/component.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/htmlview.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/image.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/netgraph.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/netgraph.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/netgraph_conn.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/netgraph_item.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/pointer.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/pointer.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/raster.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/raster.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/slider.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/slider.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/slidercontrol.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/spa_similarity.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/spa_similarity.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/time_axes.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/value.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/value.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/xy_axes.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/xyvalue.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/xyvalue.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/config.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/data_to_csv.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/datastore.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/hotkeys.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/main.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/menu.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/menu.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/modal.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/modal.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/nengo.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/nengo.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/side_menu.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/side_menu.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/sim_control.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/sim_control.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/test/datastore_test.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/tooltips.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/tooltips.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/top_toolbar.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/top_toolbar.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/viewport.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static_plots.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/templates/page.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/testing_tools.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/tests/test_basic_functionality.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/tests/test_configuration.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/tests/test_data_to_csv.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/tests/test_dynamics.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/tests/test_pdb_error.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/tests/test_save_as.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/tests/test_server.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/tests/test_spa.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/tests/test_tutorial_basic.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/user_action.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/version.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/viz.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/setup.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/huangbo_ws/1.py" afterPath="$PROJECT_DIR$/code/__init__.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Reports and Presentations/ProjectPlanPresentation.pptx" afterPath="$PROJECT_DIR$/Reports and Presentations/ProjectPlanPresentation.pptx" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/nengo_extras" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/mnist_single_layer.py" afterPath="$PROJECT_DIR$/code/mnist_single_layer.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -251,7 +36,7 @@
         <entry file="file://$PROJECT_DIR$/code/ann_network.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="72">
-              <caret line="61" column="24" lean-forward="true" selection-start-line="61" selection-start-column="23" selection-end-line="61" selection-end-column="24" />
+              <caret line="61" column="24" lean-forward="false" selection-start-line="61" selection-start-column="23" selection-end-line="61" selection-end-column="24" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -262,8 +47,8 @@
       <file leaf-file-name="mnist_single_layer.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/code/mnist_single_layer.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="406">
-              <caret line="28" column="0" lean-forward="true" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
+            <state relative-caret-position="874">
+              <caret line="54" column="32" lean-forward="false" selection-start-line="54" selection-start-column="32" selection-end-line="54" selection-end-column="32" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
@@ -275,7 +60,7 @@
         <entry file="file://$PROJECT_DIR$/code/snn_network.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="144">
-              <caret line="26" column="48" lean-forward="true" selection-start-line="26" selection-start-column="48" selection-end-line="26" selection-end-column="48" />
+              <caret line="26" column="48" lean-forward="false" selection-start-line="26" selection-start-column="48" selection-end-line="26" selection-end-column="48" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
@@ -1023,7 +808,7 @@
     <entry file="file://$PROJECT_DIR$/code/ann_network.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="72">
-          <caret line="61" column="24" lean-forward="true" selection-start-line="61" selection-start-column="23" selection-end-line="61" selection-end-column="24" />
+          <caret line="61" column="24" lean-forward="false" selection-start-line="61" selection-start-column="23" selection-end-line="61" selection-end-column="24" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
@@ -1033,7 +818,7 @@
     <entry file="file://$PROJECT_DIR$/code/snn_network.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="144">
-          <caret line="26" column="48" lean-forward="true" selection-start-line="26" selection-start-column="48" selection-end-line="26" selection-end-column="48" />
+          <caret line="26" column="48" lean-forward="false" selection-start-line="26" selection-start-column="48" selection-end-line="26" selection-end-column="48" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
           </folding>
@@ -1042,8 +827,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/code/mnist_single_layer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="406">
-          <caret line="28" column="0" lean-forward="true" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
+        <state relative-caret-position="874">
+          <caret line="54" column="32" lean-forward="false" selection-start-line="54" selection-start-column="32" selection-end-line="54" selection-end-column="32" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
           </folding>
