@@ -30,7 +30,8 @@ class RobotArmEnv(object):
                  state_space,
                  reward_func,
                  goal_func,
-                 if_emulator=True):
+                 if_emulator=True,
+                 dim=1):
         super(RobotArmEnv, self).__init__()
         # Define dependent components
         self._action_space = action_space
@@ -40,7 +41,7 @@ class RobotArmEnv(object):
 
         # Define agent
         if if_emulator:
-            self._arm = VirtualArm()
+            self._arm = VirtualArm(dim)
         else:
             self._arm = RobotArm()
 
