@@ -70,12 +70,17 @@ with nengo.Network(seed=3) as model:
 
 
 with nengo.Simulator(model) as sim:
+
+
     def get_outs(images):
         _, acts = nengo.utils.ensemble.tuning_curves(a, sim, inputs=images)
         return np.dot(acts, sim.data[conn].weights.T)
 
     def get_error(images, labels):
         return np.argmax(get_outs(images), axis=1) != labels
+
+    print type(sim.data[conn].weights.T)
+    print sim.data[conn].weights.T.shape
 
     train_error = 100 * get_error(X_train, y_train).mean()
     test_error = 100 * get_error(X_test, y_test).mean()
