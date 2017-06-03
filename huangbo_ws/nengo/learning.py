@@ -1,19 +1,14 @@
-import matplotlib.pyplot as plt
 import nengo
 import numpy as np
+import matplotlib.pyplot as plt
 
 
-from nengo_extras.data import load_mnist
-from nengo_extras.vision import Gabor, Mask
 
+model = nengo.Network()
+with model:
+    pre = nengo.Ensemble(n_neurons=60, dimensions=1)
+    input = nengo.Node([1])
+    
+    nengo.Connection(input, pre)
 
-def one_hot(labels, c=None):
-    assert labels.ndim == 1
-    n = labels.shape[0]
-    c = len(np.unique(labels)) if c is None else c
-    y = np.zeros((n, c))
-    y[np.arange(n), labels] = 1
-    return y
-
-
-rng = np.random.RandomState(9)
+    

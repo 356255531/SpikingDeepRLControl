@@ -11,8 +11,10 @@ class Q_network:
 
     def __init__(self, input_shape, output_shape, nb_hidden, decoder):
         '''
-        :param input_shape: the input dimension without batch_size
-        :param output_shape: the output dimension without batch_size
+        Spiking neural network as the Q value function approximation
+        :param input_shape: the input dimension without batch_size, example: state is 2 dimension, 
+        action is 1 dimenstion, the input shape is 3.
+        :param output_shape: the output dimension without batch_size, the dimenstion of Q values
         :param nb_hidden: the number of neurons in ensemble
         :param decoder: the path to save weights of connection channel
         '''
@@ -39,7 +41,7 @@ class Q_network:
         :return: 
         '''
 
-        encoders = self.encoder_initialization()
+        encoders = self.encoder_initialization("default")
         solver = nengo.solvers.LstsqL2(reg=0.01)
 
         model = nengo.Network(seed=3)
@@ -72,10 +74,10 @@ class Q_network:
     def predict(self, input):
         '''
         prediction after training, the output will be the corresponding q values
-        :param input: system state and action shape = (dim_sample)
+        :param input: system state and action paars, shape = (dim_sample)
         :return: the q values
         '''
-        encoders = self.encoder_initialization()
+        encoders = self.encoder_initialization("default")
 
         try:
             decoder = np.load(self.decoder)
@@ -101,76 +103,3 @@ class Q_network:
             _, acts = nengo.utils.ensemble.tuning_curves(input_neuron, sim, inputs=input)
 
         return np.dot(acts, sim.data[conn].weights.T)
-
-    def acc_calculation(self, test_data, test_label):
-        encoders = self.encoder_initialization()
-
-        model = nengo.Network(seed=3)
-        with model:
-            input_neuron = nengo.Ensemble(n_neurons=self.nb_hidden,
-                                          dimensions=self.input_shape,
-                                          neuron_type=nengo.LIFRate(),
-                                          intercepts=nengo.dists.Choice([-0.5]),
-                                          max_rates=nengo.dists.Choice([100]),
-                                          encoders=encoders,
-                                          )
-            output = nengo.Node(size_in=self.output_shape)
-            conn = nengo.Connection(input_neuron.neurons,
-                                    output,
-                                    synapse=None,
-                                    transform=np.load(self.decoder).T
-                                    )
-        with nengo.Simulator(model) as sim:
-            def get_outs(images):
-                # The tuning curve tells us how each neuron responds to an incoming input signal.
-                _, acts = nengo.utils.ensemble.tuning_curves(input_neuron, sim, inputs=images)
-                return np.dot(acts, sim.data[conn].weights.T)
-
-            def get_error(images, labels):
-                return np.argmax(get_outs(images), axis=1) != labels
-
-            prediction = get_outs(test_data)
-            acc = accuracy_score(np.argmax(test_label, axis=1), np.argmax(prediction, axis=1))
-
-            print "the test error rate is:", acc
-
-
-
-if __name__ == '__main__':
-
-    (X_train, y_train), (X_test, y_test) = mnist.load_data()
-
-    # data pre-processing
-    X_train = X_train.reshape(X_train.shape[0], -1) / 255.  # normalize
-    X_test = X_test.reshape(X_test.shape[0], -1) / 255.  # normalize
-    y_train = np_utils.to_categorical(y_train, nb_classes=10)
-    y_test = np_utils.to_categorical(y_test, nb_classes=10)
-
-    model = Q_network(input_shape=28*28, output_shape=10, nb_hidden=1000, decoder="decoder.npy")
-
-    # training
-    model.train_network(X_train, y_train, simulation_time=1)
-
-
-    # single prediction
-    # image = X_test[123,:]
-    # image_new = np.reshape(image,(28,28))
-    #
-    # import matplotlib.pyplot as plt
-    # plt.figure()
-    # plt.imshow(image_new)
-    # plt.show()
-    #
-    # print "the predict number is:", np.argmax(model.predict(image))
-
-    model.acc_calculation(X_test, y_test)
-
-
-
-
-
-
-
-
-
-

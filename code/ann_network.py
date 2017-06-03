@@ -45,64 +45,40 @@ class Q_learning_network(object):
 
 
 
-
-
-        # checkpoint = ModelCheckpoint(weights_file,
-        #                              monitor='val_acc',
-        #                              verbose=1,
-        #                              save_best_only=True,
-        #                              mode='max')
-
-        # tensorboard = TensorBoard(log_dir=weights_file + 'Graph',
-        #                           histogram_freq=0,
-        #                           write_graph=True,
-        #                           write_images=True
-        #                           )
-
-        # model.fit_generator(training_generator,
-        #                         samples_per_epoch=5000,
-        #                         nb_epoch=20,
-        #                         validation_data=validation_generator,
-        #                         nb_val_samples=300
-        #                         )
-
-
-
-
-from keras.datasets import mnist
-from keras.utils import np_utils
-
-model = Q_learning_network(batch_size=32, input_shape=28*28, nb_classes=10)
-
-(X_train, y_train), (X_test, y_test) = mnist.load_data()
-
-# data pre-processing
-X_train = X_train.reshape(X_train.shape[0], -1) / 255.   # normalize
-X_test = X_test.reshape(X_test.shape[0], -1) / 255.      # normalize
-y_train = np_utils.to_categorical(y_train, nb_classes=10)
-y_test = np_utils.to_categorical(y_test, nb_classes=10)
-
-
-def batch_generator(batch_size, data_set, label):
-    index = 0
-
-    while 1:
-
-        data_batch = data_set[index:index+batch_size, :]
-        label_batch = label[index:index+batch_size, :]
-        index = index + batch_size
-
-        yield data_batch, label_batch
-
-
-training_batch_generator = batch_generator(32, X_train, y_train)
-validation_batch_generator = batch_generator(32, X_test, y_test)
-
-
-model.run_training(weights_file="/home/huangbo/Desktop/",
-                   training_generator=training_batch_generator,
-                   validation_generator=validation_batch_generator
-                   )
+# from keras.datasets import mnist
+# from keras.utils import np_utils
+#
+# model = Q_learning_network(batch_size=32, input_shape=28*28, nb_classes=10)
+#
+# (X_train, y_train), (X_test, y_test) = mnist.load_data()
+#
+# # data pre-processing
+# X_train = X_train.reshape(X_train.shape[0], -1) / 255.   # normalize
+# X_test = X_test.reshape(X_test.shape[0], -1) / 255.      # normalize
+# y_train = np_utils.to_categorical(y_train, nb_classes=10)
+# y_test = np_utils.to_categorical(y_test, nb_classes=10)
+#
+#
+# def batch_generator(batch_size, data_set, label):
+#     index = 0
+#
+#     while 1:
+#
+#         data_batch = data_set[index:index+batch_size, :]
+#         label_batch = label[index:index+batch_size, :]
+#         index = index + batch_size
+#
+#         yield data_batch, label_batch
+#
+#
+# training_batch_generator = batch_generator(32, X_train, y_train)
+# validation_batch_generator = batch_generator(32, X_test, y_test)
+#
+#
+# model.run_training(weights_file="/home/huangbo/Desktop/",
+#                    training_generator=training_batch_generator,
+#                    validation_generator=validation_batch_generator
+#                    )
 
 
 
