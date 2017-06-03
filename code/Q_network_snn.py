@@ -41,7 +41,7 @@ class Q_network:
         :return: 
         '''
 
-        encoders = self.encoder_initialization("default")
+        encoders = self.encoder_initialization("random")
         solver = nengo.solvers.LstsqL2(reg=0.01)
 
         model = nengo.Network(seed=3)
@@ -74,10 +74,10 @@ class Q_network:
     def predict(self, input):
         '''
         prediction after training, the output will be the corresponding q values
-        :param input: system state and action paars, shape = (dim_sample)
+        :param input: input must be a numpy array, system state and action paars, shape = (dim_sample)
         :return: the q values
         '''
-        encoders = self.encoder_initialization("default")
+        encoders = self.encoder_initialization("random")
 
         try:
             decoder = np.load(self.decoder)

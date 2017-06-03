@@ -152,18 +152,18 @@ if __name__ == '__main__':
     model.train_network(X_train, y_train, simulation_time=1)
 
 
-    # single prediction
-    # image = X_test[123,:]
-    # image_new = np.reshape(image,(28,28))
-    #
-    # import matplotlib.pyplot as plt
-    # plt.figure()
-    # plt.imshow(image_new)
-    # plt.show()
-    #
-    # print "the predict number is:", np.argmax(model.predict(image))
+    #single prediction
+    image = X_test[123,:]
+    image_new = np.reshape(image,(28,28))
 
-    model.acc_calculation(X_test, y_test)
+    import matplotlib.pyplot as plt
+    plt.figure()
+    plt.imshow(image_new)
+    plt.show()
+
+    print "the predict number is:", type(model.predict(image))
+
+    # model.acc_calculation(X_test, y_test)
 
 
 
