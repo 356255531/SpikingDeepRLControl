@@ -2,21 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f04ea920-fe65-4e1d-88b5-b5a1a87a5a5d" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/code/vision.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo/learning.py.cfg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo/network/network_simple.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/huangbo_ws/nengo/node.py.cfg" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/mnist/batch_generator.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/mnist/network.py" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/huangbo_ws/mnist/__init__.py" afterPath="$PROJECT_DIR$/huangbo_ws/nengo/network/__init__.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/code/Q_network_snn.py" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/code/encoders.npy" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/code/weights.npy" afterPath="$PROJECT_DIR$/code/decoder.npy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/SpikingDeepRLControl.iml" afterPath="$PROJECT_DIR$/.idea/SpikingDeepRLControl.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/ann_network.py" afterPath="$PROJECT_DIR$/code/ann_network.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/mnist_single_layer.py" afterPath="$PROJECT_DIR$/code/mnist_single_layer.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/snn_network.py" afterPath="$PROJECT_DIR$/code/snn_network.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/huangbo_ws/nengo/integrator.py" afterPath="$PROJECT_DIR$/huangbo_ws/nengo/integrator.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/huangbo_ws/nengo/integrator.py.cfg" afterPath="$PROJECT_DIR$/huangbo_ws/nengo/integrator.py.cfg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/huangbo_ws/nengo/learning.py" afterPath="$PROJECT_DIR$/huangbo_ws/nengo/learning.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/huangbo_ws/nengo/node.py" afterPath="$PROJECT_DIR$/huangbo_ws/nengo/node.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/huangbo_ws/nengo/transformation.py" afterPath="$PROJECT_DIR$/huangbo_ws/nengo/transformation.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -33,6 +25,7 @@
     <SUITE FILE_PATH="coverage/SpikingDeepRLControl$communication_channel.coverage" NAME="communication_channel Coverage Results" MODIFIED="1495303033927" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/huangbo_ws/nengo" />
     <SUITE FILE_PATH="coverage/SpikingDeepRLControl$mnist_exp.coverage" NAME="mnist_exp Coverage Results" MODIFIED="1495656177632" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/huangbo_ws/mnist" />
     <SUITE FILE_PATH="coverage/SpikingDeepRLControl$2D_representation.coverage" NAME="2D-representation Coverage Results" MODIFIED="1494876801012" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/huangbo_ws/nengo" />
+    <SUITE FILE_PATH="coverage/SpikingDeepRLControl$transformation.coverage" NAME="transformation Coverage Results" MODIFIED="1495900181184" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/huangbo_ws/nengo" />
     <SUITE FILE_PATH="coverage/SpikingDeepRLControl$node.coverage" NAME="node Coverage Results" MODIFIED="1495184169728" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/huangbo_ws/nengo" />
     <SUITE FILE_PATH="coverage/SpikingDeepRLControl$2_neurons.coverage" NAME="2_neurons Coverage Results" MODIFIED="1494876281357" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/huangbo_ws/nengo" />
     <SUITE FILE_PATH="coverage/SpikingDeepRLControl$process.coverage" NAME="process Coverage Results" MODIFIED="1495094645001" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/huangbo_ws/nengo" />
@@ -40,18 +33,18 @@
     <SUITE FILE_PATH="coverage/SpikingDeepRLControl$multiple_neurons.coverage" NAME="multiple_neurons Coverage Results" MODIFIED="1494876424079" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/huangbo_ws/nengo" />
     <SUITE FILE_PATH="coverage/SpikingDeepRLControl$learning.coverage" NAME="learning Coverage Results" MODIFIED="1495203044614" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/huangbo_ws/nengo" />
     <SUITE FILE_PATH="coverage/SpikingDeepRLControl$integrator.coverage" NAME="integrator Coverage Results" MODIFIED="1495052273130" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/huangbo_ws/nengo" />
-    <SUITE FILE_PATH="coverage/SpikingDeepRLControl$snn_network.coverage" NAME="snn_network Coverage Results" MODIFIED="1495898341547" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/code" />
+    <SUITE FILE_PATH="coverage/SpikingDeepRLControl$snn_network.coverage" NAME="snn_network Coverage Results" MODIFIED="1496417837265" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/code" />
     <SUITE FILE_PATH="coverage/SpikingDeepRLControl$setuo_nengo.coverage" NAME="setuo_nengo Coverage Results" MODIFIED="1494534377980" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/huangbo_ws/nengo" />
     <SUITE FILE_PATH="coverage/SpikingDeepRLControl$square_learning.coverage" NAME="square_learning Coverage Results" MODIFIED="1495305819116" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/huangbo_ws/nengo" />
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="snn_network.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="snn_network.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/code/snn_network.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1908">
-              <caret line="106" column="0" lean-forward="true" selection-start-line="106" selection-start-column="0" selection-end-line="106" selection-end-column="0" />
+            <state relative-caret-position="432">
+              <caret line="24" column="25" lean-forward="true" selection-start-line="24" selection-start-column="25" selection-end-line="24" selection-end-column="25" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
@@ -59,37 +52,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="transformation.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/huangbo_ws/nengo/transformation.py">
+      <file leaf-file-name="Q_network_snn.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/code/Q_network_snn.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="342">
-              <caret line="19" column="26" lean-forward="true" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="26" />
+            <state relative-caret-position="1368">
+              <caret line="76" column="51" lean-forward="false" selection-start-line="76" selection-start-column="51" selection-end-line="76" selection-end-column="51" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="network_simple.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/huangbo_ws/nengo/network/network_simple.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="549">
-              <caret line="35" column="17" lean-forward="false" selection-start-line="35" selection-start-column="8" selection-end-line="35" selection-end-column="17" />
-              <folding>
-                <element signature="e#0#18#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ann_network.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/code/ann_network.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="810">
-              <caret line="45" column="0" lean-forward="true" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#18#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -143,6 +112,7 @@
         <option value="$PROJECT_DIR$/huangbo_ws/nengo/network/network_simple.py" />
         <option value="$PROJECT_DIR$/huangbo_ws/nengo/transformation.py" />
         <option value="$PROJECT_DIR$/code/snn_network.py" />
+        <option value="$PROJECT_DIR$/code/Q_network_snn.py" />
       </list>
     </option>
   </component>
@@ -183,7 +153,29 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="&lt; Python 2.7.12 (/usr/bin/python2.7) &gt;" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
               <option name="myItemId" value="SpikingDeepRLControl" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="&lt; Python 2.7.12 (/usr/bin/python2.7) &gt;" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dist-packages" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -194,50 +186,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="SpikingDeepRLControl" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="huangbo_ws" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="SpikingDeepRLControl" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="SpikingDeepRLControl" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="huangbo_ws" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="nengo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="SpikingDeepRLControl" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="SpikingDeepRLControl" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="huangbo_ws" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="nengo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="network" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -261,7 +209,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$USER_HOME$/nengo_extras" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunDashboard">
@@ -277,25 +225,6 @@
     </option>
   </component>
   <component name="RunManager" selected="Python.snn_network">
-    <configuration default="false" name="communication_channel" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/huangbo_ws/nengo" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="SpikingDeepRLControl" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/huangbo_ws/nengo/communication_channel.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <method />
-    </configuration>
     <configuration default="false" name="square_learning" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -367,6 +296,25 @@
       <module name="SpikingDeepRLControl" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/code/snn_network.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="transformation" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/huangbo_ws/nengo" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="SpikingDeepRLControl" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/huangbo_ws/nengo/transformation.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -521,19 +469,19 @@
       <method />
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Python.communication_channel" />
-      <item index="1" class="java.lang.String" itemvalue="Python.square_learning" />
-      <item index="2" class="java.lang.String" itemvalue="Python.mnist_exp" />
-      <item index="3" class="java.lang.String" itemvalue="Python.mnist_single_layer" />
-      <item index="4" class="java.lang.String" itemvalue="Python.snn_network" />
+      <item index="0" class="java.lang.String" itemvalue="Python.square_learning" />
+      <item index="1" class="java.lang.String" itemvalue="Python.mnist_exp" />
+      <item index="2" class="java.lang.String" itemvalue="Python.mnist_single_layer" />
+      <item index="3" class="java.lang.String" itemvalue="Python.snn_network" />
+      <item index="4" class="java.lang.String" itemvalue="Python.transformation" />
     </list>
     <recent_temporary>
       <list size="5">
         <item index="0" class="java.lang.String" itemvalue="Python.snn_network" />
-        <item index="1" class="java.lang.String" itemvalue="Python.mnist_single_layer" />
-        <item index="2" class="java.lang.String" itemvalue="Python.mnist_exp" />
-        <item index="3" class="java.lang.String" itemvalue="Python.square_learning" />
-        <item index="4" class="java.lang.String" itemvalue="Python.communication_channel" />
+        <item index="1" class="java.lang.String" itemvalue="Python.transformation" />
+        <item index="2" class="java.lang.String" itemvalue="Python.mnist_single_layer" />
+        <item index="3" class="java.lang.String" itemvalue="Python.mnist_exp" />
+        <item index="4" class="java.lang.String" itemvalue="Python.square_learning" />
       </list>
     </recent_temporary>
   </component>
@@ -556,16 +504,16 @@
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32881" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32985386" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2516269" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.34400883" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27112094" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39959225" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39959225" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -587,38 +535,7 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/huangbo_ws/nengo/setuo_nengo.py" />
-    <entry file="file://$USER_HOME$/anaconda2/envs/rl/lib/python2.7/site-packages/nengo/probe.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="52" column="67" lean-forward="true" selection-start-line="52" selection-start-column="4" selection-end-line="52" selection-end-column="67" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/anaconda2/envs/rl/lib/python2.7/site-packages/nengo/utils/matplotlib.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1584">
-          <caret line="98" column="0" lean-forward="false" selection-start-line="98" selection-start-column="0" selection-end-line="98" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/huangbo_ws/nengo_gui-master/examples/net.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/huangbo_ws/nengo/2_neurons.py" />
-    <entry file="file://$PROJECT_DIR$/huangbo_ws/nengo/multiple_neurons.py" />
-    <entry file="file://$PROJECT_DIR$/huangbo_ws/nengo/2D-representation.py" />
-    <entry file="file://$USER_HOME$/anaconda2/envs/rl/lib/python2.7/site-packages/nengo/ensemble.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="193">
-          <caret line="18" column="35" lean-forward="false" selection-start-line="18" selection-start-column="29" selection-end-line="18" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$USER_HOME$/anaconda2/envs/rl/lib/python2.7/site-packages/nengo/ensemble.py" />
     <entry file="file://$PROJECT_DIR$/huangbo_ws/nengo/integrator.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="288">
@@ -640,20 +557,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/anaconda2/envs/rl/lib/python2.7/site-packages/nengo/utils/ensemble.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="648">
-          <caret line="56" column="13" lean-forward="false" selection-start-line="56" selection-start-column="13" selection-end-line="56" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/anaconda2/envs/rl/lib/python2.7/site-packages/nengo/dists.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="254" column="25" lean-forward="false" selection-start-line="254" selection-start-column="13" selection-end-line="254" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$USER_HOME$/anaconda2/envs/rl/lib/python2.7/site-packages/nengo/utils/ensemble.py" />
+    <entry file="file://$USER_HOME$/anaconda2/envs/rl/lib/python2.7/site-packages/nengo/dists.py" />
     <entry file="file://$PROJECT_DIR$/huangbo_ws/nengo/process.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="316">
@@ -661,51 +566,15 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/anaconda2/envs/rl/lib/python2.7/site-packages/nengo/simulator.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5580">
-          <caret line="325" column="8" lean-forward="false" selection-start-line="325" selection-start-column="8" selection-end-line="325" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/anaconda2/envs/rl/lib/python2.7/site-packages/nengo/connection.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-517">
-          <caret line="407" column="22" lean-forward="false" selection-start-line="407" selection-start-column="8" selection-end-line="407" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/anaconda2/envs/keras/lib/python2.7/site-packages/tensorflow/python/training/training.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1808">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/anaconda2/envs/keras/lib/python2.7/site-packages/tensorflow/python/training/momentum.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-660">
-          <caret line="40" column="6" lean-forward="false" selection-start-line="40" selection-start-column="6" selection-end-line="40" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$USER_HOME$/anaconda2/envs/rl/lib/python2.7/site-packages/nengo/simulator.py" />
+    <entry file="file://$USER_HOME$/anaconda2/envs/rl/lib/python2.7/site-packages/nengo/connection.py" />
+    <entry file="file://$USER_HOME$/anaconda2/envs/keras/lib/python2.7/site-packages/tensorflow/python/training/training.py" />
+    <entry file="file://$USER_HOME$/anaconda2/envs/keras/lib/python2.7/site-packages/tensorflow/python/training/momentum.py" />
     <entry file="file://$PROJECT_DIR$/huangbo_ws/nengo/single_neuron.py" />
-    <entry file="file://$USER_HOME$/anaconda2/envs/keras/lib/python2.7/site-packages/nengo/probe.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$USER_HOME$/anaconda2/envs/keras/lib/python2.7/site-packages/nengo/probe.py" />
     <entry file="file://$PROJECT_DIR$/huangbo_ws/nengo/combination.py" />
     <entry file="file://$PROJECT_DIR$/huangbo_ws/mnist/batch_generator.py" />
-    <entry file="file://$USER_HOME$/anaconda2/envs/keras/lib/python2.7/site-packages/nengo/node.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="92" column="6" lean-forward="false" selection-start-line="92" selection-start-column="6" selection-end-line="92" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$USER_HOME$/anaconda2/envs/keras/lib/python2.7/site-packages/nengo/node.py" />
     <entry file="file://$PROJECT_DIR$/huangbo_ws/nengo/.ipynb_checkpoints/addtion.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="432">
@@ -727,13 +596,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/anaconda2/envs/keras/lib/python2.7/site-packages/nengo/processes.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="798">
-          <caret line="173" column="8" lean-forward="false" selection-start-line="173" selection-start-column="8" selection-end-line="173" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$USER_HOME$/anaconda2/envs/keras/lib/python2.7/site-packages/nengo/processes.py" />
     <entry file="file://$USER_HOME$/.PyCharm2017.1/system/python_stubs/-1018639577/__builtin__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="93">
@@ -748,13 +611,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/anaconda2/envs/keras/lib/python2.7/site-packages/nengo/connection.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="865">
-          <caret line="299" column="23" lean-forward="false" selection-start-line="299" selection-start-column="15" selection-end-line="299" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$USER_HOME$/anaconda2/envs/keras/lib/python2.7/site-packages/nengo/connection.py" />
     <entry file="file://$PROJECT_DIR$/huangbo_ws/nengo/square_learning.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="414">
@@ -762,42 +619,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/anaconda2/envs/keras/lib/python2.7/site-packages/nengo/ensemble.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="690">
-          <caret line="147" column="34" lean-forward="false" selection-start-line="147" selection-start-column="25" selection-end-line="147" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$USER_HOME$/anaconda2/envs/keras/lib/python2.7/site-packages/nengo/ensemble.py" />
     <entry file="file://$PROJECT_DIR$/huangbo_ws/mnist/network.py" />
     <entry file="file://$PROJECT_DIR$/huangbo_ws/mnist/mnist_exp.py" />
-    <entry file="file://$USER_HOME$/anaconda2/envs/keras/lib/python2.7/site-packages/keras/layers/core.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="267">
-          <caret line="765" column="37" lean-forward="false" selection-start-line="765" selection-start-column="28" selection-end-line="765" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$USER_HOME$/anaconda2/envs/keras/lib/python2.7/site-packages/keras/layers/core.py" />
     <entry file="file://$PROJECT_DIR$/code/cnn_network.py" />
-    <entry file="file://$USER_HOME$/anaconda2/envs/keras/lib/python2.7/site-packages/keras/callbacks.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6156">
-          <caret line="358" column="35" lean-forward="false" selection-start-line="358" selection-start-column="35" selection-end-line="358" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/anaconda2/envs/keras/lib/python2.7/site-packages/keras/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="13302">
-          <caret line="751" column="64" lean-forward="false" selection-start-line="751" selection-start-column="64" selection-end-line="751" selection-end-column="64" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$USER_HOME$/anaconda2/envs/keras/lib/python2.7/site-packages/keras/callbacks.py" />
+    <entry file="file://$USER_HOME$/anaconda2/envs/keras/lib/python2.7/site-packages/keras/models.py" />
     <entry file="file://$USER_HOME$/.PyCharm2017.1/system/python_stubs/-1018639577/numpy/random/mtrand.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-231">
           <caret line="1581" column="14" lean-forward="false" selection-start-line="1581" selection-start-column="11" selection-end-line="1581" selection-end-column="14" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -823,20 +655,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/huangbo_ws/nengo/representation/2_neurons.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="13" column="0" lean-forward="false" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/huangbo_ws/nengo/representation/single_neuron.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="24" column="0" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/huangbo_ws/nengo/learning.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="18">
@@ -854,37 +672,84 @@
     <entry file="file://$PROJECT_DIR$/code/ann_network.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="810">
-          <caret line="45" column="0" lean-forward="true" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
+          <caret line="45" column="0" lean-forward="false" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/huangbo_ws/nengo/network/network_simple.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="595">
+          <caret line="35" column="17" lean-forward="false" selection-start-line="35" selection-start-column="8" selection-end-line="35" selection-end-column="17" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/huangbo_ws/nengo/transformation.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
-          <caret line="19" column="26" lean-forward="true" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="26" />
+        <state relative-caret-position="648">
+          <caret line="38" column="41" lean-forward="false" selection-start-line="38" selection-start-column="41" selection-end-line="38" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/huangbo_ws/nengo_extras/examples/vision/mnist_single_layer.ipynb" />
+    <entry file="file://$PROJECT_DIR$/huangbo_ws/nengo_extras/examples/vision/mnist_single_layer.py" />
+    <entry file="file:///usr/local/lib/python2.7/dist-packages/nengo/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/huangbo_ws/nengo/representation/single_neuron.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="24" column="0" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/huangbo_ws/nengo/representation/2_neurons.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/lib/python2.7/dist-packages/nengo/simulator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="760">
+          <caret line="210" column="8" lean-forward="false" selection-start-line="210" selection-start-column="8" selection-end-line="210" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/lib/python2.7/dist-packages/sklearn/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1026">
+          <caret line="59" column="4" lean-forward="false" selection-start-line="59" selection-start-column="4" selection-end-line="59" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/lib/python2.7/dist-packages/nengo/utils/progress.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="810">
+          <caret line="89" column="0" lean-forward="false" selection-start-line="89" selection-start-column="0" selection-end-line="89" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/snn_network.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="24" column="25" lean-forward="true" selection-start-line="24" selection-start-column="25" selection-end-line="24" selection-end-column="25" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/huangbo_ws/nengo/network/network_simple.py">
+    <entry file="file://$PROJECT_DIR$/code/Q_network_snn.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="549">
-          <caret line="35" column="17" lean-forward="false" selection-start-line="35" selection-start-column="8" selection-end-line="35" selection-end-column="17" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/code/snn_network.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1908">
-          <caret line="106" column="0" lean-forward="true" selection-start-line="106" selection-start-column="0" selection-end-line="106" selection-end-column="0" />
+        <state relative-caret-position="1368">
+          <caret line="76" column="51" lean-forward="false" selection-start-line="76" selection-start-column="51" selection-end-line="76" selection-end-column="51" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
           </folding>
