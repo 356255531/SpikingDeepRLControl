@@ -75,7 +75,8 @@ class Q_network:
         :param input: system state and action shape = (dim_sample)
         :return: the q values
         '''
-        encoders = self.encoder_initialization()
+        encoders = self.encoder_initialization("random")
+        #encoders = self.encoder_initialization()
 
         try:
             decoder = np.load(self.decoder)
@@ -103,7 +104,8 @@ class Q_network:
         return np.dot(acts, sim.data[conn].weights.T)
 
     def acc_calculation(self, test_data, test_label):
-        encoders = self.encoder_initialization()
+        encoders = self.encoder_initialization("random")
+        #encoders = self.encoder_initialization()
 
         model = nengo.Network(seed=3)
         with model:
@@ -132,7 +134,7 @@ class Q_network:
             prediction = get_outs(test_data)
             acc = accuracy_score(np.argmax(test_label, axis=1), np.argmax(prediction, axis=1))
 
-            print "the test error rate is:", acc
+            print "the test acc is:", acc
 
 
 
@@ -149,21 +151,21 @@ if __name__ == '__main__':
     model = Q_network(input_shape=28*28, output_shape=10, nb_hidden=1000, decoder="decoder.npy")
 
     # training
-    model.train_network(X_train, y_train, simulation_time=1)
+    model.train_network(X_train, y_train, simulation_time=100)
 
 
-    #single prediction
-    image = X_test[123,:]
-    image_new = np.reshape(image,(28,28))
+    # #single prediction
+    # image = X_test[123,:]
+    # image_new = np.reshape(image,(28,28))
+    #
+    # import matplotlib.pyplot as plt
+    # plt.figure()
+    # plt.imshow(image_new)
+    # plt.show()
+    #
+    # print "the predict number is:", type(model.predict(image))
 
-    import matplotlib.pyplot as plt
-    plt.figure()
-    plt.imshow(image_new)
-    plt.show()
-
-    print "the predict number is:", type(model.predict(image))
-
-    # model.acc_calculation(X_test, y_test)
+    model.acc_calculation(X_test, y_test)
 
 
 

@@ -1,10 +1,6 @@
 import nengo
 import numpy as np
-
-from keras.datasets import mnist
-from keras.utils import np_utils
 from vision import Gabor, Mask
-from sklearn.metrics import accuracy_score
 
 
 class Q_network:
@@ -23,13 +19,15 @@ class Q_network:
         self.nb_hidden = nb_hidden
         self.decoder = decoder
 
-    def encoder_initialization(self, way="default"):
-        if way=="random":
-            encoders = np.random.normal(0, 1, size=(self.nb_hidden, self.input_shape))
-        else:
-            rng = np.random.RandomState(self.output_shape)
-            encoders = Gabor().generate(self.nb_hidden, (self.output_shape, self.output_shape), rng=rng)
-            encoders = Mask((28, 28)).populate(encoders, rng=rng, flatten=True)
+    def encoder_initialization(self):
+        '''
+        encoder is the connection relationship between input and the ensemble
+        :return: initialised encoder
+        '''
+
+        rng = np.random.RandomState(self.output_shape)
+        encoders = Gabor().generate(self.nb_hidden, (1, 1), rng=rng)
+        encoders = Mask((self.input_shape, 1)).populate(encoders, rng=rng, flatten=True)
         return encoders
 
     def train_network(self, train_data, train_targets, simulation_time=100):
@@ -41,7 +39,7 @@ class Q_network:
         :return: 
         '''
 
-        encoders = self.encoder_initialization("random")
+        encoders = self.encoder_initialization()
         solver = nengo.solvers.LstsqL2(reg=0.01)
 
         model = nengo.Network(seed=3)
@@ -77,7 +75,7 @@ class Q_network:
         :param input: input must be a numpy array, system state and action paars, shape = (dim_sample)
         :return: the q values
         '''
-        encoders = self.encoder_initialization("random")
+        encoders = self.encoder_initialization()
 
         try:
             decoder = np.load(self.decoder)
@@ -103,3 +101,4 @@ class Q_network:
             _, acts = nengo.utils.ensemble.tuning_curves(input_neuron, sim, inputs=input)
 
         return np.dot(acts, sim.data[conn].weights.T)
+
