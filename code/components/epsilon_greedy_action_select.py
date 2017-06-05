@@ -1,5 +1,7 @@
-import numpy as np
 __author__ = "zhiwei"
+
+import numpy as np
+from keras.utils import np_utils
 
 
 def epsilon_greedy_action_select(
@@ -13,20 +15,12 @@ def epsilon_greedy_action_select(
         state: 4 frames
         action: [0, 1] or [1, 0] (np array)
     """
+    dqn_output = DQN_Q_approximator.predict(np_utils.to_categorical(state, 36))
     if np.random.random() < epsilon:
-        action_idx = np.random.randint(action_num)
-        action = np.zeros(action_num)
-        action[action_idx] = 1
-        return action
+        action_idx = np.random.randint(3)
+        # action = np.zeros(action_num)
+        # action[action_idx] = 1
+    else:
+        action_idx = np.argmax(dqn_output)
 
-    Q_func = DQN_Q_approximator.predict(trans_state2input_1d(state))
-
-    action = np.zeros(action_num)
-    action[np.argmax(Q_func)] = 1
-
-    return action
-
-
-def trans_state2input_1d(state):
-    state_binary = bin(np.array(state))
-    return state_binary
+    return action_idx, dqn_output[0]

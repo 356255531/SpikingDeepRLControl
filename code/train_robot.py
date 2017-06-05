@@ -9,15 +9,14 @@ import numpy as np
 ACTION_NUM = 3
 
 # Training set up
-BATCH_SIZE = 32
-MEMERY_LIMIT = 50000
-FRAME_SETS_SIZE = 4
+# BATCH_SIZE = 50000
+MEMERY_LIMIT = 100000
 
 # RL parameters
 BELLMAN_FACTOR = 0.9
 
 # exploration setting
-OBSERVE_PHASE = 10000
+OBSERVE_PHASE = 50000
 EXPLORE_PHASE = 200000
 
 # epsilon setting
@@ -40,9 +39,7 @@ def train_dqn():
     display_memory = Memory(MEMERY_LIMIT)
 
     # Create network object
-    dqn_obj = DQN()
-
-    dqn_obj.load_weights()
+    dqn = DQN(36, 3, nb_hidden=1000, decoder="decoder.npy")
 
     # Q-Learning framework
     cost = 0
@@ -57,33 +54,37 @@ def train_dqn():
 
         while not done:
             total_step += 1
+            print total_step
 
-            action = epsilon_greedy_action_select(
-                dqn_obj,
+            action, q_func = epsilon_greedy_action_select(
+                dqn,
                 state,
                 ACTION_NUM,
                 epsilon
             )
 
-            state_bar, reward, done = env.step(np.argmax(action))
+            state_bar, reward, done = env.step(np.array([action]))
 
-            display_memory.add((state, action, reward, state_bar, done))
+            display_memory.add((state, action, reward, state_bar, done, q_func))
 
             if total_step > OBSERVE_PHASE:
+                import pdb
+                pdb.set_trace()
                 batch = display_memory.sample(BATCH_SIZE)
 
                 cost = train_network(
-                    dqn_obj,
+                    dqn,
                     batch,
                     BELLMAN_FACTOR
                 )
-            print "reward: ", reward, " cost: ", cost, " action: ", np.argmax(action), " if continue: ", not done, " epsilon: ", epsilon
+                print state
+                print "reward: ", reward, " cost: ", cost, " action: ", np.argmax(action), " if continue: ", not done, " epsilon: ", epsilon
 
             state = state_bar
 
         if 0 == ((num_episode + 1) % 1000):
             print "Cost is: ", cost
-            dqn_obj.save_weights(num_episode)  # save weights
+            # dqn.save_weights(num_episode)  # save weights
 
         if total_step > EXPLORE_PHASE:
             epsilon = EPSILON_FINAL

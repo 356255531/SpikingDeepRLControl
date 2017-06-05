@@ -118,17 +118,22 @@ class RobotArm(object):
 
 
 def main():
-    arm = VirtualArm(dim=1,
-                     arm_lens=np.array([ARM_LENGTH_1]),
+    arm = VirtualArm(dim=3,
+                     arm_lens=np.array([ARM_LENGTH_1, ARM_LENGTH_2, ARM_LENGTH_3]),
                      upper_bound=None,
                      lower_bound=None,
-                     start_angular=np.zeros(1),
-                     goal=(-2.12, -2.12))
+                     start_angular=np.zeros(3),
+                     goal=(-ARM_LENGTH_1 / 1.414, -ARM_LENGTH_1 / 1.414),
+                     if_visual=True - ARM_LENGTH_1 / 1.414
+                     )
     for x in xrange(1, 1000):
-        arm.perform_action((10,))
+        arm.perform_action((10, 10, 10))
         print "perform 10, 10, 10"
         print arm._arm_angulars_in_degree
         print arm._end_coor
+        import pdb
+        if x == 3:
+            pdb.set_trace()
 
 
 if __name__ == '__main__':

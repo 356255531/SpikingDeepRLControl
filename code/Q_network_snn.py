@@ -1,3 +1,4 @@
+__auhthor__ = "Bo"
 import nengo
 import numpy as np
 from vision import Gabor, Mask
@@ -5,10 +6,10 @@ from vision import Gabor, Mask
 
 class Q_network:
 
-    def __init__(self, input_shape, output_shape, nb_hidden, decoder):
+    def __init__(self, input_shape, output_shape, nb_hidden, decoder=None):
         '''
         Spiking neural network as the Q value function approximation
-        :param input_shape: the input dimension without batch_size, example: state is 2 dimension, 
+        :param input_shape: the input dimension without batch_size, example: state is 2 dimension,
         action is 1 dimenstion, the input shape is 3.
         :param output_shape: the output dimension without batch_size, the dimenstion of Q values
         :param nb_hidden: the number of neurons in ensemble
@@ -22,7 +23,7 @@ class Q_network:
     def encoder_initialization(self):
         '''
         encoder is the connection relationship between input and the ensemble
-        :return: initialised encoder
+        return: initialised encoder
         '''
 
         rng = np.random.RandomState(self.output_shape)
@@ -36,7 +37,7 @@ class Q_network:
         :param train_data: the training input, shape = (nb_samples, dim_samples)
         :param train_targets: the label or Q values shape=(nbm samples, dim_samples)
         :param simulation_time: the time to do the simulation, default = 100s
-        :return: 
+        :return:
         '''
 
         encoders = self.encoder_initialization()
@@ -100,3 +101,24 @@ class Q_network:
             _, acts = nengo.utils.ensemble.tuning_curves(input_neuron, sim, inputs=input)
 
         return np.dot(acts, sim.data[conn].weights.T)
+
+
+def main():
+    from keras.datasets import mnist
+    (X_train, y_train), (X_test, y_test) = mnist.load_data()
+
+    X_train = X_train.reshape(X_train.shape[0], -1) / 255.  # normalize
+    X_test = X_test.reshape(X_test.shape[0], -1) / 255.  # normalize
+
+    from keras.utils import np_utils
+    y_train = np_utils.to_categorical(y_train, 10)
+    y_test = np_utils.to_categorical(y_test, 10)
+
+    print y_test
+
+    DQN = Q_network(784, 10, nb_hidden=1000, decoder="decoder.npy")
+    DQN.train_network(X_train, y_train, simulation_time=1000)
+
+
+if __name__ == '__main__':
+    main()

@@ -26,11 +26,11 @@ class StateActionSpace_RobotArm(object):
     def get_arm_input(self, action):
         arm_input = []
         for single_action in action:
-            if -1 == single_action:
-                arm_input.append(-10)
             if 0 == single_action:
-                arm_input.append(0)
+                arm_input.append(-10)
             if 1 == single_action:
+                arm_input.append(0)
+            if 2 == single_action:
                 arm_input.append(10)
         return arm_input
 

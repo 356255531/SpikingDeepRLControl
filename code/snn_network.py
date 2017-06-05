@@ -22,7 +22,7 @@ class Q_network:
         self.decoder = decoder
 
     def encoder_initialization(self, way="default"):
-        if way=="random":
+        if way == "random":
             encoders = np.random.normal(0, 1, size=(self.nb_hidden, self.input_shape))
         else:
             rng = np.random.RandomState(self.output_shape)
@@ -36,7 +36,7 @@ class Q_network:
         :param train_data: the training input, shape = (nb_samples, dim_samples)
         :param train_targets: the label or Q values shape=(nbm samples, dim_samples)
         :param simulation_time: the time to do the simulation, default = 100s
-        :return: 
+        :return:
         '''
 
         encoders = self.encoder_initialization()
@@ -45,13 +45,13 @@ class Q_network:
         model = nengo.Network(seed=3)
         with model:
             input_neuron = nengo.Ensemble(n_neurons=self.nb_hidden,
-                                           dimensions=self.input_shape,
-                                           neuron_type=nengo.LIFRate(),
-                                           intercepts=nengo.dists.Choice([-0.5]),
-                                           max_rates=nengo.dists.Choice([100]),
-                                           eval_points=train_data,
-                                           encoders=encoders,
-                                           )
+                                          dimensions=self.input_shape,
+                                          neuron_type=nengo.LIFRate(),
+                                          intercepts=nengo.dists.Choice([-0.5]),
+                                          max_rates=nengo.dists.Choice([100]),
+                                          eval_points=train_data,
+                                          encoders=encoders,
+                                          )
             output = nengo.Node(size_in=self.output_shape)
             conn = nengo.Connection(input_neuron,
                                     output,
@@ -67,7 +67,6 @@ class Q_network:
 
         # save the connection weights after training
         np.save(self.decoder, sim.data[conn_weights][-1].T)
-
 
     def predict(self, input):
         '''
@@ -137,7 +136,6 @@ class Q_network:
             print "the test acc is:", acc
 
 
-
 if __name__ == '__main__':
 
     (X_train, y_train), (X_test, y_test) = mnist.load_data()
@@ -148,11 +146,10 @@ if __name__ == '__main__':
     y_train = np_utils.to_categorical(y_train, nb_classes=10)
     y_test = np_utils.to_categorical(y_test, nb_classes=10)
 
-    model = Q_network(input_shape=28*28, output_shape=10, nb_hidden=1000, decoder="decoder.npy")
+    model = Q_network(input_shape=28 * 28, output_shape=10, nb_hidden=1000, decoder="decoder.npy")
 
     # training
     model.train_network(X_train, y_train, simulation_time=100)
-
 
     # #single prediction
     # image = X_test[123,:]
@@ -166,13 +163,3 @@ if __name__ == '__main__':
     # print "the predict number is:", type(model.predict(image))
 
     model.acc_calculation(X_test, y_test)
-
-
-
-
-
-
-
-
-
-
