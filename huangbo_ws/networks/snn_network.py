@@ -153,9 +153,8 @@ if __name__ == '__main__':
     # training
     model.train_network(X_train, y_train, simulation_time=100)
 
-
     # #single prediction
-    # image = X_test[123,:]
+    # image = X_test[156,:]
     # image_new = np.reshape(image,(28,28))
     #
     # import matplotlib.pyplot as plt
@@ -163,7 +162,7 @@ if __name__ == '__main__':
     # plt.imshow(image_new)
     # plt.show()
     #
-    # print "the predict number is:", type(model.predict(image))
+    # print "the predict number is:", np.argmax(model.predict(image))
 
     model.acc_calculation(X_test, y_test)
 
