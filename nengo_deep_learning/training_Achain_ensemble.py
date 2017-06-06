@@ -30,10 +30,12 @@ with nengo.Network(seed=0) as net:
     # define our outputs with a probe on the last ensemble in the chain
     p = nengo.Probe(d)
 
-n_steps = 5  # the number of simulation steps we want to run our model for
+n_steps = 1  # the number of simulation steps we want to run our model for
 mini_size = 100  # minibatch size
 
-with nengo_dl.Simulator(net, minibatch_size=mini_size, device="/cpu:0") as sim:
+
+
+with nengo_dl.Simulator(net, minibatch_size=mini_size, seed=3, device="/cpu:0", step_blocks=n_steps) as sim:
     # create input/target data. this could be whatever we want, but here
     # we'll train the network to output 2x its input
     input_data = np.random.uniform(-1, 1, size=(10000, n_steps, 1))
@@ -42,24 +44,15 @@ with nengo_dl.Simulator(net, minibatch_size=mini_size, device="/cpu:0") as sim:
     # train the model, passing `input_data` to our input node `a` and
     # `target_data` to our output probe `p`. we can use whatever TensorFlow
     # optimizer we want here.
-    sim.train({a: input_data},
-              {p: target_data},
-              tf.train.MomentumOptimizer(5e-2, 0.9),
-              n_epochs=30
-              )
+    sim.train({a: input_data}, {p: target_data},
+              tf.train.MomentumOptimizer(5e-2, 0.9), n_epochs=30)
+    sim.save_params("/home/huangbo/SpikingDeepRLControl/nengo_deep_learning/checkpoints")
 
-    # run the model to see the results of the training. note that this will
-    # use the input values specified in our `nengo.Node` definition
-    # above (0.5)
-    sim.run_steps(n_steps)
+    print sim.loss({a: input_data}, {p: target_data}, "mse")
 
-    # so the output should be 1
-    assert np.allclose(sim.data[p], 1, atol=1e-2)
-
-    sim.soft_reset(include_probes=True)
-
-    # or if we wanted to see the performance on a test dataset, we could do
-    test_data = np.random.uniform(-1, 1, size=(mini_size, n_steps, 1))
-    sim.run_steps(n_steps, input_feeds={a: test_data})
-
-    assert np.allclose(test_data * 2, sim.data[p], atol=1e-2)
+with nengo_dl.Simulator(net, minibatch_size=1, seed=3, device="/cpu:0", step_blocks=n_steps) as sim_1:
+    sim_1.load_params("/home/huangbo/SpikingDeepRLControl/nengo_deep_learning/checkpoints")
+    input_data = np.random.uniform(-1, 1, size=(1, n_steps, 1))
+    print input_data
+    print input_data.shape
+    print sim_1.data[p]

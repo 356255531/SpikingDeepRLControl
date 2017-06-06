@@ -1,15 +1,17 @@
-__auhthor__ = "Bo"
 import nengo
 import numpy as np
 from vision import Gabor, Mask
+from keras.datasets import mnist
+from keras.utils import np_utils
+from sklearn.metrics import accuracy_score
 
 
-class Q_network:
+class mnist_classification:
 
-    def __init__(self, input_shape, output_shape, nb_hidden, decoder=None):
+    def __init__(self, input_shape, output_shape, nb_hidden):
         '''
         Spiking neural network as the Q value function approximation
-        :param input_shape: the input dimension without batch_size, example: state is 2 dimension,
+        :param input_shape: the input dimension without batch_size, example: state is 2 dimension, 
         action is 1 dimenstion, the input shape is 3.
         :param output_shape: the output dimension without batch_size, the dimenstion of Q values
         :param nb_hidden: the number of neurons in ensemble
@@ -18,30 +20,27 @@ class Q_network:
         self.input_shape = input_shape
         self.output_shape = output_shape
         self.nb_hidden = nb_hidden
-        self.decoder = decoder
 
     def encoder_initialization(self):
         '''
         encoder is the connection relationship between input and the ensemble
-        return: initialised encoder
+        :return: initialised encoder
         '''
-
         rng = np.random.RandomState(self.output_shape)
         encoders = Gabor().generate(self.nb_hidden, (1, 1), rng=rng)
         encoders = Mask((self.input_shape, 1)).populate(encoders, rng=rng, flatten=True)
         return encoders
 
-    def train_network(self, train_data, train_targets):
+    def traning_and_prediction(self, train_data, train_targets, evl_image):
         '''
         training the network useing all training data
         :param train_data: the training input, shape = (nb_samples, dim_samples)
         :param train_targets: the label or Q values shape=(nbm samples, dim_samples)
         :param simulation_time: the time to do the simulation, default = 100s
-        :return:
+        :return: 
         '''
 
         encoders = self.encoder_initialization()
-        print encoders.shape
         solver = nengo.solvers.LstsqL2(reg=0.01)
 
         model = nengo.Network(seed=3)
@@ -62,62 +61,43 @@ class Q_network:
                                     function=train_targets,
                                     solver=solver
                                     )
-            conn_weights = nengo.Probe(conn, 'weights', sample_every=1.0)
-
+        # training is done after create the simulator
         with nengo.Simulator(model) as sim:
-            sim.run(1)
-        # save the connection weights after training
-        np.save(self.decoder, sim.data[conn_weights][-1].T)
-
-    def predict(self, input):
-        '''
-        prediction after training, the output will be the corresponding q values
-        :param input: input must be a numpy array, system state and action paars, shape = (dim_sample)
-        :return: the q values
-        '''
-        encoders = self.encoder_initialization()
-
-        try:
-            decoder = np.load(self.decoder)
-        except IOError:
-            decoder = np.zeros((self.nb_hidden, self.output_shape))
-
-        model = nengo.Network(seed=3)
-        with model:
-            input_neuron = nengo.Ensemble(n_neurons=self.nb_hidden,
-                                          dimensions=self.input_shape,
-                                          neuron_type=nengo.LIFRate(),
-                                          intercepts=nengo.dists.Choice([-0.5]),
-                                          max_rates=nengo.dists.Choice([100]),
-                                          encoders=encoders,
-                                          )
-            output = nengo.Node(size_in=self.output_shape)
-            conn = nengo.Connection(input_neuron.neurons,
-                                    output,
-                                    synapse=None,
-                                    transform=decoder.T
-                                    )
-        with nengo.Simulator(model) as sim:
-            _, acts = nengo.utils.ensemble.tuning_curves(input_neuron, sim, inputs=input)
-        return np.dot(acts, sim.data[conn].weights.T)
-
-
-def main():
-    from keras.datasets import mnist
-    (X_train, y_train), (X_test, y_test) = mnist.load_data()
-
-    X_train = X_train.reshape(X_train.shape[0], -1) / 255.  # normalize
-    X_test = X_test.reshape(X_test.shape[0], -1) / 255.  # normalize
-
-    from keras.utils import np_utils
-    y_train = np_utils.to_categorical(y_train, 10)
-    y_test = np_utils.to_categorical(y_test, 10)
-
-    print y_test
-
-    DQN = Q_network(784, 10, nb_hidden=1000, decoder="decoder.npy")
-    DQN.train_network(X_train, y_train, simulation_time=1000)
+            # prediction for a single image
+            _, acts = nengo.utils.ensemble.tuning_curves(input_neuron, sim, inputs=evl_image)
+            return np.dot(acts, sim.data[conn].weights.T)
 
 
 if __name__ == '__main__':
-    main()
+
+    import timeit
+
+    start = timeit.default_timer()
+
+    (X_train, y_train), (X_test, y_test) = mnist.load_data()
+
+    # data pre-processing
+    X_train = X_train.reshape(X_train.shape[0], -1) / 255.  # normalize
+    X_test = X_test.reshape(X_test.shape[0], -1) / 255.  # normalize
+    y_train = np_utils.to_categorical(y_train, nb_classes=10)
+    y_test = np_utils.to_categorical(y_test, nb_classes=10)
+
+    model = mnist_classification(input_shape=28*28, output_shape=10, nb_hidden=2000)
+
+    # training
+    prediction = model.traning_and_prediction(X_train, y_train, evl_image = X_test)
+    #print prediction.shape
+    acc = accuracy_score(np.argmax(y_test, axis=1), np.argmax(prediction, axis=1))
+    print "the test acc is:", acc
+
+
+
+    # Your statements here
+
+    stop = timeit.default_timer()
+
+    print "the time is", stop - start
+
+
+
+
