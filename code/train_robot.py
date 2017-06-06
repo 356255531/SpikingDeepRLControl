@@ -9,7 +9,7 @@ import numpy as np
 ACTION_NUM = 3
 
 # Training set up
-# BATCH_SIZE = 50000
+BATCH_SIZE = 50000
 MEMERY_LIMIT = 100000
 
 # RL parameters
@@ -45,16 +45,20 @@ def train_dqn():
     cost = 0
     total_step = 0
     num_episode = 0
-    while 1:
+    for x in xrange(1, 10):
         num_episode += 1
 
         state = env.init_game()
 
         done = False
 
-        while not done:
+        count = 0
+        while 10000 != count:
+            if done:
+                state = env.init_game()
+                done = False
+            count += 1
             total_step += 1
-            print total_step
 
             action, q_func = epsilon_greedy_action_select(
                 dqn,
@@ -67,20 +71,46 @@ def train_dqn():
 
             display_memory.add((state, action, reward, state_bar, done, q_func))
 
-            if total_step > OBSERVE_PHASE:
-                import pdb
-                pdb.set_trace()
-                batch = display_memory.sample(BATCH_SIZE)
+            state = state_bar
 
-                cost = train_network(
-                    dqn,
-                    batch,
-                    BELLMAN_FACTOR
-                )
-                print state
-                print "reward: ", reward, " cost: ", cost, " action: ", np.argmax(action), " if continue: ", not done, " epsilon: ", epsilon
+            count += 1
+            print count
+
+        count = 0
+        step_count = 0
+        while 10 != count:
+            if done:
+                state = env.init_game()
+                done = False
+                print "done!", step_count
+                count += 1
+                step_count = 0
+
+            step_count += 1
+
+            action, q_func = epsilon_greedy_action_select(
+                dqn,
+                state,
+                ACTION_NUM,
+                epsilon
+            )
+
+            state_bar, reward, done = env.step(np.array([action]))
+
+            display_memory.add((state, action, reward, state_bar, done, q_func))
 
             state = state_bar
+
+            print count
+
+        batch = display_memory.sample(display_memory.size)
+        cost = train_network(
+            dqn,
+            batch,
+            BELLMAN_FACTOR
+        )
+        print state
+        print "reward: ", reward, " cost: ", cost, " action: ", np.argmax(action), " if continue: ", not done, " epsilon: ", epsilon
 
         if 0 == ((num_episode + 1) % 1000):
             print "Cost is: ", cost
