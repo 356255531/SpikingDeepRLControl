@@ -19,8 +19,8 @@ class VirtualArm(object):
                  upper_bound=None,
                  lower_bound=None,
                  start_angular=np.zeros(1),
-                 goal=(3.0, 0),
-                 if_visual=False
+                 goal=(-0.52094453300079102, 2.9544232590366239),
+                 if_visual=True
                  ):
         super(VirtualArm, self).__init__()
 

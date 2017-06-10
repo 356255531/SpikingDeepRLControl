@@ -6,9 +6,9 @@ class Reward(object):
 
     def evlt(self, previous_state, state, goal_state):
         if state == goal_state:
-            return 1
+            return 10
 
-        return -0.01
+        return -0.1
 
 
 def main():

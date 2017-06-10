@@ -76,7 +76,7 @@ class RobotArmEnv(object):
             self._done
 
     def _perform_action(self, action):
-        arm_input = self._state_action_space.get_arm_input(action)
+        arm_input = self._state_action_space.get_arm_input(np.array([np.argmax(action)]))
         self._arm.perform_action(arm_input)
         arm_readout = self._arm.read()
         state = self._state_action_space.degree_to_state(arm_readout)

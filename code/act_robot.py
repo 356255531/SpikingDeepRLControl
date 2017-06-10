@@ -62,21 +62,24 @@ def train_dqn():
                 dqn,
                 state,
                 ACTION_NUM,
-                epsilon
+                0
             )
 
             state_bar, reward, done = env.step(action)
 
-            display_memory.add((state, action, reward, state_bar, done))
+            import pdb
+            pdb.set_trace()
 
-            if total_step > OBSERVE_PHASE:
-                batch = display_memory.sample(BATCH_SIZE)
+            # display_memory.add((state, action, reward, state_bar, done))
 
-                cost = train_network(
-                    dqn,
-                    batch,
-                    BELLMAN_FACTOR
-                )
+            # if total_step > OBSERVE_PHASE:
+            #     batch = display_memory.sample(BATCH_SIZE)
+
+            #     # cost = train_network(
+            #     #     dqn,
+            #     #     batch,
+            #     #     BELLMAN_FACTOR
+            #     # )
             print "reward: ", reward, " cost: ", cost, " action: ", np.argmax(action), " if game continue: ", not done, " epsilon: ", epsilon
 
             state = state_bar
