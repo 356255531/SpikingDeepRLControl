@@ -94,29 +94,29 @@ class Q_network:
                                     synapse=None,
                                     transform=decoder.T
                                     )
-        sim = nengo.Simulator(model)
-        _, acts = nengo.utils.ensemble.tuning_curves(input_neuron, sim, inputs=input)
+        with nengo.Simulator(model) as sim:
+            _, acts = nengo.utils.ensemble.tuning_curves(input_neuron, sim, inputs=input)
         return np.dot(acts, sim.data[conn].weights.T)
 
 
-# if __name__ == '__main__':
-#     from keras.datasets import mnist
-#     from keras.utils import np_utils
-#     from sklearn.metrics import accuracy_score
-#
-#     (X_train, y_train), (X_test, y_test) = mnist.load_data()
-#     # data pre-processing
-#     X_train = X_train.reshape(X_train.shape[0], -1) / 255.  # normalize
-#     X_test = X_test.reshape(X_test.shape[0], -1) / 255.  # normalize
-#     y_train = np_utils.to_categorical(y_train, nb_classes=10)
-#     y_test = np_utils.to_categorical(y_test, nb_classes=10)
-# 
-#
-#     model = Q_network(input_shape=28*28, output_shape=10, nb_hidden=1000, decoder="/home/huangbo/Desktop/decoder.npy")
-#
-#     # training
-#     model.train_network(X_train, y_train)
-#     prediction = model.predict(X_test)
-#
-#     acc = accuracy_score(np.argmax(y_test, axis=1), np.argmax(prediction, axis=1))
-#     print "the test acc is:", acc
+if __name__ == '__main__':
+    from keras.datasets import mnist
+    from keras.utils import np_utils
+    from sklearn.metrics import accuracy_score
+
+    (X_train, y_train), (X_test, y_test) = mnist.load_data()
+    # data pre-processing
+    X_train = X_train.reshape(X_train.shape[0], -1) / 255.  # normalize
+    X_test = X_test.reshape(X_test.shape[0], -1) / 255.  # normalize
+    y_train = np_utils.to_categorical(y_train, nb_classes=10)
+    y_test = np_utils.to_categorical(y_test, nb_classes=10)
+
+
+    model = Q_network(input_shape=28*28, output_shape=10, nb_hidden=1000, decoder="/home/huangbo/Desktop/decoder.npy")
+
+    # training
+    model.train_network(X_train, y_train)
+    prediction = model.predict(X_test)
+
+    acc = accuracy_score(np.argmax(y_test, axis=1), np.argmax(prediction, axis=1))
+    print "the test acc is:", acc
