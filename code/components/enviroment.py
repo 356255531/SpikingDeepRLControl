@@ -45,7 +45,12 @@ class RobotArmEnv(object):
 
         # Define agent
         if if_emulator:
-            self._arm = VirtualArm(dim)
+            self._arm = VirtualArm(
+                dim=1,
+                start_angular=np.zeros(1),
+                goal_coor=(0, 3),
+                if_visual=False
+            )
         else:
             self._arm = RobotArm()
 
@@ -76,12 +81,12 @@ class RobotArmEnv(object):
             self._done
 
     def _perform_action(self, action):
-        arm_input = self._state_action_space.get_arm_input(np.array([np.argmax(action)]))
+        arm_input = self._state_action_space.action_to_arm_input(np.array([np.argmax(action)]))
         self._arm.perform_action(arm_input)
         arm_readout = self._arm.read()
         state = self._state_action_space.degree_to_state(arm_readout)
 
-        if self._goal_func.if_goal(state):
+        if self._goal_func.if_goal_state(state):
             self._done = True
         return state
 
@@ -89,7 +94,7 @@ class RobotArmEnv(object):
 def main():
     state_action_space = StateActionSpace_RobotArm()
     reward = Reward()
-    goal = Goal((18,))
+    goal = Goal((3, 0), state_action_space)
     env = RobotArmEnv(state_action_space, reward, goal)
     env.init_game()
     done = False

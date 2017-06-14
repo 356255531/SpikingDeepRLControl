@@ -17,7 +17,7 @@ def train_network(
         batch,
         discount_factor=0.9):
     states, actions, rewards, states_bar, dones = batch_parser(batch)
-    states_bar_predict_val = DQN.predict(np_utils.to_categorical(states_bar, 36))
+    states_bar_predict_val = DQN.predict(states)
     target_q_func = []
     for idx, done in enumerate(dones):
         if done:

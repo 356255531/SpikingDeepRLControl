@@ -7,37 +7,33 @@ class StateActionSpace_RobotArm(object):
 
     def __init__(
             self,
-            dim=1,
             resolution=np.array([10]),
-            action_unit_in_degree=np.array([3])
     ):
         super(StateActionSpace_RobotArm, self).__init__()
-        self._dim = dim
         self._resolution = resolution
-        self._action_unit_in_degree = action_unit_in_degree
 
     def degree_to_state(self, observation):
-        observation = np.array(observation)
         state = []
         for observation_degree, resolution in zip(observation, self._resolution):
-            state.append(observation_degree // resolution)
-        return tuple(state)
+            state.append(-1 + 2.0 * (observation_degree // resolution) / (360 / resolution))
+        return np.array(state)
 
-    def get_arm_input(self, action):
+    def action_to_arm_input(self, action):
         arm_input = []
-        for single_action in action:
+        for idx, single_action in enumerate(action):
             if 0 == single_action:
-                arm_input.append(-10)
+                arm_input.append(-self._resolution[idx])
             if 1 == single_action:
                 arm_input.append(0)
             if 2 == single_action:
-                arm_input.append(10)
-        return arm_input
+                arm_input.append(self._resolution[idx])
+        return np.array(arm_input)
 
 
 def main():
-    state_action_space = StateActionSpace_RobotArm()
-    print state_action_space.degree_to_state(np.array([20]))
+    state_action_space = StateActionSpace_RobotArm([10, 20])
+    print state_action_space.degree_to_state(np.array([360, 90]))
+    print state_action_space.action_to_arm_input(np.array([2, 1]))
 
 
 if __name__ == '__main__':

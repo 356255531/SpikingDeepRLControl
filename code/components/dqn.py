@@ -118,7 +118,9 @@ def main():
 
     dqn = DQN(784, 10, nb_hidden=1000, decoder="decoder.npy")
     print X_train, y_train
-    dqn.train_network(X_train, y_train, simulation_time=1000)
+    dqn.train_network(X_train, y_train, simulation_time=1)
+    print dqn.predict(X_train[0])
+    print X_train[0]
 
 
 if __name__ == '__main__':

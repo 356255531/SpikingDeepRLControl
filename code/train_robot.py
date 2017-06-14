@@ -5,12 +5,11 @@ from components import epsilon_greedy_action_select, train_network, epsilon_deca
 
 import numpy as np
 
-from ann_network import Q_learning_network
 # Game set up
 ACTION_NUM = 3
 
 # Training set up
-BATCH_SIZE = 1024
+BATCH_SIZE = 1000
 MEMERY_LIMIT = 50000
 
 # RL parameters
@@ -29,10 +28,10 @@ EPSILON_FINAL = 0.0001
 def train_dqn():
     epsilon = EPSILON_START
 
-    state_action_space_obj = StateActionSpace_RobotArm()
-    reward_func_obj = Reward()
-    goal_func_obj = Goal((10,))
-    env = RobotArmEnv(state_action_space_obj, reward_func_obj, goal_func_obj)
+    state_action_space = StateActionSpace_RobotArm()
+    reward_func = Reward()
+    goal_func = Goal((180,), state_action_space)
+    env = RobotArmEnv(state_action_space, reward_func, goal_func)
     env.init_game()
     done = False
 
@@ -40,46 +39,54 @@ def train_dqn():
     display_memory = Memory(MEMERY_LIMIT)
 
     # Create network object
-    # dqn = DQN(36, 3, nb_hidden=1000, decoder="decoder.npy")
-    dqn = Q_learning_network()
-    dqn.load_weights()
+    dqn = DQN(1, 3, nb_hidden=1000, decoder="decoder.npy")
+    # dqn = Q_learning_network()
+    # dqn.load_weights()
 
     # Q-Learning framework
     cost = 0
     total_step = 0
     num_episode = 0
     while 1:
-        num_episode += 1
+        # num_episode += 1
 
-        state = env.init_game()
+        # state = env.init_game()
 
-        done = False
+        # done = False
 
-        while not done:
-            total_step += 1
+        count = 0
+        while count < 1000:
+            state = env.init_game()
+            done = False
+            while not done:
+                if count > 1000:
+                    break
+                total_step += 1
 
-            action = epsilon_greedy_action_select(
-                dqn,
-                state,
-                ACTION_NUM,
-                epsilon
-            )
-
-            state_bar, reward, done = env.step(action)
-
-            display_memory.add((state, action, reward, state_bar, done))
-
-            if total_step > OBSERVE_PHASE:
-                batch = display_memory.sample(BATCH_SIZE)
-
-                cost = train_network(
+                action = epsilon_greedy_action_select(
                     dqn,
-                    batch,
-                    BELLMAN_FACTOR
+                    state,
+                    ACTION_NUM,
+                    epsilon
                 )
-            print "reward: ", reward, " cost: ", cost, " action: ", np.argmax(action), " if game continue: ", not done, " epsilon: ", epsilon
 
-            state = state_bar
+                state_bar, reward, done = env.step(action)
+                print state
+                display_memory.add((state, action, reward, state_bar, done))
+                count += 1
+                print count, reward
+
+                state = state_bar
+
+        if total_step > OBSERVE_PHASE:
+            batch = display_memory.sample(BATCH_SIZE)
+
+            cost = train_network(
+                dqn,
+                batch,
+                BELLMAN_FACTOR
+            )
+        print "reward: ", reward, " cost: ", cost, " action: ", np.argmax(action), " if game continue: ", not done, " epsilon: ", epsilon
 
         if 0 == ((num_episode + 1) % 1000):
             print "Cost is: ", cost

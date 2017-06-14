@@ -11,7 +11,17 @@ PI = np.pi
 
 
 class VirtualArm(object):
-    """docstring for VirtualArm"""
+    """
+    Member function:
+        init(start_angular, goal_coor):
+            arg:    start_angular, numpy array
+                    goal_coor, numpy array
+        perform_action(input_in_degree):
+            arg: input_in_degree, numpy array
+            output: no output
+        read():
+            arg: no arg
+            output: angular_of_all_joints, numpy array"""
 
     def __init__(self,
                  dim=1,
@@ -19,21 +29,19 @@ class VirtualArm(object):
                  upper_bound=None,
                  lower_bound=None,
                  start_angular=np.zeros(1),
-                 goal=(-0.52094453300079102, 2.9544232590366239),
-                 if_visual=True
+                 goal_coor=(0, 3),
+                 if_visual=False
                  ):
         super(VirtualArm, self).__init__()
 
         self._dim = dim
-        self._arm_len = np.zeros(self._dim)
-        for idx, arm_len in enumerate(arm_lens):
-            self._arm_len[idx] = arm_len
+        self._arm_len = arm_lens
 
         # Check the lower and upper bound
         self._upper_bound = upper_bound
         self._lower_bound = lower_bound
 
-        self._goal = goal
+        self._goal_coor = goal_coor
         self._if_visual = if_visual
         self.init(start_angular)
 
@@ -46,9 +54,9 @@ class VirtualArm(object):
                  self._end_coor[-1][1] + arm_len * np.sin((angluar / 180.0) * np.pi)))
         self._end_coor = tuple(self._end_coor)
 
-    def init(self, start_angular=None, goal=None):
-        if goal is not None:
-            self._goal = goal
+    def init(self, start_angular=None, goal_coor=None):
+        if goal_coor is not None:
+            self._goal_coor = goal_coor
 
         if start_angular is None:
             start_angular = np.zeros(self._dim)
@@ -105,7 +113,7 @@ class VirtualArm(object):
                 coor[0], coor[1],
                 'ro', markersize=markersize, markeredgewidth=linewidth)
 
-        plt.plot(self._goal[0], self._goal[1], 'ro', markersize=markersize, markeredgewidth=linewidth)
+        plt.plot(self._goal_coor[0], self._goal_coor[1], 'ro', markersize=markersize, markeredgewidth=linewidth)
         plt.pause(0.01)
 
 
@@ -123,17 +131,14 @@ def main():
                      upper_bound=None,
                      lower_bound=None,
                      start_angular=np.zeros(3),
-                     goal=(-ARM_LENGTH_1 / 1.414, -ARM_LENGTH_1 / 1.414),
-                     if_visual=True - ARM_LENGTH_1 / 1.414
+                     goal_coor=(0, 3),
+                     if_visual=True
                      )
     for x in xrange(1, 1000):
         arm.perform_action((10, 10, 10))
         print "perform 10, 10, 10"
-        print arm._arm_angulars_in_degree
+        print arm.read()
         print arm._end_coor
-        import pdb
-        if x == 3:
-            pdb.set_trace()
 
 
 if __name__ == '__main__':

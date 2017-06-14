@@ -1,3 +1,6 @@
+import numpy as np
+
+
 class Reward(object):
     """docstring for Reward"""
 
@@ -5,10 +8,10 @@ class Reward(object):
         super(Reward, self).__init__()
 
     def evlt(self, previous_state, state, goal_state):
-        if state == goal_state:
-            return 10
+        if np.array_equal(state, goal_state):
+            return 1
 
-        return -0.1
+        return -0.05
 
 
 def main():
