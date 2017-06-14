@@ -1,5 +1,4 @@
 import numpy as np
-from keras.utils import np_utils
 
 
 def batch_parser(batch):
@@ -18,15 +17,15 @@ def train_network(
         discount_factor=0.9):
     states, actions, rewards, states_bar, dones = batch_parser(batch)
     states_bar_predict_val = DQN.predict(states)
-    target_q_func = []
+    # import pdb
+    # pdb.set_trace()
     for idx, done in enumerate(dones):
         if done:
-            target_q_func.append(rewards[idx])
+            states_bar_predict_val[idx][np.argmax(actions[idx])] = rewards[idx]
         else:
-            target_q_func.append(rewards[idx] + discount_factor * np.max(states_bar_predict_val[idx]))
-    states = np_utils.to_categorical(states, 36)
-    target_q_func = np.array(target_q_func)
-    cost = DQN.train_network(states, actions, target_q_func)
+            states_bar_predict_val[idx][np.argmax(actions[idx])] = \
+                rewards[idx] + discount_factor * np.max(states_bar_predict_val[idx])
+    cost = DQN.train_network(states, states_bar_predict_val)
     return cost
 
 

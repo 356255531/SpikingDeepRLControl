@@ -98,6 +98,7 @@ def main():
     env = RobotArmEnv(state_action_space, reward, goal)
     env.init_game()
     done = False
+    count = 0
     while not done:
         state, reward, done = env.step(np.array([rd.randint(-1, 1)]))
         print state, reward, done

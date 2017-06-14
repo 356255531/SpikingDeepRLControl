@@ -10,14 +10,13 @@ ACTION_NUM = 3
 
 # Training set up
 BATCH_SIZE = 1000
-MEMERY_LIMIT = 50000
+MEMERY_LIMIT = 1000
 
 # RL parameters
 BELLMAN_FACTOR = 0.9
 
 # exploration setting
 OBSERVE_PHASE = 10000
-EXPLORE_PHASE = 20000
 
 # epsilon setting
 EPSILON_DISCOUNT = 0.9999
@@ -44,23 +43,19 @@ def train_dqn():
     # dqn.load_weights()
 
     # Q-Learning framework
-    cost = 0
-    total_step = 0
-    num_episode = 0
+
     while 1:
-        # num_episode += 1
+        cost = 0
+        total_step = 0
+        num_episode = 0
 
-        # state = env.init_game()
-
-        # done = False
-
-        count = 0
-        while count < 1000:
+        while total_step < OBSERVE_PHASE:
             state = env.init_game()
             done = False
             while not done:
-                if count > 1000:
+                if total_step > OBSERVE_PHASE:
                     break
+
                 total_step += 1
 
                 action = epsilon_greedy_action_select(
@@ -71,31 +66,27 @@ def train_dqn():
                 )
 
                 state_bar, reward, done = env.step(action)
-                print state
+                print "state", state, "reward", reward, "total step", total_step
+
                 display_memory.add((state, action, reward, state_bar, done))
-                count += 1
-                print count, reward
 
                 state = state_bar
 
-        if total_step > OBSERVE_PHASE:
-            batch = display_memory.sample(BATCH_SIZE)
+        batch = display_memory.sample(BATCH_SIZE)
 
-            cost = train_network(
-                dqn,
-                batch,
-                BELLMAN_FACTOR
-            )
+        cost = train_network(
+            dqn,
+            batch,
+            BELLMAN_FACTOR
+        )
+
         print "reward: ", reward, " cost: ", cost, " action: ", np.argmax(action), " if game continue: ", not done, " epsilon: ", epsilon
 
         if 0 == ((num_episode + 1) % 1000):
             print "Cost is: ", cost
             dqn.save_weights(num_episode)  # save weights
 
-        if total_step > EXPLORE_PHASE:
-            epsilon = EPSILON_FINAL
-        elif total_step > OBSERVE_PHASE:
-            epsilon = epsilon_decay(epsilon, EPSILON_DISCOUNT, EPSILON_FINAL)
+        epsilon = epsilon_decay(epsilon, EPSILON_DISCOUNT, EPSILON_FINAL)
 
 
 def main():

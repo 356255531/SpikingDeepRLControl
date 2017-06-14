@@ -31,7 +31,7 @@ def main():
     dqn = DQN(1, 3, nb_hidden=1000, decoder="decoder.npy")
     # for x in range(1000):
     #     print epsilon_greedy_action_select(dqn, np.array([-0.1]), 3, 0.1)
-    print dqn.predict(np.array([-1]))
+    print dqn.predict(np.array([0]))
 
 
 if __name__ == '__main__':

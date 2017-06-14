@@ -9,9 +9,9 @@ class Reward(object):
 
     def evlt(self, previous_state, state, goal_state):
         if np.array_equal(state, goal_state):
-            return 1
+            return 10
 
-        return -0.05
+        return -0.1
 
 
 def main():

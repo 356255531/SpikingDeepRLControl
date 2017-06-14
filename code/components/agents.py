@@ -11,11 +11,11 @@ PI = np.pi
 
 
 class VirtualArm(object):
-    """
+    """ 
     Member function:
         init(start_angular, goal_coor):
             arg:    start_angular, numpy array
-                    goal_coor, numpy array
+                    goal_coor, numpy
         perform_action(input_in_degree):
             arg: input_in_degree, numpy array
             output: no output
@@ -30,7 +30,7 @@ class VirtualArm(object):
                  lower_bound=None,
                  start_angular=np.zeros(1),
                  goal_coor=(0, 3),
-                 if_visual=False
+                 if_visual=True
                  ):
         super(VirtualArm, self).__init__()
 
