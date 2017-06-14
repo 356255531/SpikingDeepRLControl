@@ -25,11 +25,11 @@ solver = nengo.solvers.LstsqL2(reg=0.01)
 with nengo.Network(seed=3) as model:
     input = nengo.Node(nengo.processes.PresentInput(X_test, 0.1))
     layer = nengo.Ensemble(n_neurons=1000,
-                                  dimensions=784,
-                                  neuron_type=nengo.LIFRate(),
-                                  intercepts=nengo.dists.Choice([-0.5]),
-                                  max_rates=nengo.dists.Choice([100]),
-                                  encoders=encoders,
+                          dimensions=784,
+                          neuron_type=nengo.LIFRate(),
+                          intercepts=nengo.dists.Choice([-0.5]),
+                          max_rates=nengo.dists.Choice([100]),
+                          encoders=encoders,
                                   )
     output = nengo.Node(size_in=10)
     nengo.Connection(input, layer)

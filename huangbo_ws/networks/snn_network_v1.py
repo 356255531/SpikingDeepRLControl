@@ -1,6 +1,6 @@
 import nengo
 import numpy as np
-from vision import Gabor, Mask
+from code.vision import Gabor, Mask
 from keras.datasets import mnist
 from keras.utils import np_utils
 from sklearn.metrics import accuracy_score
@@ -21,12 +21,13 @@ class mnist_classification:
         self.output_shape = output_shape
         self.nb_hidden = nb_hidden
 
+
     def encoder_initialization(self):
         '''
         encoder is the connection relationship between input and the ensemble
         :return: initialised encoder
         '''
-        rng = np.random.RandomState(self.output_shape)
+        rng = np.random.RandomState(9)
         encoders = Gabor().generate(self.nb_hidden, (1, 1), rng=rng)
         encoders = Mask((self.input_shape, 1)).populate(encoders, rng=rng, flatten=True)
         return encoders
@@ -40,7 +41,9 @@ class mnist_classification:
         :return: 
         '''
 
-        encoders = self.encoder_initialization()
+        #encoders = self.encoder_initialization()
+        rng = np.random.RandomState(1)
+        encoders = rng.normal(size=(1000, 28*28))
         solver = nengo.solvers.LstsqL2(reg=0.01)
 
         model = nengo.Network(seed=3)
@@ -48,9 +51,8 @@ class mnist_classification:
             input_neuron = nengo.Ensemble(n_neurons=self.nb_hidden,
                                           dimensions=self.input_shape,
                                           neuron_type=nengo.LIFRate(),
-                                          intercepts=nengo.dists.Choice([-0.5]),
+                                          intercepts=nengo.dists.Uniform(-1.0, 1.0),
                                           max_rates=nengo.dists.Choice([100]),
-                                          eval_points=train_data,
                                           encoders=encoders,
                                           )
             output = nengo.Node(size_in=self.output_shape)
@@ -59,8 +61,10 @@ class mnist_classification:
                                     synapse=None,
                                     eval_points=train_data,
                                     function=train_targets,
-                                    solver=solver
+                                    solver=solver,
+                                    #learning_rule_type=nengo.PES(learning_rate=1e-4, pre_tau=0.1)
                                     )
+            self.ws = WeightSaver(conn, 'conn_weights')
         # training is done after create the simulator
         with nengo.Simulator(model) as sim:
             # prediction for a single image
@@ -68,11 +72,20 @@ class mnist_classification:
             return np.dot(acts, sim.data[conn].weights.T)
 
 
+class WeightSaver(object):
+    def __init__(self, connection, filename, sample_every=None, weights=False):
+        assert isinstance(connection.pre, nengo.Ensemble)
+        if not filename.endswith('.npy'):
+            filename = filename + '.npy'
+        self.filename = filename
+        #connection.solver = LoadFrom(self.filename, weights=weights)
+        self.probe = nengo.Probe(connection, 'weights', sample_every=sample_every)
+        self.connection = connection
+    def save(self, sim):
+        np.save(self.filename, sim.data[self.probe][-1].T)
+
+
 if __name__ == '__main__':
-
-    import timeit
-
-    start = timeit.default_timer()
 
     (X_train, y_train), (X_test, y_test) = mnist.load_data()
 
@@ -82,7 +95,7 @@ if __name__ == '__main__':
     y_train = np_utils.to_categorical(y_train, nb_classes=10)
     y_test = np_utils.to_categorical(y_test, nb_classes=10)
 
-    model = mnist_classification(input_shape=28*28, output_shape=10, nb_hidden=2000)
+    model = mnist_classification(input_shape=28*28, output_shape=10, nb_hidden=1000)
 
     # training
     prediction = model.traning_and_prediction(X_train, y_train, evl_image = X_test)
@@ -92,11 +105,6 @@ if __name__ == '__main__':
 
 
 
-    # Your statements here
-
-    stop = timeit.default_timer()
-
-    print "the time is", stop - start
 
 
 

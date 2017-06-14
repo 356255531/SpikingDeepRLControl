@@ -2,7 +2,6 @@ import nengo
 import numpy as np
 from vision import Gabor, Mask
 
-
 class Q_network:
 
     def __init__(self, input_shape, output_shape, nb_hidden, decoder):
@@ -25,9 +24,8 @@ class Q_network:
         :return: initialised encoder
         '''
 
-        rng = np.random.RandomState(self.output_shape)
-        encoders = Gabor().generate(self.nb_hidden, (1, 1), rng=rng)
-        encoders = Mask((self.input_shape, 1)).populate(encoders, rng=rng, flatten=True)
+        rng = np.random.RandomState(1)
+        encoders = rng.normal(size=(self.nb_hidden, self.input_shape))
         return encoders
 
     def train_network(self, train_data, train_targets):
@@ -45,13 +43,12 @@ class Q_network:
         model = nengo.Network(seed=3)
         with model:
             input_neuron = nengo.Ensemble(n_neurons=self.nb_hidden,
-                                           dimensions=self.input_shape,
-                                           neuron_type=nengo.LIFRate(),
-                                           intercepts=nengo.dists.Uniform(-1.0, 1.0),
-                                           max_rates=nengo.dists.Choice([100]),
-                                           eval_points=train_data,
-                                           encoders=encoders,
-                                           )
+                                          dimensions=self.input_shape,
+                                          neuron_type=nengo.LIFRate(),
+                                          intercepts=nengo.dists.Uniform(-1.0, 1.0),
+                                          max_rates=nengo.dists.Choice([100]),
+                                          encoders=encoders,
+                                          )
             output = nengo.Node(size_in=self.output_shape)
             conn = nengo.Connection(input_neuron,
                                     output,
@@ -60,13 +57,13 @@ class Q_network:
                                     function=train_targets,
                                     solver=solver
                                     )
+            #encoders_weights = nengo.Probe(input_neuron.encoders, "encoders_weights", sample_every=1.0)
             conn_weights = nengo.Probe(conn, 'weights', sample_every=1.0)
 
         with nengo.Simulator(model) as sim:
-            sim.run(1)
-        # save the connection weights after training
+            sim.run(3)
+        #save the connection weights after training
         np.save(self.decoder, sim.data[conn_weights][-1].T)
-
 
     def predict(self, input):
         '''
@@ -79,15 +76,16 @@ class Q_network:
         try:
             decoder = np.load(self.decoder)
         except IOError:
-            decoder = np.zeros((self.nb_hidden, self.output_shape))
+            rng = np.random.RandomState(1)
+            decoder = rng.normal(size=(self.nb_hidden, self.output_shape))
 
         model = nengo.Network(seed=3)
         with model:
             input_neuron = nengo.Ensemble(n_neurons=self.nb_hidden,
                                           dimensions=self.input_shape,
                                           neuron_type=nengo.LIFRate(),
-                                          intercepts=nengo.dists.Choice([-0.5]),
-                                          max_rates=nengo.dists.Choice(100),
+                                          intercepts=nengo.dists.Uniform(-1.0, 1.0),
+                                          max_rates=nengo.dists.Choice([100]),
                                           encoders=encoders,
                                           )
             output = nengo.Node(size_in=self.output_shape)
@@ -96,8 +94,29 @@ class Q_network:
                                     synapse=None,
                                     transform=decoder.T
                                     )
-        with nengo.Simulator(model) as sim:
-            _, acts = nengo.utils.ensemble.tuning_curves(input_neuron, sim, inputs=input)
+        sim = nengo.Simulator(model)
+        _, acts = nengo.utils.ensemble.tuning_curves(input_neuron, sim, inputs=input)
         return np.dot(acts, sim.data[conn].weights.T)
 
 
+# if __name__ == '__main__':
+#     from keras.datasets import mnist
+#     from keras.utils import np_utils
+#     from sklearn.metrics import accuracy_score
+#
+#     (X_train, y_train), (X_test, y_test) = mnist.load_data()
+#     # data pre-processing
+#     X_train = X_train.reshape(X_train.shape[0], -1) / 255.  # normalize
+#     X_test = X_test.reshape(X_test.shape[0], -1) / 255.  # normalize
+#     y_train = np_utils.to_categorical(y_train, nb_classes=10)
+#     y_test = np_utils.to_categorical(y_test, nb_classes=10)
+# 
+#
+#     model = Q_network(input_shape=28*28, output_shape=10, nb_hidden=1000, decoder="/home/huangbo/Desktop/decoder.npy")
+#
+#     # training
+#     model.train_network(X_train, y_train)
+#     prediction = model.predict(X_test)
+#
+#     acc = accuracy_score(np.argmax(y_test, axis=1), np.argmax(prediction, axis=1))
+#     print "the test acc is:", acc

@@ -3,7 +3,7 @@ import numpy as np
 
 from keras.datasets import mnist
 from keras.utils import np_utils
-from vision import Gabor, Mask
+from code.vision import Gabor, Mask
 from sklearn.metrics import accuracy_score
 
 
@@ -105,6 +105,7 @@ class Q_network:
 
     def acc_calculation(self, test_data, test_label):
         encoders = self.encoder_initialization("random")
+        print encoders.shape
         #encoders = self.encoder_initialization()
 
         model = nengo.Network(seed=3)
@@ -165,6 +166,10 @@ if __name__ == '__main__':
     # print "the predict number is:", np.argmax(model.predict(image))
 
     model.acc_calculation(X_test, y_test)
+
+
+
+    print np.load("decoder.npy").shape
 
 
 
