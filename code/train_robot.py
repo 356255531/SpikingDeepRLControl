@@ -16,7 +16,7 @@ MEMERY_LIMIT = 1000
 BELLMAN_FACTOR = 0.9
 
 # exploration setting
-OBSERVE_PHASE = 10000
+OBSERVE_PHASE = 1000
 
 # epsilon setting
 EPSILON_DISCOUNT = 0.9999
@@ -52,7 +52,12 @@ def train_dqn():
         while total_step < OBSERVE_PHASE:
             state = env.init_game()
             done = False
+            count = 0
             while not done:
+                if count > 200:
+                    break
+                count += 1
+
                 if total_step > OBSERVE_PHASE:
                     break
 

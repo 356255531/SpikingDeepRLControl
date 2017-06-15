@@ -48,8 +48,8 @@ class RobotArmEnv(object):
             self._arm = VirtualArm(
                 dim=1,
                 start_angular=np.zeros(1),
-                goal_coor=(0, 3),
-                if_visual=False
+                goal_coor=(-3, 0),
+                if_visual=True
             )
         else:
             self._arm = RobotArm()
