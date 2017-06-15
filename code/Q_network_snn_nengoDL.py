@@ -1,7 +1,7 @@
 import nengo
 import nengo_dl
 import numpy as np
-
+import tensorflow as tf
 
 class Spiking_Qnetwork:
 
@@ -19,6 +19,8 @@ class Spiking_Qnetwork:
         self.nb_hidden = nb_hidden
         self.weights_path = weights_path
 
+        self.model = self.build()
+
     def encoder_decoder_initialization(self, shape):
         '''
         :return: initialised encoder or decoder
@@ -30,22 +32,94 @@ class Spiking_Qnetwork:
     def build(self):
         encoders = self.encoder_decoder_initialization(shape=(self.nb_hidden, self.input_shape))
         decoders = self.encoder_decoder_initialization(shape=((self.nb_hidden, self.output_shape)))
+
         model = nengo.Network(seed=3)
         with model:
-            input_neuron = nengo.Ensemble(n_neurons=self.nb_hidden,
-                                          dimensions=self.input_shape,
-                                          neuron_type=nengo.LIFRate(),
-                                          intercepts=nengo.dists.Uniform(-1.0, 1.0),
-                                          max_rates=nengo.dists.Choice([100]),
-                                          encoders=encoders,
-                                          )
+            nengo_dl.configure_trainable(model, default=False)
+            model.config[nengo.Ensemble].neuron_type = nengo_dl.neurons.SoftLIFRate()
+            model.config[nengo.Ensemble].gain = nengo.dists.Choice([1])
+            model.config[nengo.Ensemble].bias = nengo.dists.Uniform(-1, 1)
+            model.config[nengo.Connection].synapse = None
+
+            self.input_node = nengo.Node(size_in=self.input_shape)
+            layer = nengo.Ensemble(n_neurons=self.nb_hidden,
+                                   dimensions=self.input_shape,
+                                   encoders=encoders,
+                                   )
+            nengo.Connection(self.input_node, layer)
+
             output = nengo.Node(size_in=self.output_shape)
-            nengo.Connection(input_neuron,
+            self.output_p = nengo.Probe(output)
+            conn = nengo.Connection(layer.neurons,
                              output,
-                             synapse=None,
                              transform=decoders.T
                              )
+            model.config[conn].trainable = True
         return model
-    
+
+    def training(self, input_data, label, total_nb_dataset, batch_size, nb_epochs=None):
+        if nb_epochs==None:
+           nb_epochs = total_nb_dataset//batch_size
+        sim = nengo_dl.Simulator(self.model,
+                                 minibatch_size=batch_size,
+                                 step_blocks=1,
+                                 device="/gpu:0",
+                                 seed=2,
+                                 )
+
+        sim.train({self.input_node: input_data},
+                  {self.output_p: label},
+                  tf.train.MomentumOptimizer(5e-2, 0.9),
+                  n_epochs=nb_epochs
+                  )
+        sim.save_params(self.weights_path)
+        sim.close()
 
 
+    def predict(self, input_data, batch_size=1):
+        sim = nengo_dl.Simulator(self.model,
+                                  minibatch_size=batch_size,
+                                  step_blocks=1,
+                                  device="/gpu:0",
+                                  seed=1)
+        sim.load_params(self.weights_path)
+        sim.step(input_feeds={self.input_node: input_data})
+        output = sim.data[self.output_p]
+        sim.close()
+        return output
+
+if __name__ == '__main__':
+
+    from keras.datasets import mnist
+    from keras.utils import np_utils
+    from sklearn.metrics import accuracy_score
+
+    (X_train, y_train), (X_test, y_test) = mnist.load_data()
+    # data pre-processing
+    X_train = X_train.reshape(X_train.shape[0], -1) / 255.  # normalize
+    X_test = X_test.reshape(X_test.shape[0], -1) / 255.  # normalize
+    y_train = np_utils.to_categorical(y_train, nb_classes=10)
+    y_test = np_utils.to_categorical(y_test, nb_classes=10)
+
+    X_train_ = np.expand_dims(X_train, axis=1)
+    X_test_ = np.expand_dims(X_test, axis=1)
+    y_train_ = np.expand_dims(y_train, axis=1)
+    y_test_ = np.expand_dims(y_test, axis=1)
+
+
+    model = Spiking_Qnetwork(input_shape=28*28,
+                             output_shape=10,
+                             nb_hidden=1000,
+                             weights_path="/home/huangbo/SpikingDeepRLControl/huangbo_ws/"
+                                          "networks/saved_weights/snn_weights")
+
+    # training
+    model.training(input_data=X_train_, label=y_train_, total_nb_dataset=60000, batch_size=600, nb_epochs=50)
+
+    output = model.predict(batch_size=X_test.shape[0], input_data=X_test_)
+    prediction = np.squeeze(output, axis=1)
+
+    # evaluate the model
+    from sklearn.metrics import accuracy_score
+    acc = accuracy_score(np.argmax(y_test, axis=1), np.argmax(prediction, axis=1))
+    print "the test acc is:", acc

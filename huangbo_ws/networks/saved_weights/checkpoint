@@ -1,2 +1,2 @@
-model_checkpoint_path: "/home/huangbo/SpikingDeepRLControl/huangbo_ws/networks/saved_weights/model"
-all_model_checkpoint_paths: "/home/huangbo/SpikingDeepRLControl/huangbo_ws/networks/saved_weights/model"
+model_checkpoint_path: "/home/huangbo/SpikingDeepRLControl/huangbo_ws/networks/saved_weights/snn_weights"
+all_model_checkpoint_paths: "/home/huangbo/SpikingDeepRLControl/huangbo_ws/networks/saved_weights/snn_weights"

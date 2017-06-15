@@ -117,6 +117,7 @@ if __name__ == '__main__':
     # training
     model.train_network(X_train, y_train)
     prediction = model.predict(X_test)
+    print prediction.shape
 
     acc = accuracy_score(np.argmax(y_test, axis=1), np.argmax(prediction, axis=1))
     print "the test acc is:", acc
