@@ -6,7 +6,7 @@ import numpy as np
 def epsilon_greedy_action_select(
     DQN_Q_approximator,
     state,
-    action_num,
+    dim,
     epsilon
 ):
     """
@@ -14,15 +14,16 @@ def epsilon_greedy_action_select(
         action: [0, 1] or [1, 0] (np array)
     """
     if np.random.random() < epsilon:
-        action_idx = np.random.randint(3)
+        return np.random.randint(3, size=(dim,))
     else:
         dqn_output = DQN_Q_approximator.predict(state)
-        action_idx = np.argmax(dqn_output)
-
-    action = np.zeros(action_num)
-    action[action_idx] = 1
-
-    return action
+        action = np.array([], dtype=int)
+        for i in xrange(dim):
+            action = np.append(
+                action,
+                np.argmax(dqn_output[i * 3:(i + 1) * 3 + 1])
+            )
+        return action
 
 
 def main():

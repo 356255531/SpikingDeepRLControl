@@ -6,12 +6,13 @@ import matplotlib.pyplot as plt
 ARM_LENGTH_1 = 3.0
 ARM_LENGTH_2 = 3.0
 ARM_LENGTH_3 = 3.0
+ARM_LENGTH = np.array([ARM_LENGTH_1, ARM_LENGTH_2, ARM_LENGTH_3])
 
 PI = np.pi
 
 
 class VirtualArm(object):
-    """ 
+    """
     Member function:
         init(start_angular, goal_coor):
             arg:    start_angular, numpy array
@@ -25,9 +26,6 @@ class VirtualArm(object):
 
     def __init__(self,
                  dim=1,
-                 arm_lens=np.array([ARM_LENGTH_1]),
-                 upper_bound=None,
-                 lower_bound=None,
                  start_angular=np.zeros(1),
                  goal_coor=(-3, 0),
                  if_visual=True
@@ -35,24 +33,21 @@ class VirtualArm(object):
         super(VirtualArm, self).__init__()
 
         self._dim = dim
-        self._arm_len = arm_lens
-
-        # Check the lower and upper bound
-        self._upper_bound = upper_bound
-        self._lower_bound = lower_bound
+        self._arm_len = ARM_LENGTH[0: self._dim]
 
         self._goal_coor = goal_coor
         self._if_visual = if_visual
         self.init(start_angular)
 
-    def _refresh_end_coor(self):
-        self._end_coor = [(0.0, 0.0)]
-
+    def _refresh_joint_coor(self):
+        self._end_coor = np.array([[0.0, 0.0]])
         for angluar, arm_len in zip(self._arm_angulars_in_degree, self._arm_len):
-            self._end_coor.append(
-                (self._end_coor[-1][0] + arm_len * np.cos((angluar / 180.0) * np.pi),
-                 self._end_coor[-1][1] + arm_len * np.sin((angluar / 180.0) * np.pi)))
-        self._end_coor = tuple(self._end_coor)
+            self._end_coor = np.append(
+                self._end_coor,
+                [[self._end_coor[-1][0] + arm_len * np.cos((angluar / 180.0) * np.pi),
+                  self._end_coor[-1][1] + arm_len * np.sin((angluar / 180.0) * np.pi)]],
+                axis=0
+            )
 
     def init(self, start_angular=None, goal_coor=None):
 
@@ -60,40 +55,29 @@ class VirtualArm(object):
             self._goal_coor = goal_coor
 
         if start_angular is None:
-            start_angular = np.random.randint(0, 360, size=self._dim)
-        self._arm_angulars_in_degree = tuple(start_angular)
+            self._arm_angulars_in_degree = np.random.randint(360, size=[self._dim])
+        else:
+            self._arm_angulars_in_degree = start_angular
 
-        self._refresh_end_coor()
+        self._refresh_joint_coor()
 
         if self._if_visual:
             self._visualize()
 
     def perform_action(self, arm_input):
-        accumulation = np.array([])
-        temp = 0
-        for single_input in arm_input:
-            temp += single_input
-            accumulation = np.append(accumulation, temp)
-        position = tuple(map(operator.add, self._arm_angulars_in_degree, accumulation))
+        joint_accumulator = [arm_input[0]]
+        for idx in xrange(1, len(arm_input)):
+            joint_accumulator.append((joint_accumulator[-1] + arm_input[idx]) % 360)
 
-        if (self._upper_bound and self._lower_bound):
-            for i in xrange(self._dim):
-                if position[i] > self._upper_bound[i]:
-                    position[i] = self._upper_bound[i]
-                if position[i] < self._lower_bound[i]:
-                    position[i] = self._lower_bound[i]
+        self._arm_angulars_in_degree = (self._arm_angulars_in_degree + np.array(joint_accumulator)) % 360
 
-        position = tuple([i % 360 for i in position])
-
-        self._arm_angulars_in_degree = position
-
-        self._refresh_end_coor()
+        self._refresh_joint_coor()
 
         if self._if_visual:
             self._visualize()
 
     def read(self):
-        return tuple(np.array(self._arm_angulars_in_degree))
+        return self._arm_angulars_in_degree
 
     def _visualize(self):
 
@@ -120,7 +104,8 @@ class VirtualArm(object):
 
 
 class RobotArm(object):
-    """docstring for RobotArm"""
+    """
+        Class for the robot arm TODO"""
 
     def __init__(self, arg):
         super(RobotArm, self).__init__()
@@ -129,9 +114,6 @@ class RobotArm(object):
 
 def main():
     arm = VirtualArm(dim=3,
-                     arm_lens=np.array([ARM_LENGTH_1, ARM_LENGTH_2, ARM_LENGTH_3]),
-                     upper_bound=None,
-                     lower_bound=None,
                      start_angular=np.zeros(3),
                      goal_coor=(0, 3),
                      if_visual=True

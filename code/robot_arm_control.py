@@ -24,9 +24,6 @@ parser.add_argument("-ed", "--epsilon_decay", nargs="?", const=1, type=float, he
 
 args = parser.parse_args()
 
-# Action number
-ACTION_NUM = 3 ** args.dimension  # Each joint has three actions
-
 
 def train_dqn():
     epsilon = args.epsilon
@@ -52,7 +49,7 @@ def train_dqn():
     display_memory = Memory(args.memory_limit)
 
     # Create network object
-    dqn = DQN(1, 3, nb_hidden=1000, decoder=args.path + "decoder.npy")
+    dqn = DQN(args.dimension, 3 * args.dimension, nb_hidden=1000, decoder=args.path + "decoder.npy")
     # dqn = Q_learning_network()
     # dqn.load_weights()
 
@@ -68,7 +65,7 @@ def train_dqn():
             done = False
             count = 0
             while not done:
-                if count > 200:
+                if count > 100:
                     break
                 count += 1
 
@@ -80,7 +77,7 @@ def train_dqn():
                 action = epsilon_greedy_action_select(
                     dqn,
                     state,
-                    ACTION_NUM,
+                    args.dimension,
                     epsilon
                 )
 
@@ -91,7 +88,7 @@ def train_dqn():
 
                 state = state_bar
 
-                print "reward: ", reward, " action: ", np.argmax(action), " if game continue: ", not done, " epsilon: ", epsilon
+                print "reward: ", reward, " action: ", action, " if game continue: ", not done, " epsilon: ", epsilon
 
         if args.train:
             batch = display_memory.sample(args.memory_limit)
@@ -99,7 +96,8 @@ def train_dqn():
             cost = train_network(
                 dqn,
                 batch,
-                args.bellman_factor
+                args.bellman_factor,
+                args.learning_rate
             )
 
             print " cost: ", cost

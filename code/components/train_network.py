@@ -14,21 +14,27 @@ def batch_parser(batch):
 def train_network(
         DQN,
         batch,
-        discount_factor=0.9):
+        discount_factor=0.9,
+        learning_rate=0.01
+):
     states, actions, rewards, states_bar, dones = batch_parser(batch)
     states_bar_predict_val = DQN.predict(states)
     # import pdb
     # pdb.set_trace()
     for idx, done in enumerate(dones):
         if done:
-            states_bar_predict_val[idx][np.argmax(actions[idx])] = rewards[idx]
+            for action_idx, action in enumerate(actions[idx]):
+                states_bar_predict_val[idx][action_idx * 3 + action] = rewards[idx]
         else:
-            states_bar_predict_val[idx][np.argmax(actions[idx])] = \
-                states_bar_predict_val[idx][np.argmax(actions[idx])] + \
-                0.01 * (
-                rewards[idx] + discount_factor * np.max(states_bar_predict_val[idx]) -
-                states_bar_predict_val[idx][np.argmax(actions[idx])]
-            )
+            for action_idx, action in enumerate(actions[idx]):
+                # import pdb
+                # pdb.set_trace()
+                states_bar_predict_val[idx][action_idx * 3 + action] = \
+                    states_bar_predict_val[idx][action_idx * 3 + action] + \
+                    0.01 * (
+                    rewards[idx] + discount_factor * np.max(states_bar_predict_val[idx]) -
+                    states_bar_predict_val[idx][action_idx * 3 + action]
+                )
     cost = DQN.train_network(states, states_bar_predict_val)
     return cost
 
