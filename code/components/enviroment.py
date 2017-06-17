@@ -36,6 +36,7 @@ class RobotArmEnv(object):
                  reward_func,
                  goal_func,
                  if_emulator=True,
+                 if_visual=False,
                  dim=1):
         super(RobotArmEnv, self).__init__()
         # Define dependent components
@@ -43,13 +44,14 @@ class RobotArmEnv(object):
         self._reward_func = reward_func
         self._goal_func = goal_func
 
+        self._if_visual = if_visual
         # Define agent
         if if_emulator:
             self._arm = VirtualArm(
                 dim=1,
                 start_angular=np.zeros(1),
                 goal_coor=(-3, 0),
-                if_visual=True
+                if_visual=self._if_visual
             )
         else:
             self._arm = RobotArm()
@@ -75,6 +77,7 @@ class RobotArmEnv(object):
             self._state, \
             self._reward_func.evlt(
                 self._prev_state,
+                action,
                 self._state,
                 self._goal_func.get_goal_state()
             ), \

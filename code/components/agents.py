@@ -43,7 +43,6 @@ class VirtualArm(object):
 
         self._goal_coor = goal_coor
         self._if_visual = if_visual
-        self.img_count = 0
         self.init(start_angular)
 
     def _refresh_end_coor(self):
@@ -61,7 +60,7 @@ class VirtualArm(object):
             self._goal_coor = goal_coor
 
         if start_angular is None:
-            start_angular = np.random.randint(180, 360, size=self._dim)
+            start_angular = np.random.randint(0, 360, size=self._dim)
         self._arm_angulars_in_degree = tuple(start_angular)
 
         self._refresh_end_coor()
@@ -118,10 +117,6 @@ class VirtualArm(object):
 
         plt.plot(self._goal_coor[0], self._goal_coor[1], 'ro', markersize=markersize, markeredgewidth=linewidth)
         plt.pause(0.01)
-
-        from matplotlib.pyplot import savefig
-        self.img_count += 1
-        savefig(str(self.img_count) + ".png")
 
 
 class RobotArm(object):
