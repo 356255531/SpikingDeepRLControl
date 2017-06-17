@@ -7,7 +7,7 @@ class DQN:
     def __init__(self, input_shape, output_shape, nb_hidden, decoder):
         '''
         Spiking neural network as the Q value function approximation
-        :param input_shape: the input dimension without batch_size, example: state is 2 dimension, 
+        :param input_shape: the input dimension without batch_size, example: state is 2 dimension,
         action is 1 dimenstion, the input shape is 3.
         :param output_shape: the output dimension without batch_size, the dimenstion of Q values
         :param nb_hidden: the number of neurons in ensemble

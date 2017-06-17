@@ -1,7 +1,6 @@
 __author__ = "zhiwei"
 
 import numpy as np
-from keras.utils import np_utils
 
 
 def epsilon_greedy_action_select(

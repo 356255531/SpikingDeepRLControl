@@ -24,7 +24,11 @@ def train_network(
             states_bar_predict_val[idx][np.argmax(actions[idx])] = rewards[idx]
         else:
             states_bar_predict_val[idx][np.argmax(actions[idx])] = \
-                rewards[idx] + discount_factor * np.max(states_bar_predict_val[idx])
+                states_bar_predict_val[idx][np.argmax(actions[idx])] + \
+                0.01 * (
+                rewards[idx] + discount_factor * np.max(states_bar_predict_val[idx]) -
+                states_bar_predict_val[idx][np.argmax(actions[idx])]
+            )
     cost = DQN.train_network(states, states_bar_predict_val)
     return cost
 
