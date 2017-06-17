@@ -21,6 +21,9 @@ class Spiking_Qnetwork:
 
         self.model = self.build()
 
+    def cross_entropy(self, prediction, label):
+        return tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=label, logits=prediction))
+
     def encoder_decoder_initialization(self, shape):
         '''
         :return: initialised encoder or decoder
@@ -35,57 +38,62 @@ class Spiking_Qnetwork:
 
         model = nengo.Network(seed=3)
         with model:
-            nengo_dl.configure_trainable(model, default=False)
+            nengo_dl.configure_trainable(model, default=True)
             model.config[nengo.Ensemble].neuron_type = nengo_dl.neurons.SoftLIFRate()
             model.config[nengo.Ensemble].gain = nengo.dists.Choice([1])
             model.config[nengo.Ensemble].bias = nengo.dists.Uniform(-1, 1)
+            model.config[nengo.Ensemble].trainable = True
+            model.config[nengo.Connection].trainable = True
             model.config[nengo.Connection].synapse = None
 
             self.input_node = nengo.Node(size_in=self.input_shape)
-            layer = nengo.Ensemble(n_neurons=self.nb_hidden,
-                                   dimensions=self.input_shape,
-                                   encoders=encoders,
-                                   )
-            nengo.Connection(self.input_node, layer)
-
+            layer_1 = nengo.Ensemble(n_neurons=self.nb_hidden,
+                                     dimensions=self.input_shape,
+                                     encoders=encoders,
+                                     )
+            layer_2 = nengo.Ensemble(n_neurons=self.nb_hidden,
+                                     dimensions=self.input_shape
+                                     )
+            layer_3 = nengo.Ensemble(n_neurons=self.nb_hidden,
+                                     dimensions=self.input_shape
+                                     )
             output = nengo.Node(size_in=self.output_shape)
+
+            conn_1 = nengo.Connection(self.input_node, layer_1)
+            conn_2 = nengo.Connection(layer_1, layer_2)
+            conn_3 = nengo.Connection(layer_2, layer_3)
+            conn_4 = nengo.Connection(layer_3.neurons, output, transform=decoders.T)
+
+            model.config[conn_1].trainable = True
+            model.config[conn_2].trainable = True
+            model.config[conn_3].trainable = True
+            model.config[conn_4].trainable = True
+
             self.output_p = nengo.Probe(output)
-            conn = nengo.Connection(layer.neurons,
-                             output,
-                             transform=decoders.T
-                             )
-            model.config[conn].trainable = True
         return model
 
-    def training(self, input_data, label, total_nb_dataset, batch_size, nb_epochs=None):
-        if nb_epochs==None:
-           nb_epochs = total_nb_dataset//batch_size
-        sim = nengo_dl.Simulator(self.model,
-                                 minibatch_size=batch_size,
-                                 step_blocks=1,
-                                 device="/gpu:0",
-                                 seed=2,
-                                 )
+    def training(self, input_data, label, batch_size, nb_epochs):
 
-        sim.train({self.input_node: input_data},
-                  {self.output_p: label},
-                  tf.train.MomentumOptimizer(5e-2, 0.9),
-                  n_epochs=nb_epochs
-                  )
-        sim.save_params(self.weights_path)
-        sim.close()
+        with nengo_dl.Simulator(self.model, minibatch_size=batch_size,
+                                step_blocks=1, device="/cpu:0", seed=2) as sim:
+
+            sim.train({self.input_node: input_data},
+                      {self.output_p: label},
+                      tf.train.MomentumOptimizer(5e-2, 0.9),
+                      #tf.train.GradientDescentOptimizer(learning_rate=0.05),
+                      n_epochs=nb_epochs
+                      )
+            sim.save_params(self.weights_path)
 
 
     def predict(self, input_data, batch_size=1):
-        sim = nengo_dl.Simulator(self.model,
-                                  minibatch_size=batch_size,
-                                  step_blocks=1,
-                                  device="/gpu:0",
-                                  seed=1)
-        sim.load_params(self.weights_path)
-        sim.step(input_feeds={self.input_node: input_data})
-        output = sim.data[self.output_p]
-        sim.close()
+
+        with nengo_dl.Simulator(self.model, minibatch_size=batch_size,
+                                step_blocks=1, device="/cpu:0", seed=1) as sim:
+
+            sim.load_params(self.weights_path)
+            sim.step(input_feeds={self.input_node: input_data})
+            output = sim.data[self.output_p]
         return output
 
 if __name__ == '__main__':
@@ -114,7 +122,7 @@ if __name__ == '__main__':
                                           "networks/saved_weights/snn_weights")
 
     # training
-    model.training(input_data=X_train_, label=y_train_, total_nb_dataset=60000, batch_size=600, nb_epochs=50)
+    model.training(input_data=X_train_, label=y_train_, batch_size=32, nb_epochs=10)
 
     output = model.predict(batch_size=X_test.shape[0], input_data=X_test_)
     prediction = np.squeeze(output, axis=1)

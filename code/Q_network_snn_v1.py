@@ -4,7 +4,7 @@ from vision import Gabor, Mask
 
 class Q_network:
 
-    def __init__(self, input_shape, output_shape, nb_hidden, decoder):
+    def __init__(self, input_shape, output_shape, nb_hidden, encoder, decoder):
         '''
         Spiking neural network as the Q value function approximation
         :param input_shape: the input dimension without batch_size, example: state is 2 dimension, 
@@ -16,6 +16,7 @@ class Q_network:
         self.input_shape = input_shape
         self.output_shape = output_shape
         self.nb_hidden = nb_hidden
+        self.encoder = encoder
         self.decoder = decoder
 
     def encoder_initialization(self):
@@ -63,6 +64,7 @@ class Q_network:
         with nengo.Simulator(model) as sim:
             sim.run(3)
         #save the connection weights after training
+        np.save(self.encoder, sim.data[input_neuron].encoders)
         np.save(self.decoder, sim.data[conn_weights][-1].T)
 
     def predict(self, input):
@@ -71,7 +73,11 @@ class Q_network:
         :param input: input must be a numpy array, system state and action paars, shape = (dim_sample)
         :return: the q values
         '''
-        encoders = self.encoder_initialization()
+        try:
+            encoders = np.load(self.encoder)
+        except IOError:
+            rng = np.random.RandomState(1)
+            encoders = rng.normal(size=(self.nb_hidden, self.input_shape))
 
         try:
             decoder = np.load(self.decoder)
@@ -112,12 +118,14 @@ if __name__ == '__main__':
     y_test = np_utils.to_categorical(y_test, nb_classes=10)
 
 
-    model = Q_network(input_shape=28*28, output_shape=10, nb_hidden=1000, decoder="/home/huangbo/Desktop/decoder.npy")
+    model = Q_network(input_shape=28*28, output_shape=10, nb_hidden=1000,
+                      encoder="/home/huangbo/Desktop/encoder.npy",
+                      decoder="/home/huangbo/Desktop/decoder.npy")
 
     # training
     model.train_network(X_train, y_train)
     prediction = model.predict(X_test)
-    print prediction.shape
+    #print prediction.shape
 
     acc = accuracy_score(np.argmax(y_test, axis=1), np.argmax(prediction, axis=1))
     print "the test acc is:", acc
