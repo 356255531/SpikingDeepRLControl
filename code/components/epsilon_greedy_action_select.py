@@ -10,9 +10,17 @@ def epsilon_greedy_action_select(
     epsilon
 ):
     """
-        Get the greedy action of a given state
-        action: [0, 1] or [1, 0] (np array)
-    """
+    note, dependency needed here
+        1) DQN_Q_approximator:  The Q-function approximator, should be
+                                able to do prediction with given state
+
+    args:
+            state, numpy array
+            dim, int, joint dimension
+            epsilon, int
+
+    usage:
+        return an action using epsilon-greedy search """
     if np.random.random() < epsilon:
         return np.random.randint(3, size=(dim,))
     else:

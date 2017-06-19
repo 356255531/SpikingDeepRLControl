@@ -13,23 +13,39 @@ PI = np.pi
 
 class VirtualArm(object):
     """
+    Agent class (multi-dim possible)
+
     Member function:
+        constructor(dim, start_angular, goal_coor, if_visual)
+
         init(start_angular, goal_coor):
-            arg:    start_angular, numpy array
-                    goal_coor, numpy
-        perform_action(input_in_degree):
-            arg: input_in_degree, numpy array
-            output: no output
-        read():
-            arg: no arg
-            output: angular_of_all_joints, numpy array"""
+
+        perform_action(input_in_degree)
+
+        read()
+    Instance:
+                _dim, numpy array
+                _arm_len, numpy array
+                _goal_coor, numpy array
+                _if_visual, bool
+    """
 
     def __init__(self,
                  dim=1,
                  start_angular=np.zeros(1),
-                 goal_coor=(-3, 0),
+                 goal_coor=np.array([-3, 0]),
                  if_visual=True
                  ):
+        """
+        constructor(dim, start_angular, goal_coor, if_visual)
+            arg:
+                dim, int
+                start_angular, numpy array
+                goal_coor, numpy array
+                if_visual, bool
+
+            usage:
+                    Create emulator class """
         super(VirtualArm, self).__init__()
 
         self._dim = dim
@@ -40,6 +56,14 @@ class VirtualArm(object):
         self.init(start_angular)
 
     def _refresh_joint_coor(self):
+        """
+        init(start_angular, goal_coor):
+            arg:
+                    start_angular, numpy array
+                    goal_coor, numpy
+            usage:
+                    Init the emulator with a start angular and goal state,
+                    otherwise with random init joint degree """
         self._end_coor = np.array([[0.0, 0.0]])
         for angluar, arm_len in zip(self._arm_angulars_in_degree, self._arm_len):
             self._end_coor = np.append(
@@ -65,6 +89,13 @@ class VirtualArm(object):
             self._visualize()
 
     def perform_action(self, arm_input):
+        """
+        perform_action(input_in_degree):
+            arg:
+                    input_in_degree, numpy array
+
+            usage:
+                    give a rotation in degree """
         joint_accumulator = [arm_input[0]]
         for idx in xrange(1, len(arm_input)):
             joint_accumulator.append((joint_accumulator[-1] + arm_input[idx]) % 360)
@@ -77,6 +108,10 @@ class VirtualArm(object):
             self._visualize()
 
     def read(self):
+        """
+        read():
+            return:
+                    current all joints angular in degree, numpy array"""
         return self._arm_angulars_in_degree
 
     def _visualize(self):

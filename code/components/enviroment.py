@@ -9,27 +9,25 @@ import random as rd
 
 
 class RobotArmEnv(object):
-    """ This is the docs for the class of NST robot arm emulator.
+    """
+        DRL Simulator Emulator class of NST omnibot
 
-        Note:
-            1. constructor denpendencies are
-                1) state space: where the artificial state and its relationship
-                    with Robotarm readout defined.
-                2) action state: where the artifical action and its relationship
-                    with robotarm input defined.
-                3) reward function: where the behavior of reward defined. It maps
-                    (previous_state, current_state) -> single_step_reward.
-                4) goal function: judge if the input state is the goal state.
-                variables:
-                5) if_emulator: decide if use a emulator or real robot arm.
+        Member function:
+            constructor(state_action_space, reward_func, goal_func, if_emulator, if_visual, dim)
 
-        Usage:
-            1. init() is to set the enviroment to init position and return the init
-                state
-            2. step(action) is to perform the given action ane return a tuple of
-                (state, reward, if_done). Note, it will raise an error when the
-                simulation is done.
-                    """
+            init_game():
+                            random init the robot arm
+
+            step(action)
+
+        Instance:
+            _state_action_space
+            _reward_func
+            _goal_func
+            _if_visual
+            _state
+            _done: if reach the goal state
+            _previous_state """
 
     def __init__(self,
                  state_action_space,
@@ -38,6 +36,16 @@ class RobotArmEnv(object):
                  if_emulator=True,
                  if_visual=False,
                  dim=1):
+        """
+        note, there are several dependencies for this class
+            1) state space: where output of robot and state transformation are defined.
+            2) reward function: map (s, a, s') to reward.
+            3) goal function: judge if the input state is the goal state.
+        args:
+            1) if_emulator, bool, if use emulator or real robot arm
+            2) if_visual, bool, if do visualization
+            3) dim, int, joint dimension (if use emulator)
+        """
         super(RobotArmEnv, self).__init__()
         # Define dependent components
         self._state_action_space = state_action_space
@@ -57,7 +65,9 @@ class RobotArmEnv(object):
             self._arm = RobotArm()
 
     def init_game(self):
-        # init_game the local variables
+        """
+        usage:
+            random init the robot arm """
         self._arm.init()
         arm_readout = self._arm.read()
         self._state = self._state_action_space.degree_to_state(arm_readout)
@@ -66,6 +76,13 @@ class RobotArmEnv(object):
         return self._state
 
     def step(self, action):
+        """
+        args:
+            action, int
+
+        usage:
+            step the enviroment forward with given action,
+            update the state, previous state, reward and so on. """
         if self._done:
             raise ValueError("Episode ended, please reinitialize.")
 

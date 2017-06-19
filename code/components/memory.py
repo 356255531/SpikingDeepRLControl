@@ -6,33 +6,60 @@ __author__ = 'Zhiwei'
 
 class Memory(object):
     """
-        A memory zone to save experience
+    Experience replay memory class
+
+    Member function:
+        constructor(memory_limit)
+
+        add(element)
+
+        sample(size)
+
+    Instance:
+        _memory_limit, int
+        _memory, deque
+        _size, memory size
     """
 
     def __init__(
             self,
             memory_limit
     ):
+        """
+        args:
+            memory_limit, int, the maximal number of elements in memory """
         super(Memory, self).__init__()
-        self.memory_limit = memory_limit
+        self._memory_limit = memory_limit
 
-        self.memory = deque()
-        self.size = 0
+        self._memory = deque()
+        self._size = 0
 
     def add(self, element):
-        self.memory.append(element)
-        self.size += 1
+        """
+        args:
+            element, tuple, usually should be (state, action, state', reward, done)
 
-        if self.size > self.memory_limit:
-            self.memory.popleft()
-            self.size -= 1
+        usage:
+            automatical pop out the oldest data when limit exceeds """
+        self._memory.append(element)
+        self._size += 1
 
-    def sample(self, size):
-        if size <= 0 or size > self.size:
+        if self._size > self._memory_limit:
+            self._memory.popleft()
+            self._size -= 1
+
+    def sample(self, batch_size):
+        """
+        args:
+            batch_size, int
+
+        usage:
+            sample a batch from memory, whose number is batch_size """
+        if batch_size <= 0 or batch_size > self._size:
             raise ValueError("sample return empty list")
             return []
 
-        return rd.sample(self.memory, size)
+        return rd.sample(self._memory, batch_size)
 
 
 if __name__ == '__main__':

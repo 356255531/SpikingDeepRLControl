@@ -3,38 +3,54 @@ import numpy as np
 
 
 class DQN:
+    """
+    Spiking neural network as the Q value function approximation:
 
-    def __init__(self, input_shape, output_shape, nb_hidden, decoder):
+    Member function:
+        constructor(input_dim, output_dim, num_hidden_neuros, decoder)
+
+        encoder_initialization()
+
+        train_network(train_input, train_labels)
+
+        predict(input)
+    """
+
+    def __init__(self, input_dim, output_dim, num_hidden_neuros, decoder):
         '''
-        Spiking neural network as the Q value function approximation
-        :param input_shape: the input dimension without batch_size, example: state is 2 dimension,
-        action is 1 dimenstion, the input shape is 3.
-        :param output_shape: the output dimension without batch_size, the dimenstion of Q values
-        :param nb_hidden: the number of neurons in ensemble
-        :param decoder: the path to save weights of connection channel
+        constructor:
+            args:
+                input_dim, numpy array
+                output_dim, numpy array, same shape with action
+                num_hidden_neuros, int
+                decoder, string, path to save weights
+
+            usage:
+                    Init the SNN-based Q-Network
         '''
-        self.input_shape = input_shape
-        self.output_shape = output_shape
-        self.nb_hidden = nb_hidden
+        self.input_dim = input_dim
+        self.output_dim = output_dim
+        self.num_hidden_neuros = num_hidden_neuros
         self.decoder = decoder
 
     def encoder_initialization(self):
         '''
-        encoder is the connection relationship between input and the ensemble
-        :return: initialised encoder
+            usage:
+                    Init the encoder
         '''
 
         rng = np.random.RandomState(1)
-        encoders = rng.normal(size=(self.nb_hidden, self.input_shape))
+        encoders = rng.normal(size=(self.num_hidden_neuros, self.input_dim))
         return encoders
 
-    def train_network(self, train_data, train_targets):
+    def train_network(self, train_input, train_labels):
         '''
-        training the network useing all training data
-        :param train_data: the training input, shape = (nb_samples, dim_samples)
-        :param train_targets: the label or Q values shape=(nbm samples, dim_samples)
-        :param simulation_time: the time to do the simulation, default = 100s
-        :return: 
+        args:
+                train_input, numpy array (batch_size * input_dim)
+                train_labels, numpy array (batch_size * output_dim)
+
+        usage:
+                do supervised learning with respect the given input and labels
         '''
 
         encoders = self.encoder_initialization()
@@ -42,19 +58,19 @@ class DQN:
 
         model = nengo.Network(seed=3)
         with model:
-            input_neuron = nengo.Ensemble(n_neurons=self.nb_hidden,
-                                          dimensions=self.input_shape,
+            input_neuron = nengo.Ensemble(n_neurons=self.num_hidden_neuros,
+                                          dimensions=self.input_dim,
                                           neuron_type=nengo.LIFRate(),
                                           intercepts=nengo.dists.Uniform(-1.0, 1.0),
                                           max_rates=nengo.dists.Choice([100]),
                                           encoders=encoders,
                                           )
-            output = nengo.Node(size_in=self.output_shape)
+            output = nengo.Node(size_in=self.output_dim)
             conn = nengo.Connection(input_neuron,
                                     output,
                                     synapse=None,
-                                    eval_points=train_data,
-                                    function=train_targets,
+                                    eval_points=train_input,
+                                    function=train_labels,
                                     solver=solver
                                     )
             #encoders_weights = nengo.Probe(input_neuron.encoders, "encoders_weights", sample_every=1.0)
@@ -67,9 +83,14 @@ class DQN:
 
     def predict(self, input):
         '''
-        prediction after training, the output will be the corresponding q values
-        :param input: input must be a numpy array, system state and action paars, shape = (dim_sample)
-        :return: the q values
+        args:
+                input, numpy array (batch_size * input_dim)
+
+        return:
+                output, numpy array, Q-function of given input data (batch_size * output_dim)
+
+        usage:
+                Do prediction by feedforward with given input (in our case is state)
         '''
         encoders = self.encoder_initialization()
 
@@ -77,18 +98,18 @@ class DQN:
             decoder = np.load(self.decoder)
         except IOError:
             rng = np.random.RandomState(1)
-            decoder = rng.normal(size=(self.nb_hidden, self.output_shape))
+            decoder = rng.normal(size=(self.num_hidden_neuros, self.output_dim))
 
         model = nengo.Network(seed=3)
         with model:
-            input_neuron = nengo.Ensemble(n_neurons=self.nb_hidden,
-                                          dimensions=self.input_shape,
+            input_neuron = nengo.Ensemble(n_neurons=self.num_hidden_neuros,
+                                          dimensions=self.input_dim,
                                           neuron_type=nengo.LIFRate(),
                                           intercepts=nengo.dists.Uniform(-1.0, 1.0),
                                           max_rates=nengo.dists.Choice([100]),
                                           encoders=encoders,
                                           )
-            output = nengo.Node(size_in=self.output_shape)
+            output = nengo.Node(size_in=self.output_dim)
             conn = nengo.Connection(input_neuron.neurons,
                                     output,
                                     synapse=None,
@@ -112,7 +133,7 @@ class DQN:
 #     y_test = np_utils.to_categorical(y_test, nb_classes=10)
 #
 #
-#     model = Q_network(input_shape=28*28, output_shape=10, nb_hidden=1000, decoder="/home/huangbo/Desktop/decoder.npy")
+#     model = Q_network(input_dim=28*28, output_dim=10, num_hidden_neuros=1000, decoder="/home/huangbo/Desktop/decoder.npy")
 #
 #     # training
 #     model.train_network(X_train, y_train)
@@ -122,7 +143,7 @@ class DQN:
 #     print "the test acc is:", acc
 
 def main():
-    dqn = DQN(1, 3, nb_hidden=1000, decoder="decoder.npy")
+    dqn = DQN(1, 3, num_hidden_neuros=1000, decoder="decoder.npy")
     print dqn.predict(np.array([0]))
 
 if __name__ == '__main__':

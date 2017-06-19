@@ -2,6 +2,12 @@ import numpy as np
 
 
 def batch_parser(batch):
+    """
+    args:
+        mini batch, tuple
+
+    usage:
+        parse the mini-batch to different type batches """
     states = np.array([batch_instance[0] for batch_instance in batch])
     actions = np.array([batch_instance[1] for batch_instance in batch])
     rewards = np.array([batch_instance[2] for batch_instance in batch])
@@ -14,29 +20,36 @@ def batch_parser(batch):
 def train_network(
         DQN,
         batch,
-        discount_factor=0.9,
+        bellman_factor=0.9,
         learning_rate=0.01
 ):
+    """
+    Note, dependency here needed
+        1) DQN: Q-function approximator
+
+    args:
+        batch, tuple, mini-batch
+        bellman_factor, float
+        learning_rate, float
+
+    usage:
+        perform supervise learning using TD-Error """
     states, actions, rewards, states_bar, dones = batch_parser(batch)
     states_bar_predict_val = DQN.predict(states)
-    # import pdb
-    # pdb.set_trace()
+
     for idx, done in enumerate(dones):
         if done:
             for action_idx, action in enumerate(actions[idx]):
                 states_bar_predict_val[idx][action_idx * 3 + action] = rewards[idx]
         else:
             for action_idx, action in enumerate(actions[idx]):
-                # import pdb
-                # pdb.set_trace()
+                td_error = rewards[idx] + bellman_factor * np.max(states_bar_predict_val[idx]) - \
+                    states_bar_predict_val[idx][action_idx * 3 + action]
                 states_bar_predict_val[idx][action_idx * 3 + action] = \
                     states_bar_predict_val[idx][action_idx * 3 + action] + \
-                    0.01 * (
-                    rewards[idx] + discount_factor * np.max(states_bar_predict_val[idx]) -
-                    states_bar_predict_val[idx][action_idx * 3 + action]
-                )
-    cost = DQN.train_network(states, states_bar_predict_val)
-    return cost
+                    learning_rate * td_error
+
+    DQN.train_network(states, states_bar_predict_val)
 
 
 def main():

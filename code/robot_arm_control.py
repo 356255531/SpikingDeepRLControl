@@ -28,10 +28,10 @@ args = parser.parse_args()
 def train_dqn():
     epsilon = args.epsilon
 
-    resolution_in_degree = 10 * np.ones(args.dimension)
-    state_action_space = StateActionSpace_RobotArm(resolution_in_degree)
+    resolution_in_degree = 10 * np.ones(args.dimension)  # Discretization Resolution in Degree
+    state_action_space = StateActionSpace_RobotArm(resolution_in_degree)  # Encode the joint to state
 
-    reward_func = Reward()
+    reward_func = Reward()  # The rule of reward function
     goal_func = Goal((180,), state_action_space)
     env = RobotArmEnv(
         state_action_space,
@@ -49,14 +49,11 @@ def train_dqn():
     display_memory = Memory(args.memory_limit)
 
     # Create network object
-    dqn = DQN(args.dimension, 3 * args.dimension, nb_hidden=1000, decoder=args.path + "decoder.npy")
-    # dqn = Q_learning_network()
-    # dqn.load_weights()
+    dqn = DQN(args.dimension, 3 * args.dimension, num_hidden_neuros=1000, decoder=args.path + "decoder.npy")
 
     # Q-Learning framework
 
     while 1:
-        cost = 0
         total_step = 0
         num_episode = 0
 
@@ -93,18 +90,12 @@ def train_dqn():
         if args.train:
             batch = display_memory.sample(args.memory_limit)
 
-            cost = train_network(
+            train_network(  # Training Step
                 dqn,
                 batch,
                 args.bellman_factor,
                 args.learning_rate
             )
-
-            print " cost: ", cost
-
-        if 0 == ((num_episode + 1) % 1000):
-            print "Cost is: ", cost
-            dqn.save_weights(num_episode)  # save weights
 
         epsilon = epsilon_decay(epsilon, args.epsilon_decay, args.bellman_factor_final)
         num_episode += 1

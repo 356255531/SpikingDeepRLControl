@@ -3,7 +3,16 @@ import numpy as np
 
 
 class StateActionSpace_RobotArm(object):
-    """docstring for StateActionSpace_RobotArm"""
+    """
+    Robot arm state action space class
+
+    Member function:
+            degree_to_state(arm_readout_in_degree)
+
+            action_to_arm_input(action)
+
+    Instance:
+        _resolution, numpy array, used to discretize robot arm readout to state """
 
     def __init__(
             self,
@@ -12,9 +21,15 @@ class StateActionSpace_RobotArm(object):
         super(StateActionSpace_RobotArm, self).__init__()
         self._resolution = resolution
 
-    def degree_to_state(self, observation):
+    def degree_to_state(self, arm_readout_in_degree):
+        """
+        args:
+            arm_readout_in_degree, numpy array
+
+        return:
+            artificial state corresponds to the robot arm readout in degree """
         state = []
-        for observation_degree, resolution in zip(observation, self._resolution):
+        for observation_degree, resolution in zip(arm_readout_in_degree, self._resolution):
             state.append(-1 + 2.0 * (observation_degree // resolution) / (360 / resolution))
         return np.array(state)
 
