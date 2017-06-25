@@ -38,7 +38,19 @@ class Q_network:
         :return: 
         '''
 
-        encoders = self.encoder_initialization()
+        try:
+            encoders = np.load(self.encoder)
+        except IOError:
+            rng = np.random.RandomState(1)
+            encoders = rng.normal(size=(self.nb_hidden, self.input_shape))
+
+        try:
+            decoder = np.load(self.decoder)
+        except IOError:
+            rng = np.random.RandomState(1)
+            decoder = rng.normal(size=(self.nb_hidden, self.output_shape))
+
+        #encoders = self.encoder_initialization()
         solver = nengo.solvers.LstsqL2(reg=0.01)
 
         model = nengo.Network(seed=3)
@@ -54,6 +66,7 @@ class Q_network:
             conn = nengo.Connection(input_neuron,
                                     output,
                                     synapse=None,
+                                    #transform=decoder.T,
                                     eval_points=train_data,
                                     function=train_targets,
                                     solver=solver
