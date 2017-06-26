@@ -103,7 +103,12 @@ class Deep_qNetwork_snn:
             out_p = nengo.Probe(output)
 
         with nengo_dl.Simulator(model, minibatch_size=minibatch_size) as sim:
-            sim.load_params(self.save_path)
+
+            try:
+                sim.load_params(self.save_path)
+            except:
+                pass
+
             input_data = {input: prediction_input}
             sim.step(input_feeds = input_data)
             output = np.squeeze(sim.data[out_p], axis=1)
@@ -124,11 +129,11 @@ if __name__ == '__main__':
                                       output_shape=10,
                                       save_path='/home/huangbo/Desktop/weights/mnist_parameters'
                                       )
-    deep_qNetwork.training(minibatch_size=32,
-                           train_whole_dataset = mnist.train.images[:, None, :],
-                           train_whole_labels = mnist.train.labels[:, None, :],
-                           num_epochs=10
-                           )
+    # deep_qNetwork.training(minibatch_size=32,
+    #                        train_whole_dataset = mnist.train.images[:, None, :],
+    #                        train_whole_labels = mnist.train.labels[:, None, :],
+    #                        num_epochs=10
+    #                        )
 
     test_input = X_test[:, None, :]
     prediction = deep_qNetwork.predict(prediction_input=test_input, minibatch_size=10000)
