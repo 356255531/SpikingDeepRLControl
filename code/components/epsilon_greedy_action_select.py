@@ -15,7 +15,7 @@ def epsilon_greedy_action_select(
                                 able to do prediction with given state
 
     args:
-            state, numpy array
+            state, two dimensional numpy array
             dim, int, joint dimension
             epsilon, int
 
@@ -24,7 +24,7 @@ def epsilon_greedy_action_select(
     if np.random.random() < epsilon:
         return np.random.randint(3, size=(dim,))
     else:
-        dqn_output = DQN_Q_approximator.predict(state)
+        dqn_output = DQN_Q_approximator.predict(np.reshape(state, (1, dim)))
         action = np.array([], dtype=int)
         for i in xrange(dim):
             action = np.append(

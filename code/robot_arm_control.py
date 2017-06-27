@@ -49,7 +49,7 @@ def train_dqn():
     display_memory = Memory(args.memory_limit)
 
     # Create network object
-    dqn = DQN(args.dimension, 3 * args.dimension, num_hidden_neuros=1000, decoder=args.path + "decoder.npy")
+    dqn = DQN(args.dimension, 3 * args.dimension, "saved_weights/")
 
     # Q-Learning framework
 
@@ -62,7 +62,7 @@ def train_dqn():
             done = False
             count = 0
             while not done:
-                if count > 100:
+                if count > 1:
                     break
                 count += 1
 
