@@ -24,7 +24,9 @@ def epsilon_greedy_action_select(
     if np.random.random() < epsilon:
         return np.random.randint(3, size=(dim,))
     else:
-        dqn_output = DQN_Q_approximator.predict(np.reshape(state, (1, dim)))
+        state = np.array([state])
+        state = state[:, None, :]
+        dqn_output = DQN_Q_approximator.predict(state)
         action = np.array([], dtype=int)
         for i in xrange(dim):
             action = np.append(
