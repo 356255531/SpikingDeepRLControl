@@ -1,10 +1,7 @@
 import nengo
 import nengo_dl
 import numpy as np
-import matplotlib.pyplot as plt
-
 import tensorflow as tf
-from tensorflow.examples.tutorials.mnist import input_data
 
 
 class Deep_qNetwork_snn:
@@ -81,7 +78,10 @@ class Deep_qNetwork_snn:
         with nengo_dl.Simulator(model, minibatch_size=minibatch_size) as sim:
 
             if pre_train_weights != None:
-                sim.load_params(pre_train_weights)
+                try :
+                    sim.load_params(pre_train_weights)
+                except:
+                    pass
 
             optimizer = self.choose_optimizer('adadelta', 1)
             # construct the simulator
@@ -103,7 +103,6 @@ class Deep_qNetwork_snn:
             out_p = nengo.Probe(output)
 
         with nengo_dl.Simulator(model, minibatch_size=minibatch_size) as sim:
-
             try:
                 sim.load_params(self.save_path)
             except:
@@ -119,7 +118,11 @@ class Deep_qNetwork_snn:
 
 
 if __name__ == '__main__':
+
+    import matplotlib.pyplot as plt
+    from tensorflow.examples.tutorials.mnist import input_data
     from sklearn.metrics import accuracy_score
+
     mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
 
     X_test = mnist.test.images
@@ -129,16 +132,19 @@ if __name__ == '__main__':
                                       output_shape=10,
                                       save_path='/home/huangbo/Desktop/weights/mnist_parameters'
                                       )
-    # deep_qNetwork.training(minibatch_size=32,
-    #                        train_whole_dataset = mnist.train.images[:, None, :],
-    #                        train_whole_labels = mnist.train.labels[:, None, :],
-    #                        num_epochs=10
-    #                        )
 
-    test_input = X_test[:, None, :]
-    prediction = deep_qNetwork.predict(prediction_input=test_input, minibatch_size=10000)
-    acc = accuracy_score(np.argmax(y_test, axis=1), np.argmax(prediction, axis=1))
-    print "the test acc is:", acc
+    for i in range(10):
+        deep_qNetwork.training(minibatch_size=32,
+                               train_whole_dataset = mnist.train.images[:, None, :],
+                               train_whole_labels = mnist.train.labels[:, None, :],
+                               num_epochs = 1,
+                               pre_train_weights = '/home/huangbo/Desktop/weights/mnist_parameters'
+                               )
+
+        test_input = X_test[:, None, :]
+        prediction = deep_qNetwork.predict(prediction_input=test_input, minibatch_size=10000)
+        acc = accuracy_score(np.argmax(y_test, axis=1), np.argmax(prediction, axis=1))
+        print "the test acc is:", acc
 
     # test_input = X_test[156, :]
     # print test_input.shape
