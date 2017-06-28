@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f04ea920-fe65-4e1d-88b5-b5a1a87a5a5d" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/Q_network_snn_nengDL_v1.py" afterPath="$PROJECT_DIR$/code/Q_network_snn_nengDL_v1.py" />
-    </list>
+    <list default="true" id="f04ea920-fe65-4e1d-88b5-b5a1a87a5a5d" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -52,8 +49,8 @@
       <file leaf-file-name="Q_network_snn_nengDL_v1.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/code/Q_network_snn_nengDL_v1.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="807">
-              <caret line="166" column="16" lean-forward="true" selection-start-line="166" selection-start-column="16" selection-end-line="166" selection-end-column="16" />
+            <state relative-caret-position="447">
+              <caret line="152" column="44" lean-forward="true" selection-start-line="152" selection-start-column="44" selection-end-line="152" selection-end-column="44" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
@@ -979,8 +976,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/code/Q_network_snn_nengDL_v1.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="807">
-          <caret line="166" column="16" lean-forward="true" selection-start-line="166" selection-start-column="16" selection-end-line="166" selection-end-column="16" />
+        <state relative-caret-position="447">
+          <caret line="152" column="44" lean-forward="true" selection-start-line="152" selection-start-column="44" selection-end-line="152" selection-end-column="44" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
           </folding>
