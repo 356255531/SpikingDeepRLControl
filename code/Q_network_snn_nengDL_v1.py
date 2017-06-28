@@ -90,7 +90,7 @@ class Deep_qNetwork_snn:
             # save the parameters to file
             sim.save_params(self.save_path)
 
-    def predict(self, prediction_input, minibatch_size=1):
+    def predict(self, prediction_input, minibatch_size=1, load_weights=False):
         '''
         prediction of the network
         :param prediction_input: a input data shape = (minibatch_size, 1, input_shape)
@@ -104,14 +104,16 @@ class Deep_qNetwork_snn:
             out_p = nengo.Probe(output)
 
         with nengo_dl.Simulator(model, minibatch_size=minibatch_size) as sim:
-            try:
-                sim.load_params(self.save_path)
-            except:
-                pass
 
-            input_data = {input: prediction_input}
-            sim.step(input_feeds = input_data)
-            output = np.squeeze(sim.data[out_p], axis=1)
+            if load_weights == True:
+                try:
+                    sim.load_params(self.save_path)
+                except:
+                    pass
+
+                input_data = {input: prediction_input}
+                sim.step(input_feeds = input_data)
+                output = np.squeeze(sim.data[out_p], axis=1)
 
             return deepcopy(output)
 
@@ -142,27 +144,6 @@ if __name__ == '__main__':
                                )
 
         test_input = X_test[:, None, :]
-        prediction = deep_qNetwork.predict(prediction_input=test_input, minibatch_size=10000)
+        prediction = deep_qNetwork.predict(prediction_input=test_input, minibatch_size=10000, load_weights=True)
         acc = accuracy_score(np.argmax(y_test, axis=1), np.argmax(prediction, axis=1))
         print "the test acc is:", acc
-
-    # test_input = X_test[156, :]
-    # print test_input.shape
-    #
-    # test_input = test_input[np.newaxis, :]
-    # test_input = test_input[np.newaxis, :]
-    # print test_input.shape
-    #
-    # test_input_1 = np.squeeze(test_input, axis=0)
-    # test_input_1 = np.squeeze(test_input_1, axis=0)
-    # test_input_1 = np.reshape(test_input_1, newshape=(28, 28))
-    #
-    # prediction = deep_qNetwork.predict(prediction_input=test_input, minibatch_size=1)
-    #
-    # print prediction.shape
-    # print np.argmax(prediction, axis=1)
-    #
-    # plt.figure()
-    # plt.imshow(test_input_1)
-    # plt.show()
-
