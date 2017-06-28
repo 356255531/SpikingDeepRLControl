@@ -2,6 +2,7 @@ import nengo
 import nengo_dl
 import numpy as np
 import tensorflow as tf
+from copy import deepcopy
 
 
 class Deep_qNetwork_snn:
@@ -55,7 +56,7 @@ class Deep_qNetwork_snn:
     def objective(self, x, y):
         return tf.nn.softmax_cross_entropy_with_logits(logits=x, labels=y)
 
-    def training(self, minibatch_size, train_whole_dataset, train_whole_labels, num_epochs, pre_train_weights=None):
+    def training(self, minibatch_size, train_whole_dataset, train_whole_labels, num_epochs):
         '''
         Training the network, objective will be the loss function, default is 'mse', but you can alse define your
         own loss function, weights will be saved after the training. 
@@ -77,9 +78,9 @@ class Deep_qNetwork_snn:
 
         with nengo_dl.Simulator(model, minibatch_size=minibatch_size) as sim:
 
-            if pre_train_weights != None:
+            if self.save_path is not None:
                 try :
-                    sim.load_params(pre_train_weights)
+                    sim.load_params(self.save_path)
                 except:
                     pass
 
@@ -112,7 +113,7 @@ class Deep_qNetwork_snn:
             sim.step(input_feeds = input_data)
             output = np.squeeze(sim.data[out_p], axis=1)
 
-            return output
+            return deepcopy(output)
 
 
 
@@ -137,8 +138,7 @@ if __name__ == '__main__':
         deep_qNetwork.training(minibatch_size=32,
                                train_whole_dataset = mnist.train.images[:, None, :],
                                train_whole_labels = mnist.train.labels[:, None, :],
-                               num_epochs = 1,
-                               pre_train_weights = '/home/huangbo/Desktop/weights/mnist_parameters'
+                               num_epochs = 1
                                )
 
         test_input = X_test[:, None, :]
