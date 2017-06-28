@@ -94,7 +94,8 @@ def train_dqn():
                 dqn,
                 batch,
                 args.bellman_factor,
-                args.learning_rate
+                args.learning_rate,
+                args.memory_limit
             )
 
         epsilon = epsilon_decay(epsilon, args.epsilon_decay, args.bellman_factor_final)

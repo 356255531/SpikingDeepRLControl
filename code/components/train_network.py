@@ -1,4 +1,5 @@
 import numpy as np
+from copy import deepcopy
 
 
 def batch_parser(batch):
@@ -21,7 +22,8 @@ def train_network(
         DQN,
         batch,
         bellman_factor=0.9,
-        learning_rate=0.01
+        learning_rate=0.01,
+        batch_size=1
 ):
     """
     Note, dependency here needed
@@ -35,7 +37,8 @@ def train_network(
     usage:
         perform supervise learning using TD-Error """
     states, actions, rewards, states_bar, dones = batch_parser(batch)
-    states_bar_predict_val = DQN.predict(states)
+    states = states[:, None, :]
+    states_bar_predict_val = DQN.predict(states, minibatch_size=batch_size)
 
     for idx, done in enumerate(dones):
         if done:
@@ -45,11 +48,14 @@ def train_network(
             for action_idx, action in enumerate(actions[idx]):
                 td_error = rewards[idx] + bellman_factor * np.max(states_bar_predict_val[idx]) - \
                     states_bar_predict_val[idx][action_idx * 3 + action]
-                states_bar_predict_val[idx][action_idx * 3 + action] = \
-                    states_bar_predict_val[idx][action_idx * 3 + action] + \
-                    learning_rate * td_error
+                states_bar_predict_val[idx][action_idx * 3 + action] = states_bar_predict_val[idx][action_idx * 3 + action] + learning_rate * td_error
 
-    DQN.train_network(states, states_bar_predict_val)
+    DQN.training(minibatch_size=1,
+                 train_whole_dataset=states,
+                 train_whole_labels=states_bar_predict_val[:, None, :],
+                 num_epochs=1,
+                 pre_train_weights='saved_weights/'
+                 )
 
 
 def main():

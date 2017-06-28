@@ -144,6 +144,7 @@ import nengo
 import nengo_dl
 import numpy as np
 import tensorflow as tf
+from copy import deepcopy
 
 
 class DQN:
@@ -219,7 +220,7 @@ class DQN:
 
         with nengo_dl.Simulator(model, minibatch_size=minibatch_size) as sim:
 
-            if pre_train_weights != None:
+            if pre_train_weights is not None:
                 try:
                     sim.load_params(pre_train_weights)
                 except:
@@ -254,7 +255,7 @@ class DQN:
             sim.step(input_feeds=input_data)
             output = np.squeeze(sim.data[out_p], axis=1)
 
-            return output
+            return deepcopy(output)
 
 
 if __name__ == '__main__':
