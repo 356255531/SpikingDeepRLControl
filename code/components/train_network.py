@@ -17,11 +17,23 @@ def batch_parser(batch):
     return states, actions, rewards, states_bar, dones
 
 
+def action_to_idx(actions, dim):
+    action_in_idx = np.zeros([actions.shape[0], 3 ** dim])
+    for idx, action in enumerate(actions):
+        sum = 0
+        for single_action_idx, single_action in enumerate(action):
+            sum += 3 ** (dim - 1 - single_action_idx) * single_action
+        action_in_idx[idx][sum] = 1
+
+    return action_in_idx
+
+
 def train_network(
+        dim,
         DQN,
         batch,
         bellman_factor=0.9,
-        learning_rate=0.01
+        learning_rate=10e-6
 ):
     """
     Note, dependency here needed
@@ -37,19 +49,18 @@ def train_network(
     states, actions, rewards, states_bar, dones = batch_parser(batch)
     states_bar_predict_val = DQN.predict(states)
 
+    target_q_func = []
     for idx, done in enumerate(dones):
         if done:
-            for action_idx, action in enumerate(actions[idx]):
-                states_bar_predict_val[idx][action_idx * 3 + action] = rewards[idx]
+            target_q_func.append(rewards[idx])
         else:
-            for action_idx, action in enumerate(actions[idx]):
-                td_error = rewards[idx] + bellman_factor * np.max(states_bar_predict_val[idx]) - \
-                    states_bar_predict_val[idx][action_idx * 3 + action]
-                states_bar_predict_val[idx][action_idx * 3 + action] = \
-                    states_bar_predict_val[idx][action_idx * 3 + action] + \
-                    learning_rate * td_error
+            target_q_func.append(
+                rewards[idx] + bellman_factor * np.max(states_bar_predict_val[idx]))
 
-    DQN.train_network(states, states_bar_predict_val)
+    actions = action_to_idx(actions, dim)
+
+    cost = DQN.train_network(states, actions, target_q_func)
+    return cost
 
 
 def main():

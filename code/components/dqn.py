@@ -121,23 +121,24 @@ class SNN:
         return np.dot(acts, sim.data[conn].weights.T)
 
 
-class DQN_Flappy_Bird(object):
-    """docstring for DQN_Flappy_Bird"""
+class ANN(object):
+    """docstring for Q_learning_network"""
 
     def __init__(self, joint_dim=1, dqn_start_learning_rate=10e-6):
-        super(DQN_Flappy_Bird, self).__init__()
+        super(ANN, self).__init__()
         # Extract input date
-        self.action_num = 3 * joint_dim
-        self.dqn_start_learning_rate = dqn_start_learning_rate
+        self._joint_dim = joint_dim
+        self._action_num = 3 ** joint_dim
+        self._dqn_start_learning_rate = dqn_start_learning_rate
 
         # Create the network and set the input, output, and label
-        self.input_layer, self.output_layer = self.build_network()
+        self.input_layer, self.output_layer = self.build_network(self._joint_dim, self._action_num)
 
         # Cost
-        self.actions_batch = tf.placeholder(tf.float32, [None, self.action_num])
+        self.actions_batch = tf.placeholder(tf.float32, [None, self._action_num])
         self.target_q_func_batch = tf.placeholder(tf.float32, [None])
         self.preditct_q_func = tf.reduce_sum(
-            tf.matmul(self.output_layer, self.actions_batch), reduction_indices=1)
+            tf.matmul(self.output_layer, tf.transpose(self.actions_batch)), reduction_indices=1)
         self.cost = tf.reduce_mean(
             tf.square(self.target_q_func_batch - self.preditct_q_func)
         )
@@ -150,9 +151,9 @@ class DQN_Flappy_Bird(object):
         self.sess = tf.Session()
 
         # Init all the variable
-        self.sess.run(tf.initialize_all_variables())
+        self.sess.run(tf.global_variables_initializer())
 
-    def build_network(self):
+    def build_network(self, input_dim, output_dim):
         def gen_weights_var(shape):
             inital = tf.truncated_normal(shape, stddev=0.01)
             return tf.Variable(inital)
@@ -161,74 +162,42 @@ class DQN_Flappy_Bird(object):
             inital = tf.constant(0.01, shape=shape)
             return tf.Variable(inital)
 
-        def connect_conv2d(input, weights, stride):
-            return tf.nn.conv2d(
-                input,
-                weights,
-                [1, stride, stride, 1],
-                padding='SAME',
-                use_cudnn_on_gpu=True
-            )
-
         def connect_activ_relu(input, bias):
             return tf.nn.relu(input + bias)
 
-        def connect_max_pool_2x2(input):
-            return tf.nn.max_pool(input, ksize=[1, 2, 2, 1], strides=[1, 2, 2, 1], padding="SAME")
-
         # 1st conv layer filter parameter
-        weights_conv_1 = gen_weights_var([8, 8, 4, 32])
-        bias_activ_conv_1 = gen_bias_var([32])
+        weights_1 = gen_weights_var([input_dim, 500])
+        bias_activ_1 = gen_bias_var([500])
 
         # 2nd conv layer filter parameter
-        weights_conv_2 = gen_weights_var([4, 4, 32, 64])
-        bias_activ_conv_2 = gen_bias_var([64])
+        weights_2 = gen_weights_var([500, 100])
+        bias_activ_2 = gen_bias_var([100])
 
         # 3rd conv layer filter parameter
-        weights_conv_3 = gen_weights_var([3, 3, 64, 64])
-        bias_activ_conv_3 = gen_bias_var([64])
-
-        # 4th fully connect net parameter
-        weights_fc_layer_4 = gen_weights_var([1600, 512])
-        bias_fc_layer_4 = gen_bias_var([512])
-
-        # 5th fully connect net parameter
-        weights_fc_layer_5 = gen_weights_var([512, 2])
-        bias_fc_layer_5 = gen_bias_var([2])
+        weights_3 = gen_weights_var([100, output_dim])
+        bias_activ_3 = gen_bias_var([output_dim])
 
         # input layer
-        input_layer = tf.placeholder(tf.float32, [None, 80, 80, 4])
+        input_layer = tf.placeholder(tf.float32, [None, input_dim])
 
-        # Convo layer 1
-        output_conv_lay_1 = connect_conv2d(input_layer, weights_conv_1, 4)
-        output_active_con_lay_1 = connect_activ_relu(output_conv_lay_1, bias_activ_conv_1)
-        output_max_pool_layer_1 = connect_max_pool_2x2(output_active_con_lay_1)
+        # hidden layer 1
+        output_lay_1 = connect_activ_relu(tf.matmul(input_layer, weights_1), bias_activ_1)
 
-        # Convo layer 2
-        output_conv_lay_2 = connect_conv2d(output_max_pool_layer_1, weights_conv_2, 2)
-        output_active_con_lay_2 = connect_activ_relu(output_conv_lay_2, bias_activ_conv_2)
-
-        # Convo layer 3
-        output_conv_lay_3 = connect_conv2d(output_active_con_lay_2, weights_conv_3, 1)
-        output_active_con_lay_3 = connect_activ_relu(output_conv_lay_3, bias_activ_conv_3)
-        output_reshape_layer_3 = tf.reshape(output_active_con_lay_3, [-1, 1600])  # Convo layer 3 reshape to fully connected net
-
-        # Fully connect layer 4
-        output_fc_layer_4 = tf.matmul(output_reshape_layer_3, weights_fc_layer_4)
-        output_active_fc_layer_4 = connect_activ_relu(output_fc_layer_4, bias_fc_layer_4)
+        # hidden layer 2
+        output_lay_2 = connect_activ_relu(tf.matmul(output_lay_1, weights_2), bias_activ_2)
 
         # Output layer
-        output_layer = tf.matmul(output_active_fc_layer_4, weights_fc_layer_5) + bias_fc_layer_5
+        output_layer = tf.matmul(output_lay_2, weights_3) + bias_activ_3
 
         return input_layer, output_layer
 
     def predict(self, state):
         return self.sess.run(self.output_layer, feed_dict={self.input_layer: state})
 
-    def save_weights(self, num_episode, saved_directory="saved_weights/"):
+    def save_weights(self, num_episode, saved_directory="saved_weights_ann/"):
         self.saver.save(self.sess, saved_directory + "dqn_weights", global_step=num_episode)
 
-    def load_weights(self, saved_directory="saved_weights"):
+    def load_weights(self, saved_directory="saved_weights_ann/"):
         checkpoint = tf.train.get_checkpoint_state(saved_directory)
         if checkpoint and checkpoint.model_checkpoint_path:
             self.saver.restore(self.sess, checkpoint.model_checkpoint_path)

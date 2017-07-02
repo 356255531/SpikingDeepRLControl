@@ -1,5 +1,6 @@
 from memory import Memory
-from dqn import DQN
+from dqn import SNN
+from dqn import ANN
 from enviroment import RobotArmEnv
 from state_action_space import StateActionSpace_RobotArm
 from reward_func import Reward
