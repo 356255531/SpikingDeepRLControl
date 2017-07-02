@@ -47,19 +47,29 @@ def train_network(
     usage:
         perform supervise learning using TD-Error """
     states, actions, rewards, states_bar, dones = batch_parser(batch)
-    states_bar_predict_val = DQN.predict(states)
+    # states_bar_predict_val = DQN.predict(states)  # ann
+    states_bar_predict_val = DQN.predict(states[:, None, :])
 
-    target_q_func = []
+    # target_q_func = []  #ann
+    # for idx, done in enumerate(dones):
+    #     if done:
+    #         target_q_func.append(rewards[idx])
+    #     else:
+    #         target_q_func.append(
+    #             rewards[idx] + bellman_factor * np.max(states_bar_predict_val[idx]))
+
     for idx, done in enumerate(dones):
         if done:
-            target_q_func.append(rewards[idx])
+            states_bar_predict_val[idx][actions[idx]] = rewards[idx]
         else:
-            target_q_func.append(
-                rewards[idx] + bellman_factor * np.max(states_bar_predict_val[idx]))
+            states_bar_predict_val[idx][actions[idx]] = rewards[idx] + \
+                bellman_factor * np.max(states_bar_predict_val[idx])
 
-    actions = action_to_idx(actions, dim)
+    # actions = action_to_idx(actions, dim)  # ann
 
-    cost = DQN.train_network(states, actions, target_q_func)
+    # cost = DQN.train_network(states, actions, target_q_func)  # ann
+
+    cost = DQN.train_network(states[:, None, :], states_bar_predict_val[:, None, :], 1)
     return cost
 
 

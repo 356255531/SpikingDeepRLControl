@@ -1,124 +1,136 @@
 import nengo
 import numpy as np
 import tensorflow as tf
+from copy import deepcopy
+import nengo_dl
 
 
 class SNN:
-    """
-    Spiking neural network as the Q value function approximation:
+    '''
+    Q_function approximation using Spiking neural network
+    '''
 
-    Member function:
-        constructor(input_dim, output_dim, num_hidden_neuros, decoder)
-
-        encoder_initialization()
-
-        train_network(train_input, train_labels)
-
-        predict(input)
-    """
-
-    def __init__(self, input_dim, output_dim, num_hidden_neuros, decoder):
+    def __init__(self, dim, batch_size_train, batch_size_predict, opt, learning_rate, weiths_path="saved_weights_ann/"):
         '''
-        constructor:
-            args:
-                input_dim, numpy array
-                output_dim, numpy array, same shape with action
-                num_hidden_neuros, int
-                decoder, string, path to save weights
-
-            usage:
-                    Init the SNN-based Q-Network
+        :param input_shape: the input shape of network, a number of integer 
+        :param output_shape: the output shape of network, a number of integer
+        :param batch_size_train: the batch size of training
+        :param batch_size_predict: the batch size of prediction
         '''
-        self.input_dim = input_dim
-        self.output_dim = output_dim
-        self.num_hidden_neuros = num_hidden_neuros
-        self.decoder = decoder
+        self.input_shape = dim
+        self.output_shape = 3 ** dim
+        self.opt = opt
+        self.learning_rate = learning_rate
+        self.optimizer = self.choose_optimizer(self.opt, self.learning_rate)
 
-    def encoder_initialization(self):
+        self.softlif_neurons = nengo_dl.SoftLIFRate(tau_rc=0.02, tau_ref=0.002, sigma=0.002)
+        self.ens_params = dict(max_rates=nengo.dists.Choice([100]), intercepts=nengo.dists.Choice([0]))
+        self.amplitude = 0.01
+
+        self.model_train, self.sim_train, self.input_train, self.out_p_train = \
+            self.build_simulator(minibatch_size=batch_size_train)
+
+        self.model_predict, self.sim_predict, self.input_predict, self.out_p_predict = \
+            self.build_simulator(minibatch_size=batch_size_predict)
+
+    def build_network(self):
+        # input_node
+        input = nengo.Node(nengo.processes.PresentInput(np.zeros(shape=(1, self.input_shape)), 0.1))
+
+        # layer_1
+        x = nengo_dl.tensor_layer(input, tf.layers.dense, units=100)
+        x = nengo_dl.tensor_layer(x, self.softlif_neurons, **self.ens_params)
+
+        # layer_2
+        x = nengo_dl.tensor_layer(x, tf.layers.dense, transform=self.amplitude, units=100)
+        x = nengo_dl.tensor_layer(x, self.softlif_neurons, **self.ens_params)
+
+        # output
+        x = nengo_dl.tensor_layer(x, tf.layers.dense, units=self.output_shape)
+        return input, x
+
+    def build_simulator(self, minibatch_size):
+
+        with nengo.Network(seed=0) as model:
+            input, output = self.build_network()
+            out_p = nengo.Probe(output)
+
+        sim = nengo_dl.Simulator(model, minibatch_size=minibatch_size)
+        return model, sim, input, out_p
+
+    def choose_optimizer(self, opt, learning_rate=1):
+        if opt == "adam":
+            optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate)
+        elif opt == 'adadelta':
+            optimizer = tf.train.AdadeltaOptimizer(learning_rate=learning_rate)
+        elif opt == "rms":
+            optimizer = tf.train.RMSPropOptimizer(learning_rate=learning_rate)
+        elif opt == "sgd":
+            optimizer = tf.train.GradientDescentOptimizer(learning_rate=learning_rate)
+        return optimizer
+
+    def objective(self, x, y):
+        return tf.nn.softmax_cross_entropy_with_logits(logits=x, labels=y)
+
+    def train_network(self, train_whole_dataset, train_whole_labels, num_epochs):
         '''
-            usage:
-                    Init the encoder
+        Training the network, objective will be the loss function, default is 'mse', but you can alse define your
+        own loss function, weights will be saved after the training. 
+        :param minibatch_size: the batch size for training. 
+        :param train_whole_dataset: whole training dataset, the nengo_dl will take minibatch from this dataset
+        :param train_whole_labels: whole training labels
+        :param num_epochs: how many epoch to train the whole dataset
+        :param pre_train_weights: if we want to fine-tuning the network, load weights before training
+        :return: None
         '''
 
-        rng = np.random.RandomState(1)
-        encoders = rng.normal(size=(self.num_hidden_neuros, self.input_dim))
-        return encoders
+        with self.model_train:
+            nengo_dl.configure_trainable(self.model_train, default=True)
 
-    def train_network(self, train_input, train_labels):
-        '''
-        args:
-                train_input, numpy array (batch_size * input_dim)
-                train_labels, numpy array (batch_size * output_dim)
+            train_inputs = {self.input_train: train_whole_dataset}
+            train_targets = {self.out_p_train: train_whole_labels}
 
-        usage:
-                do supervised learning with respect the given input and labels
-        '''
+        # construct the simulator
+        self.sim_train.train(train_inputs,
+                             train_targets,
+                             optimizer,
+                             n_epochs=num_epochs,
+                             objective='mse'
+                             )
 
-        encoders = self.encoder_initialization()
-        solver = nengo.solvers.LstsqL2(reg=0.01)
+    def save(self, save_path):
+        # save the parameters to file
+        self.sim_train.save_params(save_path + "dqn_weights")
 
-        model = nengo.Network(seed=3)
-        with model:
-            input_neuron = nengo.Ensemble(n_neurons=self.num_hidden_neuros,
-                                          dimensions=self.input_dim,
-                                          neuron_type=nengo.LIFRate(),
-                                          intercepts=nengo.dists.Uniform(-1.0, 1.0),
-                                          max_rates=nengo.dists.Choice([100]),
-                                          encoders=encoders,
-                                          )
-            output = nengo.Node(size_in=self.output_dim)
-            conn = nengo.Connection(input_neuron,
-                                    output,
-                                    synapse=None,
-                                    eval_points=train_input,
-                                    function=train_labels,
-                                    solver=solver
-                                    )
-            #encoders_weights = nengo.Probe(input_neuron.encoders, "encoders_weights", sample_every=1.0)
-            conn_weights = nengo.Probe(conn, 'weights', sample_every=1.0)
-
-        with nengo.Simulator(model) as sim:
-            sim.run(3)
-        # save the connection weights after training
-        np.save(self.decoder, sim.data[conn_weights][-1].T)
-
-    def predict(self, input):
-        '''
-        args:
-                input, numpy array (batch_size * input_dim)
-
-        return:
-                output, numpy array, Q-function of given input data (batch_size * output_dim)
-
-        usage:
-                Do prediction by feedforward with given input (in our case is state)
-        '''
-        encoders = self.encoder_initialization()
-
+    def load_weights(self, flag, save_path):
         try:
-            decoder = np.load(self.decoder)
-        except IOError:
-            rng = np.random.RandomState(1)
-            decoder = rng.normal(size=(self.num_hidden_neuros, self.output_dim))
+            if flag == 'train':
+                self.sim_train.load_params(save_path)
+            elif flag == 'prediction':
+                self.sim_predict.load_params(save_path)
+        except:
+            print "No Weights loaded to " + flag
 
-        model = nengo.Network(seed=3)
-        with model:
-            input_neuron = nengo.Ensemble(n_neurons=self.num_hidden_neuros,
-                                          dimensions=self.input_dim,
-                                          neuron_type=nengo.LIFRate(),
-                                          intercepts=nengo.dists.Uniform(-1.0, 1.0),
-                                          max_rates=nengo.dists.Choice([100]),
-                                          encoders=encoders,
-                                          )
-            output = nengo.Node(size_in=self.output_dim)
-            conn = nengo.Connection(input_neuron.neurons,
-                                    output,
-                                    synapse=None,
-                                    transform=decoder.T
-                                    )
-        with nengo.Simulator(model) as sim:
-            _, acts = nengo.utils.ensemble.tuning_curves(input_neuron, sim, inputs=input)
-        return np.dot(acts, sim.data[conn].weights.T)
+    def predict(self, prediction_input):
+        '''
+        prediction of the network
+        :param prediction_input: a input data shape = (minibatch_size, 1, input_shape)
+        :return: prediction with shape = (minibatch_size, output_shape)
+        '''
+        self.load_weights
+        input_data = {self.input_predict: prediction_input}
+        self.sim_predict.step(input_feeds=input_data)
+        # print self.sim_predict.data[self.out_p_predict].shape
+        if self.sim_predict.data[self.out_p_predict].shape[1] == 1:
+            output = self.sim_predict.data[self.out_p_predict]
+            output = np.squeeze(output, axis=1)
+        else:
+            output = self.sim_predict.data[self.out_p_predict][:, -1, :]
+        return deepcopy(output)
+
+    def close_simulator(self):
+        self.sim_train.close()
+        self.sim_predict.close()
 
 
 class ANN(object):

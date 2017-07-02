@@ -39,7 +39,7 @@ parser.add_argument("-ef", "--epsilon_final", nargs="?", const=1,
                     type=float, help="Final epsilon value", default=0.05)
 parser.add_argument("-ed", "--epsilon_decay", nargs="?", const=1,
                     type=float, help="Decay factor of epsilon", default=0.9999)
-parser.add_argument("-ob", "--observation_phase", nargs="?", const=1,
+parser.add_argument("-op", "--observation_phase", nargs="?", const=1,
                     type=float, help="In observation phase, no training behavior", default=10000)
 parser.add_argument("-ep", "--exploration_phase", nargs="?", const=1, type=float,
                     help="In exploration phase, algorithm continue explore all possible actions",
@@ -85,8 +85,8 @@ def train_dqn(
     display_memory = Memory(memory_limit)
 
     # Create network object
-    dqn = ANN(joint_dim, learning_rate)
-    dqn.load_weights(weight_path)
+    dqn = SNN(joint_dim, batch_size, batch_size, 'rms', 10e-2)  # snn
+    # dqn = ANN(joint_dim, learning_rate) # ann
 
     # Q-Learning framework
 
@@ -106,7 +106,8 @@ def train_dqn(
                 dqn,
                 state,
                 joint_dim,
-                epsilon
+                epsilon,
+                batch_size
             )
 
             state_bar, reward, done = env.step(action)
@@ -136,8 +137,8 @@ def train_dqn(
 
         total_reward_previous = total_reward
 
-        if (total_step - 1) % 1000 == 1:
-            dqn.save_weights(num_episode, weight_path)
+        # if (total_step - 1) % 1000 == 1:
+        #     dqn.save_weights(num_episode, weight_path)  # ann
 
         if total_step <= exploration_phase:
             if total_step > observation_phase:
