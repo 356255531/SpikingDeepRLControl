@@ -6,23 +6,20 @@ from copy import deepcopy
 
 
 
-class Deep_qNetwork_snn:
+class DQN:
     '''
     Q_function approximation using Spiking neural network
     '''
-    def __init__(self, input_shape, output_shape, batch_size_train, batch_size_predict, save_path):
+    def __init__(self, input_shape, output_shape, batch_size_train, batch_size_predict):
         '''
         :param input_shape: the input shape of network, a number of integer 
         :param output_shape: the output shape of network, a number of integer
         :param batch_size_train: the batch size of training
         :param batch_size_predict: the batch size of prediction
-        :param save_path: the path to save network parameters, in the prediction, network will load the weights in 
-                this path.
-                example: '/home/huangbo/Desktop/weights/mnist_parameters'
         '''
         self.input_shape = input_shape
         self.output_shape = output_shape
-        self.save_path = save_path
+
 
         self.softlif_neurons = nengo_dl.SoftLIFRate(tau_rc=0.02, tau_ref=0.002, sigma=0.002)
         self.ens_params = dict(max_rates=nengo.dists.Choice([100]), intercepts=nengo.dists.Choice([0]))
@@ -93,13 +90,6 @@ class Deep_qNetwork_snn:
             train_inputs = {self.input_train: train_whole_dataset}
             train_targets = {self.out_p_train: train_whole_labels}
 
-        #with self.sim_train:
-        if self.save_path is not None:
-            try :
-                self.sim_train.load_params(self.save_path)
-            except:
-                pass
-
         optimizer = self.choose_optimizer('adadelta', 1)
         # construct the simulator
         self.sim_train.train(train_inputs,
@@ -108,28 +98,27 @@ class Deep_qNetwork_snn:
                              n_epochs=num_epochs,
                              objective=self.objective
                              )
-        # save the parameters to file
-        self.sim_train.save_params(self.save_path)
 
-    def predict(self, prediction_input, load_weights=False):
+    def save(self, save_path):
+        # save the parameters to file
+        self.sim_train.save_params(save_path)
+
+    def load_weights(self, flag, save_path):
+        if flag == 'train':
+            self.sim_train.load_params(save_path)
+        elif flag == 'prediction':
+            self.sim_predict.load_params(save_path)
+
+    def predict(self, prediction_input):
         '''
         prediction of the network
         :param prediction_input: a input data shape = (minibatch_size, 1, input_shape)
         :return: prediction with shape = (minibatch_size, output_shape)
         '''
 
-        with self.model_predict:
-            nengo_dl.configure_trainable(self.model_predict, default=False)
-
-        #with self.sim_predict:
-        if load_weights == True:
-            try:
-                self.sim_predict.load_params(self.save_path)
-            except:
-                pass
-
         input_data = {self.input_predict: prediction_input}
         self.sim_predict.step(input_feeds = input_data)
+        #print self.sim_predict.data[self.out_p_predict].shape
         if self.sim_predict.data[self.out_p_predict].shape[1] == 1:
             output = self.sim_predict.data[self.out_p_predict]
             output = np.squeeze(output, axis=1)
@@ -155,20 +144,23 @@ if __name__ == '__main__':
     X_test = mnist.test.images
     y_test = mnist.test.labels
 
-    deep_qNetwork = Deep_qNetwork_snn(input_shape=784,
-                                      output_shape=10,
-                                      batch_size_train=32,
-                                      batch_size_predict=10000,
-                                      save_path='/home/huangbo/Desktop/weights/mnist_parameters'
-                                      )
+    deep_qNetwork = DQN(input_shape=784,
+                          output_shape=10,
+                          batch_size_train=32,
+                          batch_size_predict=10000
+                          )
+
+    deep_qNetwork.load_weights(flag='prediction', save_path='/home/huangbo/Desktop/weights/mnist_parameters')
     for i in range(10):
-        deep_qNetwork.training(train_whole_dataset = mnist.train.images[:, None, :],
-                               train_whole_labels = mnist.train.labels[:, None, :],
-                               num_epochs = 1
-                               )
+        #deep_qNetwork.load_weights(flag='train')
+        # deep_qNetwork.training(train_whole_dataset = mnist.train.images[:, None, :],
+        #                        train_whole_labels = mnist.train.labels[:, None, :],
+        #                        num_epochs = 1
+        #                        )
+        # deep_qNetwork.save(save_path='/home/huangbo/Desktop/weights/mnist_parameters')
 
         test_input = X_test[:, None, :]
-        prediction = deep_qNetwork.predict(prediction_input=test_input, load_weights=True)
+        prediction = deep_qNetwork.predict(prediction_input=test_input)
         acc = accuracy_score(np.argmax(y_test, axis=1), np.argmax(prediction, axis=1))
         print "the test acc is:", acc
 
