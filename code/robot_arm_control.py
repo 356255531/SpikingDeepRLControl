@@ -1,6 +1,6 @@
 # Import Classes
 from components import Memory
-from components import ANN, SNN
+from components import ANN
 from components import StateActionSpace_RobotArm, Reward, Goal
 from components import RobotArmEnv
 # Import functions
@@ -32,13 +32,13 @@ parser.add_argument("-bf", "--bellman_factor", nargs="?", const=1,
 parser.add_argument("-l", "--memory_limit", nargs="?", const=1,
                     type=int, help="The limit of display memory", default=50000)
 parser.add_argument("-eml", "--episode_max_len", nargs="?", const=1,
-                    type=int, help="The maximal length of a episode", default=100)
+                    type=int, help="The maximal length of a episode", default=36)
 parser.add_argument("-e", "--epsilon", nargs="?", const=1,
                     type=float, help="Epsilon value of policy selection", default=0.5)
 parser.add_argument("-ef", "--epsilon_final", nargs="?", const=1,
                     type=float, help="Final epsilon value", default=0.05)
 parser.add_argument("-ed", "--epsilon_decay", nargs="?", const=1,
-                    type=float, help="Decay factor of epsilon", default=0.9999)
+                    type=float, help="Decay factor of epsilon", default=0.999)
 parser.add_argument("-op", "--observation_phase", nargs="?", const=1,
                     type=float, help="In observation phase, no training behavior", default=10000)
 parser.add_argument("-ep", "--exploration_phase", nargs="?", const=1, type=float,
@@ -84,21 +84,15 @@ def train_dqn(
     # Create memory_pool poolenv
     display_memory = Memory(memory_limit)
 
-    # Create network object
-    # dqn = SNN(joint_dim, batch_size, 'rms', 0.05)  # snn
-    # try:
-    #     dqn.load_weights("saved_weights_snn/saved_weights_snn")
-    # except:
-    #     pass
     dqn = ANN(joint_dim, learning_rate)  # ann
-    dqn.load_weights("saved_weights_snn/saved_weights_ann")  # ann
+    dqn.load_weights(weight_path + "dqn_weights")  # ann
 
     # Q-Learning framework
 
     total_step = 0
     num_episode = 0
     cost = float("inf")
-    total_reward_previous = -100
+
     while 1:
         num_episode += 1
 
@@ -123,8 +117,7 @@ def train_dqn(
             print "reward: ", reward, " action: ", action, \
                 " if game continue: ", \
                 not done, " epsilon: ", epsilon, \
-                " cost: ", cost, " total_reward: ", total_reward_previous, \
-                " total_step: ", total_step
+                " cost: ", cost, " total_step: ", total_step
 
             display_memory.add((state, action,
                                 reward, state_bar, done))
@@ -141,13 +134,11 @@ def train_dqn(
                 bellman_factor,
                 learning_rate
             )
-            # if (num_episode + 2) % 30 == 1:  # snn
-            #     dqn.save_weights("saved_weights_snn/saved_weights_snn")
 
         total_reward_previous = total_reward
 
         if total_step > observation_phase and (num_episode - 1) % 100 == 1:  # ann
-            dqn.save_weights(num_episode, "saved_weights_snn/saved_weights_ann")  # ann
+            dqn.save_weights(num_episode, weight_path + "dqn_weights")  # ann
 
         if total_step <= exploration_phase:
             if total_step > observation_phase:

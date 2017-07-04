@@ -3,6 +3,10 @@ __author__ = "zhiwei"
 import numpy as np
 
 
+def ():
+    pass
+
+
 def epsilon_greedy_action_select(
     DQN_Q_approximator,
     state,
@@ -25,9 +29,6 @@ def epsilon_greedy_action_select(
     if np.random.random() < epsilon:
         return np.random.randint(3, size=(dim,))
     else:
-        # states = np.repeat(np.array([state]), batch_size, axis=0) #snn
-        # dqn_output = DQN_Q_approximator.predict(states[:, None, :])[0, :]
-
         dqn_output = DQN_Q_approximator.predict(np.array([state]))  # ann
         action = np.array([], dtype=int)
         for i in xrange(dim):

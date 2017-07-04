@@ -19,7 +19,7 @@ class SNN:
         :param learning_rate: learning_rate
 
         '''
-        self.input_shape = joint_dim
+        self.input_shape = joint_dim * 36
         self.output_shape = 3 * joint_dim
         self.optimizer = self.choose_optimizer(opt, learning_rate)
 

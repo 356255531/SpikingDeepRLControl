@@ -82,7 +82,7 @@ class VirtualArm(object):
             self._goal_coor = goal_coor
 
         if start_angular is None:
-            self._arm_angulars_in_degree = np.random.randint(360, size=[self._dim])
+            self._arm_angulars_in_degree = np.random.randint(36, size=[self._dim]) * 10
             # self._arm_angulars_in_degree = np.zeros(self._dim)
         else:
             self._arm_angulars_in_degree = start_angular
