@@ -13,8 +13,8 @@ import argparse
 # Argument parser
 parser = argparse.ArgumentParser()
 
-parser.add_argument("-sim", "--emulator", nargs="?", const=1,
-                    type=bool, help="Use a emulator [Y/n]", default=True)
+parser.add_argument("-sim", "--simulator", nargs="?", const=1,
+                    type=bool, help="Use a simulator [Y/n]", default=True)
 parser.add_argument("-d", "--dimension", nargs="?", const=1,
                     type=int, help="Dimension of a robot [default: 1]", default=1)
 parser.add_argument("-t", "--train", nargs="?", const=1,
@@ -49,7 +49,7 @@ args = parser.parse_args()
 
 
 def train_dqn(
-    if_emulator,
+    if_simulator,
     joint_dim,
     if_train,
     weight_path,
@@ -71,12 +71,12 @@ def train_dqn(
         resolution_in_degree)  # Encode the joint to state
 
     reward_func = Reward()  # The rule of reward function
-    goal_func = Goal((180,), state_action_space)
+    goal_func = Goal((-3, 0))
     env = RobotArmEnv(
         state_action_space,
         reward_func,
         goal_func,
-        if_emulator=if_emulator,
+        if_simulator=if_simulator,
         if_visual=if_visual,
         dim=joint_dim
     )
@@ -85,8 +85,13 @@ def train_dqn(
     display_memory = Memory(memory_limit)
 
     # Create network object
-    dqn = SNN(joint_dim, batch_size, batch_size, 'rms', 10e-2)  # snn
-    # dqn = ANN(joint_dim, learning_rate) # ann
+    # dqn = SNN(joint_dim, batch_size, 'rms', 0.05)  # snn
+    # try:
+    #     dqn.load_weights("saved_weights_snn/saved_weights_snn")
+    # except:
+    #     pass
+    dqn = ANN(joint_dim, learning_rate)  # ann
+    dqn.load_weights("saved_weights_snn/saved_weights_ann")  # ann
 
     # Q-Learning framework
 
@@ -96,6 +101,7 @@ def train_dqn(
     total_reward_previous = -100
     while 1:
         num_episode += 1
+
         state = env.init_game()
         done = False
 
@@ -117,28 +123,31 @@ def train_dqn(
             print "reward: ", reward, " action: ", action, \
                 " if game continue: ", \
                 not done, " epsilon: ", epsilon, \
-                " cost: ", cost, " total_reward: ", total_reward_previous
+                " cost: ", cost, " total_reward: ", total_reward_previous, \
+                " total_step: ", total_step
 
             display_memory.add((state, action,
                                 reward, state_bar, done))
 
             state = state_bar
 
-            if if_train and total_step > observation_phase:
-                batch = display_memory.sample(batch_size)
+        if if_train and total_step > observation_phase:
+            batch = display_memory.sample(batch_size)
 
-                cost = train_network(  # Training Step
-                    joint_dim,
-                    dqn,
-                    batch,
-                    bellman_factor,
-                    learning_rate
-                )
+            cost = train_network(  # Training Step
+                joint_dim,
+                dqn,
+                batch,
+                bellman_factor,
+                learning_rate
+            )
+            # if (num_episode + 2) % 30 == 1:  # snn
+            #     dqn.save_weights("saved_weights_snn/saved_weights_snn")
 
         total_reward_previous = total_reward
 
-        # if (total_step - 1) % 1000 == 1:
-        #     dqn.save_weights(num_episode, weight_path)  # ann
+        if total_step > observation_phase and (num_episode - 1) % 100 == 1:  # ann
+            dqn.save_weights(num_episode, "saved_weights_snn/saved_weights_ann")  # ann
 
         if total_step <= exploration_phase:
             if total_step > observation_phase:
@@ -149,7 +158,7 @@ def train_dqn(
 
 
 def main():
-    if_emulator = args.emulator
+    if_simulator = args.simulator
     joint_dim = args.dimension
     if_train = args.train
     weight_path = args.path
@@ -165,7 +174,7 @@ def main():
     observation_phase = args.observation_phase
     exploration_phase = args.exploration_phase
     train_dqn(
-        if_emulator,
+        if_simulator,
         joint_dim,
         if_train,
         weight_path,

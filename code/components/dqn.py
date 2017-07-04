@@ -10,28 +10,25 @@ class SNN:
     Q_function approximation using Spiking neural network
     '''
 
-    def __init__(self, dim, batch_size_train, batch_size_predict, opt, learning_rate, weiths_path="saved_weights_ann/"):
+    def __init__(self, joint_dim, batch_size_train, opt, learning_rate):
         '''
         :param input_shape: the input shape of network, a number of integer 
         :param output_shape: the output shape of network, a number of integer
         :param batch_size_train: the batch size of training
-        :param batch_size_predict: the batch size of prediction
+        :param opt: optimizer, 'adam', 'adadelta', 'rms', 'sgd'
+        :param learning_rate: learning_rate
+
         '''
-        self.input_shape = dim
-        self.output_shape = 3 ** dim
-        self.opt = opt
-        self.learning_rate = learning_rate
-        self.optimizer = self.choose_optimizer(self.opt, self.learning_rate)
+        self.input_shape = joint_dim
+        self.output_shape = 3 * joint_dim
+        self.optimizer = self.choose_optimizer(opt, learning_rate)
 
         self.softlif_neurons = nengo_dl.SoftLIFRate(tau_rc=0.02, tau_ref=0.002, sigma=0.002)
         self.ens_params = dict(max_rates=nengo.dists.Choice([100]), intercepts=nengo.dists.Choice([0]))
         self.amplitude = 0.01
 
-        self.model_train, self.sim_train, self.input_train, self.out_p_train = \
+        self.model, self.sim, self.input, self.out_p = \
             self.build_simulator(minibatch_size=batch_size_train)
-
-        self.model_predict, self.sim_predict, self.input_predict, self.out_p_predict = \
-            self.build_simulator(minibatch_size=batch_size_predict)
 
     def build_network(self):
         # input_node
@@ -84,32 +81,26 @@ class SNN:
         :return: None
         '''
 
-        with self.model_train:
-            nengo_dl.configure_trainable(self.model_train, default=True)
+        with self.model:
+            nengo_dl.configure_trainable(self.model, default=True)
 
-            train_inputs = {self.input_train: train_whole_dataset}
-            train_targets = {self.out_p_train: train_whole_labels}
+            train_inputs = {self.input: train_whole_dataset}
+            train_targets = {self.out_p: train_whole_labels}
 
         # construct the simulator
-        self.sim_train.train(train_inputs,
-                             train_targets,
-                             optimizer,
-                             n_epochs=num_epochs,
-                             objective='mse'
-                             )
+        self.sim.train(train_inputs,
+                       train_targets,
+                       self.optimizer,
+                       n_epochs=num_epochs,
+                       objective='mse'
+                       )
 
-    def save(self, save_path):
+    def save_weights(self, save_path):
         # save the parameters to file
-        self.sim_train.save_params(save_path + "dqn_weights")
+        self.sim.save_params(save_path)
 
-    def load_weights(self, flag, save_path):
-        try:
-            if flag == 'train':
-                self.sim_train.load_params(save_path)
-            elif flag == 'prediction':
-                self.sim_predict.load_params(save_path)
-        except:
-            print "No Weights loaded to " + flag
+    def load_weights(self, save_path):
+        self.sim.load_params(save_path)
 
     def predict(self, prediction_input):
         '''
@@ -117,20 +108,19 @@ class SNN:
         :param prediction_input: a input data shape = (minibatch_size, 1, input_shape)
         :return: prediction with shape = (minibatch_size, output_shape)
         '''
-        self.load_weights
-        input_data = {self.input_predict: prediction_input}
-        self.sim_predict.step(input_feeds=input_data)
-        # print self.sim_predict.data[self.out_p_predict].shape
-        if self.sim_predict.data[self.out_p_predict].shape[1] == 1:
-            output = self.sim_predict.data[self.out_p_predict]
+
+        input_data = {self.input: prediction_input}
+        self.sim.step(input_feeds=input_data)
+
+        if self.sim.data[self.out_p].shape[1] == 1:
+            output = self.sim.data[self.out_p]
             output = np.squeeze(output, axis=1)
         else:
-            output = self.sim_predict.data[self.out_p_predict][:, -1, :]
+            output = self.sim.data[self.out_p][:, -1, :]
         return deepcopy(output)
 
     def close_simulator(self):
-        self.sim_train.close()
-        self.sim_predict.close()
+        self.sim.close()
 
 
 class ANN(object):
@@ -140,7 +130,7 @@ class ANN(object):
         super(ANN, self).__init__()
         # Extract input date
         self._joint_dim = joint_dim
-        self._action_num = 3 ** joint_dim
+        self._action_num = 3 * joint_dim
         self._dqn_start_learning_rate = dqn_start_learning_rate
 
         # Create the network and set the input, output, and label
@@ -248,10 +238,36 @@ class ANN(object):
 #     acc = accuracy_score(np.argmax(y_test, axis=1), np.argmax(prediction, axis=1))
 #     print "the test acc is:", acc
 
-
-def main():
-    dqn = DQN(1, 3, num_hidden_neuros=1000, decoder="decoder.npy")
-    print dqn.predict(np.array([0]))
-
 if __name__ == '__main__':
-    main()
+
+    import matplotlib.pyplot as plt
+    from tensorflow.examples.tutorials.mnist import input_data
+    from sklearn.metrics import accuracy_score
+
+    mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
+
+    X_test = mnist.test.images
+    y_test = mnist.test.labels
+
+    deep_qNetwork = SNN(input_shape=784,
+                        output_shape=10,
+                        batch_size_train=128,
+                        opt='rms',
+                        learning_rate=0.005
+                        )
+
+    for i in range(10):
+        # deep_qNetwork.load_weights()
+        deep_qNetwork.train_network(train_whole_dataset=mnist.train.images[:, None, :],
+                                    train_whole_labels=mnist.train.labels[:, None, :],
+                                    num_epochs=1
+                                    )
+        # deep_qNetwork.save(save_path='/home/huangbo/Desktop/weights/mnist_parameters')
+
+        #X_test = X_test[0:128, :]
+        test_input = X_test[0:128, None, :]
+        prediction = deep_qNetwork.predict(prediction_input=test_input)
+        acc = accuracy_score(np.argmax(y_test[0:128, :], axis=1), np.argmax(prediction, axis=1))
+        print "the test acc is:", acc
+
+    deep_qNetwork.close_simulator()

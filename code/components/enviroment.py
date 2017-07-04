@@ -13,7 +13,7 @@ class RobotArmEnv(object):
         DRL Simulator Emulator class of NST omnibot
 
         Member function:
-            constructor(state_action_space, reward_func, goal_func, if_emulator, if_visual, dim)
+            constructor(state_action_space, reward_func, goal_func, if_simulator, if_visual, dim)
 
             init_game():
                             random init the robot arm
@@ -33,7 +33,7 @@ class RobotArmEnv(object):
                  state_action_space,
                  reward_func,
                  goal_func,
-                 if_emulator=True,
+                 if_simulator=True,
                  if_visual=False,
                  dim=1):
         """
@@ -42,7 +42,7 @@ class RobotArmEnv(object):
             2) reward function: map (s, a, s') to reward.
             3) goal function: judge if the input state is the goal state.
         args:
-            1) if_emulator, bool, if use emulator or real robot arm
+            1) if_simulator, bool, if use emulator or real robot arm
             2) if_visual, bool, if do visualization
             3) dim, int, joint dimension (if use emulator)
         """
@@ -53,11 +53,11 @@ class RobotArmEnv(object):
         self._goal_func = goal_func
 
         self._if_visual = if_visual
+        self._dim = dim
         # Define agent
-        if if_emulator:
+        if if_simulator:
             self._arm = VirtualArm(
-                dim=1,
-                start_angular=np.zeros(1),
+                dim=self._dim,
                 goal_coor=(-3, 0),
                 if_visual=self._if_visual
             )
@@ -69,7 +69,7 @@ class RobotArmEnv(object):
         usage:
             random init the robot arm """
         self._arm.init()
-        arm_readout = self._arm.read()
+        arm_readout = self._arm.read_joint_degree()
         self._state = self._state_action_space.degree_to_state(arm_readout)
         self._done = False
 
@@ -90,37 +90,43 @@ class RobotArmEnv(object):
 
         self._state = self._perform_action(action)
 
+        current_end_coor = self._arm.read_end_coor()
         return \
             self._state, \
             self._reward_func.evlt(
-                self._prev_state,
-                action,
-                self._state,
-                self._goal_func.get_goal_state()
+                current_end_coor,
+                self._goal_func.return_goal_coor()
             ), \
             self._done
 
     def _perform_action(self, action):
         arm_input = self._state_action_space.action_to_arm_input(action)
         self._arm.perform_action(arm_input)
-        arm_readout = self._arm.read()
+        arm_readout = self._arm.read_joint_degree()
         state = self._state_action_space.degree_to_state(arm_readout)
 
-        if self._goal_func.if_goal_state(state):
+        current_end_coor = self._arm.read_end_coor()
+        if self._goal_func.if_goal_coor(current_end_coor):
             self._done = True
         return state
 
 
 def main():
     state_action_space = StateActionSpace_RobotArm()
-    reward = Reward()
-    goal = Goal((3, 0), state_action_space)
-    env = RobotArmEnv(state_action_space, reward, goal)
+    reward_func = Reward()  # The rule of reward function
+    goal_func = Goal((-3, 0))
+    env = RobotArmEnv(
+        state_action_space,
+        reward_func,
+        goal_func,
+        if_simulator=True,
+        if_visual=True,
+        dim=1
+    )
     env.init_game()
     done = False
-    count = 0
     while not done:
-        state, reward, done = env.step(np.array([rd.randint(-1, 1)]))
+        state, reward, done = env.step(np.array([rd.randint(0, 2)]))
         print state, reward, done
         if done:
             break

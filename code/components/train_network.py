@@ -18,12 +18,10 @@ def batch_parser(batch):
 
 
 def action_to_idx(actions, dim):
-    action_in_idx = np.zeros([actions.shape[0], 3 ** dim])
+    action_in_idx = np.zeros([actions.shape[0], 3 * dim])
     for idx, action in enumerate(actions):
-        sum = 0
         for single_action_idx, single_action in enumerate(action):
-            sum += 3 ** (dim - 1 - single_action_idx) * single_action
-        action_in_idx[idx][sum] = 1
+            action_in_idx[idx][3 * single_action_idx + single_action] = 1
 
     return action_in_idx
 
@@ -47,29 +45,29 @@ def train_network(
     usage:
         perform supervise learning using TD-Error """
     states, actions, rewards, states_bar, dones = batch_parser(batch)
-    # states_bar_predict_val = DQN.predict(states)  # ann
-    states_bar_predict_val = DQN.predict(states[:, None, :])
+    states_bar_predict_val = DQN.predict(states)  # ann
+    # states_bar_predict_val = DQN.predict(states[:, None, :])  # snn
 
-    # target_q_func = []  #ann
-    # for idx, done in enumerate(dones):
-    #     if done:
-    #         target_q_func.append(rewards[idx])
-    #     else:
-    #         target_q_func.append(
-    #             rewards[idx] + bellman_factor * np.max(states_bar_predict_val[idx]))
-
+    target_q_func = []  # ann
     for idx, done in enumerate(dones):
         if done:
-            states_bar_predict_val[idx][actions[idx]] = rewards[idx]
+            target_q_func.append(rewards[idx])
         else:
-            states_bar_predict_val[idx][actions[idx]] = rewards[idx] + \
-                bellman_factor * np.max(states_bar_predict_val[idx])
+            target_q_func.append(
+                rewards[idx] + bellman_factor * np.max(states_bar_predict_val[idx]))
 
-    # actions = action_to_idx(actions, dim)  # ann
+    # for idx_done, done in enumerate(dones):  # snn
+    #     for idx_action, action in enumerate(actions[idx_done]):
+    #         if done:
+    #             states_bar_predict_val[idx_done][actions[idx_done][idx_action]] = rewards[idx_done]
+    #         else:
+    #             states_bar_predict_val[idx_done][actions[idx_done][idx_action]] = rewards[idx_done] + bellman_factor * np.max(states_bar_predict_val[idx_done][idx_action * 3: (idx_action + 1) * 3 + 1])
 
-    # cost = DQN.train_network(states, actions, target_q_func)  # ann
+    actions = action_to_idx(actions, dim)  # ann
 
-    cost = DQN.train_network(states[:, None, :], states_bar_predict_val[:, None, :], 1)
+    cost = DQN.train_network(states, actions, target_q_func)  # ann
+
+    # cost = DQN.train_network(states[:, None, :], states_bar_predict_val[:, None, :], 1)
     return cost
 
 

@@ -32,9 +32,9 @@ class VirtualArm(object):
 
     def __init__(self,
                  dim=1,
-                 start_angular=np.zeros(1),
+                 start_angular=None,
                  goal_coor=np.array([-3, 0]),
-                 if_visual=True
+                 if_visual=False,
                  ):
         """
         constructor(dim, start_angular, goal_coor, if_visual)
@@ -53,6 +53,9 @@ class VirtualArm(object):
 
         self._goal_coor = goal_coor
         self._if_visual = if_visual
+
+        if start_angular is None:
+            start_angular = np.zeros(self._dim)
         self.init(start_angular)
 
     def _refresh_joint_coor(self):
@@ -79,15 +82,19 @@ class VirtualArm(object):
             self._goal_coor = goal_coor
 
         if start_angular is None:
-            # self._arm_angulars_in_degree = np.random.randint(360, size=[self._dim])
-            self._arm_angulars_in_degree = np.zeros(self._dim)
+            self._arm_angulars_in_degree = np.random.randint(360, size=[self._dim])
+            # self._arm_angulars_in_degree = np.zeros(self._dim)
         else:
             self._arm_angulars_in_degree = start_angular
 
         self._refresh_joint_coor()
 
         if self._if_visual:
-            self._visualize()
+            try:
+                self._visualize()
+            except:
+                import pdb
+                pdb.set_trace()
 
     def perform_action(self, arm_input):
         """
@@ -108,12 +115,15 @@ class VirtualArm(object):
         if self._if_visual:
             self._visualize()
 
-    def read(self):
+    def read_joint_degree(self):
         """
         read():
             return:
                     current all joints angular in degree, numpy array"""
         return self._arm_angulars_in_degree
+
+    def read_end_coor(self):
+        return self._end_coor[-1]
 
     def _visualize(self):
 
@@ -149,16 +159,12 @@ class RobotArm(object):
 
 
 def main():
-    arm = VirtualArm(dim=3,
-                     start_angular=np.zeros(3),
-                     goal_coor=(0, 3),
-                     if_visual=True
-                     )
+    arm = VirtualArm(dim=2, if_visual=True)
     for x in xrange(1, 1000):
-        arm.perform_action((10, 10, 10))
+        current_coor = arm.read_end_coor()
+        print "ha", current_coor
+        arm.perform_action((10, 10))
         print "perform 10, 10, 10"
-        print arm.read()
-        print arm._end_coor
 
 
 if __name__ == '__main__':

@@ -1,4 +1,5 @@
 import numpy as np
+from goal_func import Goal
 
 
 class Reward(object):
@@ -11,7 +12,7 @@ class Reward(object):
     def __init__(self):
         super(Reward, self).__init__()
 
-    def evlt(self, previous_state, action, state, goal_state):
+    def evlt(self, current_coor, goal_coor):
         """
         args:
             previous_state, numpy array
@@ -21,10 +22,7 @@ class Reward(object):
 
         return:
             reward accordingto the setting above """
-        if np.array_equal(state, goal_state):
-            return 10
-
-        return -0.1
+        return -np.linalg.norm(goal_coor - current_coor)
 
 
 def main():

@@ -42,6 +42,7 @@ class StateActionSpace_RobotArm(object):
                 arm_input.append(0)
             if 2 == single_action:
                 arm_input.append(self._resolution[idx])
+
         return np.array(arm_input)
 
 
