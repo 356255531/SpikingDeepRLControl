@@ -10,6 +10,9 @@ from components import epsilon_greedy_action_select, train_network, epsilon_deca
 import numpy as np
 import argparse
 
+import pdb
+import operator
+
 # Argument parser
 parser = argparse.ArgumentParser()
 
@@ -81,11 +84,11 @@ def train_dqn(
         dim=joint_dim
     )
 
-    # Create memory_pool poolenv
+    # Create memory_pool
     display_memory = Memory(memory_limit)
 
     dqn = ANN(joint_dim, learning_rate)  # ann
-    dqn.load_weights(weight_path + "dqn_weights")  # ann
+    dqn.load_weights(weight_path, "dqn_weights")  # ann
 
     # Q-Learning framework
 
@@ -103,6 +106,7 @@ def train_dqn(
         total_reward = 0
         while episode_step < episode_max_len and not done:
             action = epsilon_greedy_action_select(
+                env,
                 dqn,
                 state,
                 joint_dim,
@@ -114,31 +118,31 @@ def train_dqn(
             total_reward += reward
             episode_step += 1
             total_step += 1
-            print "reward: ", reward, " action: ", action, \
-                " if game continue: ", \
-                not done, " epsilon: ", epsilon, \
-                " cost: ", cost, " total_step: ", total_step
+            print "state: ", state, " action: ", action, \
+                "reward: ", reward, \
+                " if game continue: ", not done, \
+                " epsilon: ", epsilon, \
+                " cost: ", cost, " total_step: ", total_step, \
+                " num_episode: ", num_episode
 
             display_memory.add((state, action,
                                 reward, state_bar, done))
 
             state = state_bar
 
-        if if_train and total_step > observation_phase:
-            batch = display_memory.sample(batch_size)
+            if if_train and total_step > observation_phase:
+                batch = display_memory.sample(batch_size)
 
-            cost = train_network(  # Training Step
-                joint_dim,
-                dqn,
-                batch,
-                bellman_factor,
-                learning_rate
-            )
-
-        total_reward_previous = total_reward
+                cost = train_network(  # Training Step
+                    joint_dim,
+                    dqn,
+                    batch,
+                    bellman_factor,
+                    learning_rate
+                )
 
         if total_step > observation_phase and (num_episode - 1) % 100 == 1:  # ann
-            dqn.save_weights(num_episode, weight_path + "dqn_weights")  # ann
+            dqn.save_weights(num_episode, weight_path, "dqn_weights")  # ann
 
         if total_step <= exploration_phase:
             if total_step > observation_phase:
@@ -146,6 +150,31 @@ def train_dqn(
                     epsilon, epsilon_decay_factor, epsilon_final)
         else:
             epsilon = epsilon_final
+    # epsilon = 1
+    # done = True
+    # q_table = {}
+    # for i in xrange(100000):
+    #     state = env.init_game()
+    #     q_table[tuple(state)] = {}
+    #     for j in xrange(9):
+    #         q_table[tuple(state)][j] = np.random.rand()
+
+    # while 1:
+    #     if done:
+    #         state = env.init_game()
+    #         done = False
+    #     if np.random.rand() < epsilon:
+    #         action = np.random.randint(3, size=[2])
+    #     else:
+    #         action = max(q_table[tuple(state)].iteritems(), key=operator.itemgetter(1))[0]
+    #         action = np.array([action / 3, action % 3])
+
+    #     state_bar, reward, done = env.step(action)
+    #     print state, state_bar, action, done, epsilon, (env._arm.read_end_coor()[0] + 3) ** 2 + (env._arm.read_end_coor()[1]) ** 2
+    #     q_table[tuple(state)][max(q_table[tuple(state)].iteritems(), key=operator.itemgetter(1))[0]] += \
+    #         0.1 * (reward + 0.5 * max(q_table[tuple(state)], key=q_table.get) - q_table[tuple(state)][max(q_table[tuple(state)].iteritems(), key=operator.itemgetter(1))[0]])
+    #     state = state_bar
+    #     epsilon *= 0.99999
 
 
 def main():

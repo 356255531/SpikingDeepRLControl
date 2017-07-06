@@ -3,11 +3,8 @@ __author__ = "zhiwei"
 import numpy as np
 
 
-def ():
-    pass
-
-
 def epsilon_greedy_action_select(
+    env,
     DQN_Q_approximator,
     state,
     dim,
@@ -27,15 +24,17 @@ def epsilon_greedy_action_select(
     usage:
         return an action using epsilon-greedy search """
     if np.random.random() < epsilon:
-        return np.random.randint(3, size=(dim,))
+        if np.random.random() < 0.5:
+            return env.get_jacobi_action()
+        else:
+            return np.random.randint(3, size=[dim])
     else:
         dqn_output = DQN_Q_approximator.predict(np.array([state]))  # ann
+        action_idx = np.argmax(dqn_output[0])
         action = np.array([], dtype=int)
-        for i in xrange(dim):
-            action = np.append(
-                action,
-                np.argmax(dqn_output[i * 3:(i + 1) * 3])
-            )
+        for i in xrange(dim, 0, -1):
+            action = np.append(action, [action_idx / 3 ** (i - 1)])
+            action_idx /= 3 ** (i - 1)
         return action
 
 

@@ -19,8 +19,8 @@ class SNN:
         :param learning_rate: learning_rate
 
         '''
-        self.input_shape = joint_dim * 36
-        self.output_shape = 3 * joint_dim
+        self.input_shape = joint_dim
+        self.output_shape = 3 ** joint_dim
         self.optimizer = self.choose_optimizer(opt, learning_rate)
 
         self.softlif_neurons = nengo_dl.SoftLIFRate(tau_rc=0.02, tau_ref=0.002, sigma=0.002)
@@ -130,7 +130,7 @@ class ANN(object):
         super(ANN, self).__init__()
         # Extract input date
         self._joint_dim = joint_dim
-        self._action_num = 3 * joint_dim
+        self._action_num = 3 ** joint_dim
         self._dqn_start_learning_rate = dqn_start_learning_rate
 
         # Create the network and set the input, output, and label
@@ -168,15 +168,15 @@ class ANN(object):
             return tf.nn.relu(input + bias)
 
         # 1st conv layer filter parameter
-        weights_1 = gen_weights_var([input_dim, 500])
-        bias_activ_1 = gen_bias_var([500])
+        weights_1 = gen_weights_var([input_dim, 50])
+        bias_activ_1 = gen_bias_var([50])
 
         # 2nd conv layer filter parameter
-        weights_2 = gen_weights_var([500, 100])
-        bias_activ_2 = gen_bias_var([100])
+        weights_2 = gen_weights_var([50, 50])
+        bias_activ_2 = gen_bias_var([50])
 
         # 3rd conv layer filter parameter
-        weights_3 = gen_weights_var([100, output_dim])
+        weights_3 = gen_weights_var([50, output_dim])
         bias_activ_3 = gen_bias_var([output_dim])
 
         # input layer
@@ -196,10 +196,10 @@ class ANN(object):
     def predict(self, state):
         return self.sess.run(self.output_layer, feed_dict={self.input_layer: state})
 
-    def save_weights(self, num_episode, saved_directory="saved_weights_ann/"):
-        self.saver.save(self.sess, saved_directory + "dqn_weights", global_step=num_episode)
+    def save_weights(self, num_episode, saved_directory="saved_weights_ann/", name="dqn_weights"):
+        self.saver.save(self.sess, saved_directory + name, global_step=num_episode)
 
-    def load_weights(self, saved_directory="saved_weights_ann/"):
+    def load_weights(self, saved_directory="saved_weights_ann/", name="dqn_weights"):
         checkpoint = tf.train.get_checkpoint_state(saved_directory)
         if checkpoint and checkpoint.model_checkpoint_path:
             self.saver.restore(self.sess, checkpoint.model_checkpoint_path)

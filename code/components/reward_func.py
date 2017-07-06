@@ -22,11 +22,7 @@ class Reward(object):
 
         return:
             reward accordingto the setting above """
-        euclidean_dist = np.linalg.norm(goal_coor - current_coor)
-        if euclidean_dist < 1:
-            return 100
-        else:
-            return -euclidean_dist
+        return -np.linalg.norm(goal_coor - current_coor)
 
 
 def main():

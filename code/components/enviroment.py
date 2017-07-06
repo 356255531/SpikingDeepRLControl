@@ -69,6 +69,11 @@ class RobotArmEnv(object):
         usage:
             random init the robot arm """
         self._arm.init()
+        current_end_coor = self._arm.read_end_coor()
+        while self._goal_func.if_goal_coor(current_end_coor):
+            self._arm.init()
+            current_end_coor = self._arm.read_end_coor()
+
         arm_readout = self._arm.read_joint_degree()
         self._state = self._state_action_space.degree_to_state(arm_readout)
         self._done = False
@@ -109,6 +114,15 @@ class RobotArmEnv(object):
         if self._goal_func.if_goal_coor(current_end_coor):
             self._done = True
         return state
+
+    def get_jacobi_action(self):
+        arm_readout = self._arm.read_joint_degree()
+        state = self._state_action_space.degree_to_state(arm_readout)
+
+        if state[0] > 0:
+            return [0]
+        else:
+            return [2]
 
 
 def main():

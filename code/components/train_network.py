@@ -17,13 +17,16 @@ def batch_parser(batch):
     return states, actions, rewards, states_bar, dones
 
 
-def action_to_idx(actions, dim):
-    action_in_idx = np.zeros([actions.shape[0], 3 * dim])
+def action_to_idx(actions, dim, batch_size):
+    actions_idx = np.zeros([batch_size, 3 ** dim])
     for idx, action in enumerate(actions):
-        for single_action_idx, single_action in enumerate(action):
-            action_in_idx[idx][single_action_idx * 3 + single_action] = 1
+        sum = 0
+        for i in xrange(dim, 1, -1):
+            sum += 3 ** (i - 1) * action[dim - i]
+        sum += action[-1]
+        actions_idx[idx][sum] = 1
 
-    return action_in_idx
+    return actions_idx
 
 
 def train_network(
@@ -46,7 +49,6 @@ def train_network(
         perform supervise learning using TD-Error """
     states, actions, rewards, states_bar, dones = batch_parser(batch)
     states_bar_predict_val = DQN.predict(states_bar)
-
     target_q_func = []  # ann
     for idx, done in enumerate(dones):
         if done:
@@ -55,8 +57,11 @@ def train_network(
             target_q_func.append(
                 rewards[idx] + bellman_factor * np.max(states_bar_predict_val[idx]))
 
-    actions = action_to_idx(actions, dim)  # ann
-    cost = DQN.train_network(states, actions, target_q_func)  # ann
+    batch_size = states.shape[0]
+
+    actions_idx = action_to_idx(actions, dim, batch_size)
+
+    cost = DQN.train_network(states, actions_idx, target_q_func)  # ann
 
     return cost
 
