@@ -87,8 +87,8 @@ def train_dqn(
     # Create memory_pool
     display_memory = Memory(memory_limit)
 
-    dqn = ANN(joint_dim, learning_rate)  # ann
-    dqn.load_weights(weight_path, "dqn_weights")  # ann
+    # dqn = ANN(joint_dim, learning_rate)  # ann
+    # dqn.load_weights(weight_path, "dqn_weights")  # ann
 
     # Q-Learning framework
 
@@ -96,85 +96,96 @@ def train_dqn(
     num_episode = 0
     cost = float("inf")
 
-    while 1:
-        num_episode += 1
-
-        state = env.init_game()
-        done = False
-
-        episode_step = 0
-        total_reward = 0
-        while episode_step < episode_max_len and not done:
-            action = epsilon_greedy_action_select(
-                env,
-                dqn,
-                state,
-                joint_dim,
-                epsilon,
-                batch_size
-            )
-
-            state_bar, reward, done = env.step(action)
-            total_reward += reward
-            episode_step += 1
-            total_step += 1
-            print "state: ", state, " action: ", action, \
-                "reward: ", reward, \
-                " if game continue: ", not done, \
-                " epsilon: ", epsilon, \
-                " cost: ", cost, " total_step: ", total_step, \
-                " num_episode: ", num_episode
-
-            display_memory.add((state, action,
-                                reward, state_bar, done))
-
-            state = state_bar
-
-            if if_train and total_step > observation_phase:
-                batch = display_memory.sample(batch_size)
-
-                cost = train_network(  # Training Step
-                    joint_dim,
-                    dqn,
-                    batch,
-                    bellman_factor,
-                    learning_rate
-                )
-
-        if total_step > observation_phase and (num_episode - 1) % 100 == 1:  # ann
-            dqn.save_weights(num_episode, weight_path, "dqn_weights")  # ann
-
-        if total_step <= exploration_phase:
-            if total_step > observation_phase:
-                epsilon = epsilon_decay(
-                    epsilon, epsilon_decay_factor, epsilon_final)
-        else:
-            epsilon = epsilon_final
-    # epsilon = 1
-    # done = True
-    # q_table = {}
-    # for i in xrange(100000):
-    #     state = env.init_game()
-    #     q_table[tuple(state)] = {}
-    #     for j in xrange(9):
-    #         q_table[tuple(state)][j] = np.random.rand()
-
     # while 1:
-    #     if done:
-    #         state = env.init_game()
-    #         done = False
-    #     if np.random.rand() < epsilon:
-    #         action = np.random.randint(3, size=[2])
-    #     else:
-    #         action = max(q_table[tuple(state)].iteritems(), key=operator.itemgetter(1))[0]
-    #         action = np.array([action / 3, action % 3])
+    #     num_episode += 1
 
-    #     state_bar, reward, done = env.step(action)
-    #     print state, state_bar, action, done, epsilon, (env._arm.read_end_coor()[0] + 3) ** 2 + (env._arm.read_end_coor()[1]) ** 2
-    #     q_table[tuple(state)][max(q_table[tuple(state)].iteritems(), key=operator.itemgetter(1))[0]] += \
-    #         0.1 * (reward + 0.5 * max(q_table[tuple(state)], key=q_table.get) - q_table[tuple(state)][max(q_table[tuple(state)].iteritems(), key=operator.itemgetter(1))[0]])
-    #     state = state_bar
-    #     epsilon *= 0.99999
+    #     state = env.init_game()
+    #     done = False
+
+    #     episode_step = 0
+    #     total_reward = 0
+    #     while episode_step < episode_max_len and not done:
+    #         action = epsilon_greedy_action_select(
+    #             env,
+    #             dqn,
+    #             state,
+    #             joint_dim,
+    #             epsilon,
+    #             batch_size
+    #         )
+
+    #         state_bar, reward, done = env.step(action)
+    #         total_reward += reward
+    #         episode_step += 1
+    #         total_step += 1
+    #         print "state: ", state, " action: ", action, \
+    #             "reward: ", reward, \
+    #             " if game continue: ", not done, \
+    #             " epsilon: ", epsilon, \
+    #             " cost: ", cost, " total_step: ", total_step, \
+    #             " num_episode: ", num_episode
+
+    #         display_memory.add((state, action,
+    #                             reward, state_bar, done))
+
+    #         state = state_bar
+
+    #         if if_train and total_step > observation_phase:
+    #             batch = display_memory.sample(batch_size)
+
+    #             cost = train_network(  # Training Step
+    #                 joint_dim,
+    #                 dqn,
+    #                 batch,
+    #                 bellman_factor,
+    #                 learning_rate
+    #             )
+
+    #     if total_step > observation_phase and (num_episode - 1) % 100 == 1:  # ann
+    #         dqn.save_weights(num_episode, weight_path, "dqn_weights")  # ann
+
+    #     if total_step <= exploration_phase:
+    #         if total_step > observation_phase:
+    #             epsilon = epsilon_decay(
+    #                 epsilon, epsilon_decay_factor, epsilon_final)
+    #     else:
+    #         epsilon = epsilon_final
+
+    epsilon = 1
+    done = True
+    q_table = {}
+    for i in xrange(10000):
+        state = env.init_game()
+        q_table[state[0]] = np.zeros(3)
+        for j in xrange(3):
+            q_table[state[0]][j] = np.random.rand()
+
+    count = 100000
+    while count > 0:
+        count -= 1
+        if done:
+            state = env.init_game()
+            done = False
+        if np.random.rand() < epsilon:
+            action = np.random.randint(3, size=[1])
+        else:
+            action = np.argmax(q_table[state[0]])
+            action = np.array([action])
+
+        state_bar, reward, done = env.step(action)
+        print "state: ", state, " action: ", action, \
+            "reward: ", reward, \
+            " if game continue: ", not done, \
+            " epsilon: ", epsilon, \
+            " cost: ", cost, " total_step: ", total_step, \
+            " num_episode: ", num_episode
+        if done:
+            q_table[state[0]][action[0]] = 0.1 * (reward - q_table[state[0]][action[0]])
+            continue
+        q_table[state[0]][action[0]] += \
+            0.1 * (reward + 0.5 * np.max(q_table[state_bar[0]]) - q_table[state[0]][action[0]])
+        state = state_bar
+        epsilon *= 0.999
 
 
 def main():
