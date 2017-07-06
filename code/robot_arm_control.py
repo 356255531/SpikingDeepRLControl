@@ -154,38 +154,28 @@ def train_dqn(
     epsilon = 1
     done = True
     q_table = {}
-    for i in xrange(10000):
+    for i in xrange(100000):
         state = env.init_game()
-        q_table[state[0]] = np.zeros(3)
-        for j in xrange(3):
-            q_table[state[0]][j] = np.random.rand()
+        q_table[tuple(state)] = {}
+        for j in xrange(9):
+            q_table[tuple(state)][j] = np.random.rand()
 
-    count = 100000
-    while count > 0:
-        count -= 1
+    while 1:
         if done:
             state = env.init_game()
             done = False
         if np.random.rand() < epsilon:
-            action = np.random.randint(3, size=[1])
+            action = np.random.randint(3, size=[2])
         else:
-            action = np.argmax(q_table[state[0]])
-            action = np.array([action])
+            action = max(q_table[tuple(state)].iteritems(), key=operator.itemgetter(1))[0]
+            action = np.array([action / 3, action % 3])
 
         state_bar, reward, done = env.step(action)
-        print "state: ", state, " action: ", action, \
-            "reward: ", reward, \
-            " if game continue: ", not done, \
-            " epsilon: ", epsilon, \
-            " cost: ", cost, " total_step: ", total_step, \
-            " num_episode: ", num_episode
-        if done:
-            q_table[state[0]][action[0]] = 0.1 * (reward - q_table[state[0]][action[0]])
-            continue
-        q_table[state[0]][action[0]] += \
-            0.1 * (reward + 0.5 * np.max(q_table[state_bar[0]]) - q_table[state[0]][action[0]])
+        print state, state_bar, action, done, epsilon, (env._arm.read_end_coor()[0] + 3) ** 2 + (env._arm.read_end_coor()[1]) ** 2
+        q_table[tuple(state)][max(q_table[tuple(state)].iteritems(), key=operator.itemgetter(1))[0]] += \
+            0.1 * (reward + 0.5 * max(q_table[tuple(state)], key=q_table.get) - q_table[tuple(state)][max(q_table[tuple(state)].iteritems(), key=operator.itemgetter(1))[0]])
         state = state_bar
-        epsilon *= 0.999
+        epsilon *= 0.99999
 
 
 def main():
