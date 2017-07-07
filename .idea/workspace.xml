@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f04ea920-fe65-4e1d-88b5-b5a1a87a5a5d" name="Default" comment="">
+<<<<<<< HEAD
       <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/.gitignore" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/.jscs.json" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/.travis.yml" afterPath="" />
@@ -192,6 +193,10 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/setup.py" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/Q_network_snn_v1.py" afterPath="$PROJECT_DIR$/code/Q_network_snn_v1.py" />
+=======
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/code/Q_network_snn_nengoDL_v3.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+>>>>>>> f17d78c0dff582f3475d3fa39bfd9386bf54b62c
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -238,11 +243,19 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+<<<<<<< HEAD
       <file leaf-file-name="learning_save_weights.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/huangbo_ws/florian/learning_save_weights.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="540">
               <caret line="33" column="63" lean-forward="false" selection-start-line="33" selection-start-column="54" selection-end-line="33" selection-end-column="63" />
+=======
+      <file leaf-file-name="Q_network_snn_nengDL_v1.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/code/Q_network_snn_nengDL_v1.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1566">
+              <caret line="91" column="0" lean-forward="false" selection-start-line="59" selection-start-column="0" selection-end-line="91" selection-end-column="0" />
+>>>>>>> f17d78c0dff582f3475d3fa39bfd9386bf54b62c
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
@@ -250,11 +263,31 @@
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
       <file leaf-file-name="mountain_car.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/huangbo_ws/florian/mountain_car.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="2556">
               <caret line="234" column="37" lean-forward="true" selection-start-line="234" selection-start-column="37" selection-end-line="234" selection-end-column="37" />
+=======
+      <file leaf-file-name="Q_network_snn_nengoDL_v2.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/code/Q_network_snn_nengoDL_v2.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="165">
+              <caret line="131" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="166" selection-end-column="35" />
+              <folding>
+                <element signature="e#0#12#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Q_network_snn_nengoDL_v3.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/code/Q_network_snn_nengoDL_v3.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2844">
+              <caret line="158" column="43" lean-forward="true" selection-start-line="158" selection-start-column="43" selection-end-line="158" selection-end-column="43" />
+>>>>>>> f17d78c0dff582f3475d3fa39bfd9386bf54b62c
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -335,9 +368,15 @@
         <option value="$PROJECT_DIR$/huangbo_ws/nengo_dl_huangbo/mnist_nengo_dl.py" />
         <option value="$PROJECT_DIR$/huangbo_ws/nengo_dl_huangbo/Q_network_snn.py" />
         <option value="$PROJECT_DIR$/code/Q_network_snn_nengDL_v1.py" />
+<<<<<<< HEAD
         <option value="$PROJECT_DIR$/code/Q_network_snn_v1.py" />
         <option value="$PROJECT_DIR$/huangbo_ws/florian/learning_save_weights.py" />
         <option value="$PROJECT_DIR$/huangbo_ws/florian/mountain_car.py" />
+=======
+        <option value="$PROJECT_DIR$/code/Q_network_snn_v2.py" />
+        <option value="$PROJECT_DIR$/code/Q_network_snn_nengoDL_v2.py" />
+        <option value="$PROJECT_DIR$/code/Q_network_snn_nengoDL_v3.py" />
+>>>>>>> f17d78c0dff582f3475d3fa39bfd9386bf54b62c
       </list>
     </option>
   </component>
@@ -369,7 +408,10 @@
     </navigator>
     <panes>
       <pane id="Scratches" />
+<<<<<<< HEAD
       <pane id="Scope" />
+=======
+>>>>>>> f17d78c0dff582f3475d3fa39bfd9386bf54b62c
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -381,10 +423,6 @@
               <option name="myItemId" value="External Libraries" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; Python 2.7.12 (/usr/bin/python2.7) &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -392,21 +430,8 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; Python 2.7.12 (/usr/bin/python2.7) &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="nengo_dl" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
               <option name="myItemId" value="SpikingDeepRLControl" />
+<<<<<<< HEAD
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -549,6 +574,8 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="florian" />
+=======
+>>>>>>> f17d78c0dff582f3475d3fa39bfd9386bf54b62c
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -568,11 +595,15 @@
           </PATH>
         </subPane>
       </pane>
+<<<<<<< HEAD
+=======
+      <pane id="Scope" />
+>>>>>>> f17d78c0dff582f3475d3fa39bfd9386bf54b62c
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$USER_HOME$/FastMaskRCNN" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunDashboard">
@@ -876,16 +907,22 @@
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19102296" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22964509" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32985386" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+<<<<<<< HEAD
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22964509" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32985386" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29320818" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+=======
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32985386" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30646053" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+>>>>>>> f17d78c0dff582f3475d3fa39bfd9386bf54b62c
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39959225" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -931,6 +968,7 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+<<<<<<< HEAD
     <entry file="file:///usr/local/lib/python2.7/dist-packages/keras/models.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
@@ -938,6 +976,8 @@
         </state>
       </provider>
     </entry>
+=======
+>>>>>>> f17d78c0dff582f3475d3fa39bfd9386bf54b62c
     <entry file="file://$PROJECT_DIR$/code/Q_network_gui_v1.py.cfg" />
     <entry file="file://$PROJECT_DIR$/code/Q_network_gui.py" />
     <entry file="file://$PROJECT_DIR$/huangbo_ws/networks/ann_network.py">
@@ -1015,7 +1055,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
           <caret line="142" column="8" lean-forward="false" selection-start-line="142" selection-start-column="8" selection-end-line="142" selection-end-column="8" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1187,6 +1226,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="430">
           <caret line="252" column="0" lean-forward="true" selection-start-line="252" selection-start-column="0" selection-end-line="252" selection-end-column="0" />
+<<<<<<< HEAD
         </state>
       </provider>
     </entry>
@@ -1194,10 +1234,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="156">
           <caret line="37" column="41" lean-forward="false" selection-start-line="37" selection-start-column="41" selection-end-line="37" selection-end-column="41" />
+=======
+>>>>>>> f17d78c0dff582f3475d3fa39bfd9386bf54b62c
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/Desktop/nengo_dl/nengo_dl/simulator.py">
+    <entry file="file://$PROJECT_DIR$/../nengo_dl/nengo_dl/simulator.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="248">
           <caret line="340" column="74" lean-forward="false" selection-start-line="340" selection-start-column="71" selection-end-line="340" selection-end-column="74" />
@@ -1222,11 +1264,36 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="672">
           <caret line="48" column="66" lean-forward="false" selection-start-line="48" selection-start-column="17" selection-end-line="48" selection-end-column="66" />
+<<<<<<< HEAD
+=======
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/Q_network_snn_v1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="172">
+          <caret line="84" column="39" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="144" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/Q_network_snn.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="156">
+          <caret line="37" column="41" lean-forward="false" selection-start-line="37" selection-start-column="41" selection-end-line="37" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/Q_network_snn_v2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1962">
+          <caret line="109" column="56" lean-forward="false" selection-start-line="109" selection-start-column="49" selection-end-line="109" selection-end-column="56" />
+>>>>>>> f17d78c0dff582f3475d3fa39bfd9386bf54b62c
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/code/Q_network_snn_nengDL_v1.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="867">
           <caret line="149" column="0" lean-forward="false" selection-start-line="149" selection-start-column="0" selection-end-line="149" selection-end-column="0" />
         </state>
@@ -1243,6 +1310,30 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="540">
           <caret line="33" column="63" lean-forward="false" selection-start-line="33" selection-start-column="54" selection-end-line="33" selection-end-column="63" />
+=======
+        <state relative-caret-position="1566">
+          <caret line="91" column="0" lean-forward="false" selection-start-line="59" selection-start-column="0" selection-end-line="91" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/Q_network_snn_nengoDL_v2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="131" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="166" selection-end-column="35" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/Q_network_snn_nengoDL_v3.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2844">
+          <caret line="158" column="43" lean-forward="true" selection-start-line="158" selection-start-column="43" selection-end-line="158" selection-end-column="43" />
+>>>>>>> f17d78c0dff582f3475d3fa39bfd9386bf54b62c
           <folding>
             <element signature="e#0#12#0" expanded="true" />
           </folding>
