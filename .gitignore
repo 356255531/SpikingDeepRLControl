@@ -91,3 +91,6 @@ ENV/
 # office popwerpoint
 .pptx
 .ppt
+
+# IDE files
+.idea/
