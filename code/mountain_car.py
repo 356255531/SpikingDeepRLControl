@@ -1,54 +1,14 @@
-# Import Classes
-from components import StateActionSpace_RobotArm, Reward, Goal
-from components import RobotArmEnv
-
-# Import libs
-import numpy as np
-import argparse
+import gym
 import nengo
+import numpy as np
 import pytry
 
-# Argument parser
-parser = argparse.ArgumentParser()
 
-parser.add_argument("-sim", "--simulator", nargs="?", const=1,
-                    type=bool, help="Use a simulator [Y/n]", default=True)
-parser.add_argument("-d", "--dimension", nargs="?", const=1,
-                    type=int, help="Dimension of a robot [default: 1]", default=1)
-parser.add_argument("-t", "--train", nargs="?", const=1,
-                    type=bool, help="Train the robot arm [or acting: a]", default=True)
-parser.add_argument("-p", "--path", nargs="?", const=1, type=str, help="path to decoder",
-                    default="saved_weights_ann/")
-parser.add_argument("-v", "--visualization", nargs="?", const=False,
-                    type=bool, help="If visulize robot arm action [y/N]", default=False)
-parser.add_argument("-r", "--learning_rate", nargs="?", const=1,
-                    type=float, help="The learning rate", default=10e-6)
-parser.add_argument("-bs", "--batch_size", nargs="?", const=1,
-                    type=int, help="The training batch size", default=128)
-parser.add_argument("-bf", "--bellman_factor", nargs="?", const=1,
-                    type=float, help="Bellman factor", default=0.9)
-parser.add_argument("-l", "--memory_limit", nargs="?", const=1,
-                    type=int, help="The limit of display memory", default=50000)
-parser.add_argument("-eml", "--episode_max_len", nargs="?", const=1,
-                    type=int, help="The maximal length of a episode", default=36)
-parser.add_argument("-e", "--epsilon", nargs="?", const=1,
-                    type=float, help="Epsilon value of policy selection", default=0.5)
-parser.add_argument("-ef", "--epsilon_final", nargs="?", const=1,
-                    type=float, help="Final epsilon value", default=0.05)
-parser.add_argument("-ed", "--epsilon_decay", nargs="?", const=1,
-                    type=float, help="Decay factor of epsilon", default=0.999)
-parser.add_argument("-op", "--observation_phase", nargs="?", const=1,
-                    type=float, help="In observation phase, no training behavior", default=10000)
-parser.add_argument("-ep", "--exploration_phase", nargs="?", const=1, type=float,
-                    help="In exploration phase, algorithm continue explore all possible actions",
-                    default=100000)
-
-args = parser.parse_args()
-
-
-class Nengo_Arm_Sim(nengo.Node):
-    def __init__(self, actions, env, mean_solved=-110, mean_cancel=-500, max_eps=10000, max_trials_per_ep=36):
+class OpenAIGym(nengo.Node):
+    def __init__(self, actions, name='MountainCar-v0', mean_solved=-110, mean_cancel=-500, max_eps=10000, max_trials_per_ep=2000, b_render=True):
         self.actions = actions
+        self.name = name
+        self.b_render = b_render
         self.done = False
         self.solved = False
         self.max_trials_per_ep = max_trials_per_ep
@@ -64,18 +24,19 @@ class Nengo_Arm_Sim(nengo.Node):
         self.max_eps = max_eps
         # self.all_rewards = []
 
-        super(Nengo_Arm_Sim, self).__init__(label=self.name, output=self.tick,
-                                            size_in=len(self.actions), size_out=3)
+        super(OpenAIGym, self).__init__(label=self.name, output=self.tick,
+                                        size_in=len(self.actions), size_out=3)
 
         # initialize openai gym environment
-        self.env = env
+        self.env = gym.make(self.name)
+        self.env.reset()
 
     def tick(self, t, x):
         self.num_trials += 1
         if self.num_trials > self.max_trials_per_ep:
             self.reached_max_trials = True
         action = np.argmax(x)
-        ob, reward, done, _ = self.env.step([action])
+        ob, reward, done, _ = self.env.step(action)
         rval = [item for item in ob]
         rval.append(reward)
         if self.b_render:
@@ -126,6 +87,55 @@ class Nengo_Arm_Sim(nengo.Node):
             self.env.close()
 
 
+class QLearn(nengo.Network):
+    def __init__(self, aigym, t_past=0.1, t_now=0.005, gamma=0.9, init_state=[0, 0, 0]):
+        super(QLearn, self).__init__()
+        with self:
+
+            self.desired_action = nengo.Ensemble(n_neurons=300, dimensions=3, radius=2.0)
+            nengo.Connection(self.desired_action, self.desired_action, synapse=0.1)
+
+            self.state = nengo.Ensemble(n_neurons=300, dimensions=2, radius=1.5)
+
+            def selection(t, x):
+                choice = np.argmax(x)
+
+                result = np.zeros(3)
+                result[choice] = 1
+                return result
+
+            self.select = nengo.Node(selection, size_in=3)
+
+            nengo.Connection(self.select, self.desired_action)
+
+            self.q = nengo.Node(None, size_in=3)
+
+            def initial_q(state):
+                return init_state
+
+            self.conn = nengo.Connection(self.state, self.q, function=initial_q,
+                                         learning_rule_type=nengo.PES(pre_tau=t_past))
+            nengo.Connection(self.q, self.select)
+
+            self.reward = nengo.Node(None, size_in=1)
+
+            self.reward_array = nengo.Node(lambda t, x: x[:-1] * x[-1], size_in=4)
+            nengo.Connection(self.reward, self.reward_array[-1])
+            nengo.Connection(self.select, self.reward_array[:-1])
+
+            self.error = nengo.Node(None, size_in=3)
+
+            nengo.Connection(self.reward_array, self.error, synapse=t_past)
+            nengo.Connection(self.q, self.error, synapse=t_now, transform=gamma)
+            nengo.Connection(self.q, self.error, synapse=t_past, transform=-1)
+
+            nengo.Connection(self.error, self.conn.learning_rule, transform=-1)
+
+        nengo.Connection(aigym[:-1], self.state)
+        nengo.Connection(aigym[-1], self.reward)
+        nengo.Connection(self.desired_action, aigym)
+
+
 class QLearn1(nengo.Network):
     def __init__(self, aigym, t_past=0.1, t_now=0.005, gamma=0.9, init_state=[0, 0], learning_rate=1e-4):
         super(QLearn1, self).__init__()
@@ -134,7 +144,7 @@ class QLearn1(nengo.Network):
             self.desired_action = nengo.Ensemble(n_neurons=300, dimensions=2, radius=2.0)
             nengo.Connection(self.desired_action, self.desired_action, synapse=0.1)
 
-            self.state = nengo.Ensemble(n_neurons=300, dimensions=1, radius=1.5)
+            self.state = nengo.Ensemble(n_neurons=300, dimensions=2, radius=1.5)
 
             def selection(t, x):
                 choice = np.argmax(x)
@@ -192,7 +202,7 @@ class MountainCarTrial(pytry.NengoTrial):
     def model(self, p):
         model = nengo.Network(seed=2)
         with model:
-            self.mc = Nengo_Arm_Sim(actions=[0, 1, 2], mean_solved=p.mean_solved, mean_cancel=-500, max_eps=p.max_eps)
+            self.mc = OpenAIGym(actions=[0, 1, 2], name='MountainCar-v0', mean_solved=p.mean_solved, mean_cancel=-500, max_eps=p.max_eps, b_render=False)
             #self.ql = QLearn(aigym=self.mc, t_past=p.t_past, t_now=p.t_now, gamma=p.gamma, init_state = p.init_state)
             self.ql = QLearn1(aigym=self.mc, t_past=p.t_past, t_now=p.t_now, gamma=p.gamma, init_state=p.init_state, learning_rate=p.learning_rate)
 
@@ -204,62 +214,30 @@ class MountainCarTrial(pytry.NengoTrial):
         return dict(solved=self.mc.solved, episodes=self.mc.num_eps, last_hundred_rewards=self.mc.last_hundred_rewards)
 
 
-def train_dqn(
-    if_simulator,
-    joint_dim,
-    if_train,
-    weight_path,
-    if_visual,
-    learning_rate,
-    batch_size,
-    bellman_factor,
-    memory_limit,
-    episode_max_len,
-    epsilon,
-    epsilon_decay_factor,
-    epsilon_final,
-    observation_phase,
-    exploration_phase
-):
-    resolution_in_degree = 10 * np.ones(
-        args.dimension)  # Discretization Resolution in Degree
-    state_action_space = StateActionSpace_RobotArm(
-        resolution_in_degree)  # Encode the joint to state
+model = nengo.Network(seed=2)
+b_toy_cmd = False
 
-    reward_func = Reward()  # The rule of reward function
-    goal_func = Goal((-3, 0))
-    env = RobotArmEnv(
-        state_action_space,
-        reward_func,
-        goal_func,
-        if_simulator=if_simulator,
-        if_visual=if_visual,
-        dim=joint_dim
-    )
+with model:
+    mc = OpenAIGym(actions=[0, 1, 2], name='MountainCar-v0')
+    ql = QLearn1(aigym=mc)
 
-    model = nengo.Network(seed=2)
-    b_toy_cmd = False
+    if b_toy_cmd:
+        def input_func(t):
+            result = [0] * 3
+            index = int(np.random.rand(1, 1) * 2)
 
-    with model:
-        mc = Nengo_Arm_Sim(actions=[0, 1, 2])
-        ql = QLearn1(aigym=mc)
+            if index > 0:
+                index = 2
 
-        if b_toy_cmd:
-            def input_func(t):
-                result = [0] * 3
-                index = int(np.random.rand(1, 1) * 2)
+            result[index] = 1
 
-                if index > 0:
-                    index = 2
+            return result
 
-                result[index] = 1
+        stim = nengo.Node(input_func)
 
-                return result
+        nengo.Connection(stim, mc)
 
-            stim = nengo.Node(input_func)
-
-            nengo.Connection(stim, mc)
-
+if __name__ == '__main__':
     b_pytry = True
     if not b_pytry:
         sim = nengo.Simulator(model, progress_bar=False)
@@ -273,42 +251,3 @@ def train_dqn(
                     for init_state in [[0, 0], [0.5, 0.5]]:
                         for learning_rate in [1e-3, 1e-4, 1e-5]:
                             MountainCarTrial().run(t_past=t_past, t_now=t_now, gamma=gamma, init_state=init_state, verbose=False)
-
-
-def main():
-    if_simulator = args.simulator
-    joint_dim = args.dimension
-    if_train = args.train
-    weight_path = args.path
-    if_visual = args.visualization
-    learning_rate = args.learning_rate
-    batch_size = args.batch_size
-    bellman_factor = args.bellman_factor
-    memory_limit = args.memory_limit
-    episode_max_len = args.episode_max_len
-    epsilon = args.epsilon
-    epsilon_decay_factor = args.epsilon_decay
-    epsilon_final = args.epsilon_final
-    observation_phase = args.observation_phase
-    exploration_phase = args.exploration_phase
-    train_dqn(
-        if_simulator,
-        joint_dim,
-        if_train,
-        weight_path,
-        if_visual,
-        learning_rate,
-        batch_size,
-        bellman_factor,
-        memory_limit,
-        episode_max_len,
-        epsilon,
-        epsilon_decay_factor,
-        epsilon_final,
-        observation_phase,
-        exploration_phase
-    )
-
-
-if __name__ == '__main__':
-    main()
