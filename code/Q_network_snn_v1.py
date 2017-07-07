@@ -66,7 +66,7 @@ class Q_network:
             conn = nengo.Connection(input_neuron,
                                     output,
                                     synapse=None,
-                                    #transform=decoder.T,
+                                    transform=decoder.T,
                                     eval_points=train_data,
                                     function=train_targets,
                                     solver=solver

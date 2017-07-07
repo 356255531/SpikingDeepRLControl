@@ -2,7 +2,196 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f04ea920-fe65-4e1d-88b5-b5a1a87a5a5d" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/Q_network_snn_nengDL_v1.py" afterPath="$PROJECT_DIR$/code/Q_network_snn_nengDL_v1.py" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/.gitignore" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/.jscs.json" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/.travis.yml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/CHANGES.rst" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/CONTRIBUTORS.rst" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/LICENSE.rst" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/MANIFEST.in" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/README.rst" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/docs/codeflow.rst" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/docs/dev_guide.rst" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/docs/getting_started.rst" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/docs/index.rst" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/docs/workflow.rst" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/examples/2d.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/examples/basic.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/examples/lines.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/examples/net.ipynb" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/examples/net.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/examples/spa.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/ez_setup.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/__init__.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/components/__init__.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/components/ace_editor.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/components/component.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/components/editor.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/components/htmlview.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/components/netgraph.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/components/pointer.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/components/raster.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/components/sim_control.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/components/slider.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/components/spa_plot.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/components/spa_similarity.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/components/spike_grid.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/components/value.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/components/voltage.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/components/xyvalue.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/config.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/conftest.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/basics/2d_representation.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/basics/addition.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/basics/combining.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/basics/communication_channel.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/basics/ensemble_array.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/basics/html.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/basics/inhibitory_gating.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/basics/many_neurons.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/basics/multiplication.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/basics/single_neuron.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/basics/squaring.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/basics/two_neurons.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/default.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/hbb_tutorials/chapter1/singleneuron.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/hbb_tutorials/chapter2/1-scalars.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/hbb_tutorials/chapter2/2-vectors.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/hbb_tutorials/chapter3/1-addition.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/hbb_tutorials/chapter3/2-arbitrary_linear.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/hbb_tutorials/chapter3/3-non_linear.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/hbb_tutorials/chapter4/1-structure.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/hbb_tutorials/chapter4/2-spa_structure.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/hbb_tutorials/chapter5/1-question.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/hbb_tutorials/chapter5/2-spa_question.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/hbb_tutorials/chapter5/3-question-memory.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/hbb_tutorials/chapter5/4-spa_question-memory.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/hbb_tutorials/chapter5/5-question-control.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/hbb_tutorials/chapter5/6-spa_question-control.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/hbb_tutorials/chapter6/learn.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/hbb_tutorials/chapter7/1-spa_sequence.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/hbb_tutorials/chapter7/2-spa_sequencerouted.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/hbb_tutorials/chapter7/3-spa_sequencerouted_cleanup.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/hbb_tutorials/chapter7/4-spa_sequencerouted_cleanupAll.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/hbb_tutorials/chapter8/2D_decision_integrator.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/hbb_tutorials/read_me.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/recurrent/controlled_integrator.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/recurrent/controlled_oscillator.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/recurrent/integrator.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/recurrent/lorenz_attractor.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/recurrent/oscillator.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/recurrent/template_integrator.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/00-intro.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/01-one-neuron.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/02-two-neurons.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/03-many-neurons.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/04-connecting-neurons.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/05-computing.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/06-adding.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/07-multiple-dimensions.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/08-combining.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/09-multiplication.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/10-transforms.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/11-memory.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/12-differential-eqns.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/13-oscillators.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/14-controlled-oscillator.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/15-lorenz.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/16-ensemble-properties.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/17-neuron-models.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/18-networks.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/19-spa.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/20-spa-actions.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/21-spa-sequence.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/22-spa-sequence-controlled.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/23-spa-binding.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/24-spa-unbinding.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/examples/tutorial/25-spa-parse.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/exec_env.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/grandalf/LICENSE" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/grandalf/README.rst" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/grandalf/__init__.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/grandalf/graphs.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/grandalf/layouts.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/grandalf/nx.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/grandalf/routing.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/grandalf/utils.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/gui.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/guibackend.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/ipython.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/layout.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/main.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/modal_js.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/namefinder.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/page.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/password.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/seed_generation.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/server.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/ace.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/ace.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/2d_axes.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/component.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/htmlview.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/image.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/netgraph.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/netgraph.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/netgraph_conn.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/netgraph_item.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/pointer.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/pointer.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/raster.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/raster.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/slider.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/slider.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/slidercontrol.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/spa_similarity.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/spa_similarity.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/time_axes.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/value.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/value.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/xy_axes.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/xyvalue.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/components/xyvalue.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/config.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/data_to_csv.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/datastore.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/favicon.ico" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/hotkeys.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/main.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/menu.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/menu.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/modal.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/modal.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/nengo.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/nengo.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/side_menu.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/side_menu.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/sim_control.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/sim_control.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/test/datastore_test.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/tooltips.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/tooltips.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/top_toolbar.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/top_toolbar.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static/viewport.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/static_plots.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/templates/page.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/testing_tools.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/tests/test_basic_functionality.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/tests/test_configuration.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/tests/test_data_to_csv.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/tests/test_dynamics.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/tests/test_pdb_error.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/tests/test_save_as.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/tests/test_server.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/tests/test_spa.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/tests/test_tutorial_basic.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/user_action.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/version.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/nengo_gui/viz.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/huangbo_ws/nengo_gui-master/setup.py" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/code/Q_network_snn_v1.py" afterPath="$PROJECT_DIR$/code/Q_network_snn_v1.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -35,6 +224,7 @@
     <SUITE FILE_PATH="coverage/SpikingDeepRLControl$ann_network.coverage" NAME="ann_network Coverage Results" MODIFIED="1496678476354" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/code" />
     <SUITE FILE_PATH="coverage/SpikingDeepRLControl$2D_representation.coverage" NAME="2D-representation Coverage Results" MODIFIED="1494876801012" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/huangbo_ws/nengo" />
     <SUITE FILE_PATH="coverage/SpikingDeepRLControl$Q_network_snn_nengDL_v1.coverage" NAME="Q_network_snn_nengDL_v1 Coverage Results" MODIFIED="1498664121340" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/code" />
+    <SUITE FILE_PATH="coverage/SpikingDeepRLControl$learning_save_weights.coverage" NAME="learning_save_weights Coverage Results" MODIFIED="1499338985932" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/huangbo_ws/florian" />
     <SUITE FILE_PATH="coverage/SpikingDeepRLControl$mnist_single_layer.coverage" NAME="mnist_single_layer Coverage Results" MODIFIED="1495722261792" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/code" />
     <SUITE FILE_PATH="coverage/SpikingDeepRLControl$multiple_neurons.coverage" NAME="multiple_neurons Coverage Results" MODIFIED="1494876424079" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/huangbo_ws/nengo" />
     <SUITE FILE_PATH="coverage/SpikingDeepRLControl$nengo_dl_end2end.coverage" NAME="nengo_dl_end2end Coverage Results" MODIFIED="1497694934196" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/huangbo_ws/networks" />
@@ -48,23 +238,25 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Q_network_snn_nengoDL.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/code/Q_network_snn_nengoDL.py">
+      <file leaf-file-name="learning_save_weights.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/huangbo_ws/florian/learning_save_weights.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="672">
-              <caret line="48" column="66" lean-forward="false" selection-start-line="48" selection-start-column="17" selection-end-line="48" selection-end-column="66" />
-              <folding />
+            <state relative-caret-position="540">
+              <caret line="33" column="63" lean-forward="false" selection-start-line="33" selection-start-column="54" selection-end-line="33" selection-end-column="63" />
+              <folding>
+                <element signature="e#0#12#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Q_network_snn_nengDL_v1.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/code/Q_network_snn_nengDL_v1.py">
+      <file leaf-file-name="mountain_car.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/huangbo_ws/florian/mountain_car.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1548">
-              <caret line="149" column="0" lean-forward="true" selection-start-line="149" selection-start-column="0" selection-end-line="149" selection-end-column="0" />
+            <state relative-caret-position="2556">
+              <caret line="234" column="37" lean-forward="true" selection-start-line="234" selection-start-column="37" selection-end-line="234" selection-end-column="37" />
               <folding>
-                <element signature="e#0#12#0" expanded="true" />
+                <element signature="e#0#10#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -139,11 +331,13 @@
         <option value="/usr/local/lib/python2.7/dist-packages/nengo_dl/neurons.py" />
         <option value="$PROJECT_DIR$/huangbo_ws/networks/nengo_dl_end2end.py" />
         <option value="$PROJECT_DIR$/code/Q_network_snn_nengoDL.py" />
-        <option value="$PROJECT_DIR$/code/Q_network_snn_v1.py" />
         <option value="$PROJECT_DIR$/huangbo_ws/Nengo_Sarsa_hack/nengo_car_sarsa.py" />
         <option value="$PROJECT_DIR$/huangbo_ws/nengo_dl_huangbo/mnist_nengo_dl.py" />
         <option value="$PROJECT_DIR$/huangbo_ws/nengo_dl_huangbo/Q_network_snn.py" />
         <option value="$PROJECT_DIR$/code/Q_network_snn_nengDL_v1.py" />
+        <option value="$PROJECT_DIR$/code/Q_network_snn_v1.py" />
+        <option value="$PROJECT_DIR$/huangbo_ws/florian/learning_save_weights.py" />
+        <option value="$PROJECT_DIR$/huangbo_ws/florian/mountain_car.py" />
       </list>
     </option>
   </component>
@@ -174,6 +368,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -320,84 +516,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; Python 2.7.12 (/usr/bin/python2.7) &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="python2.7" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dist-packages" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="SpikingDeepRLControl" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; Python 2.7.12 (/usr/bin/python2.7) &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="python2.7" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dist-packages" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="logilab" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="SpikingDeepRLControl" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; Python 2.7.12 (/usr/bin/python2.7) &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="python2.7" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dist-packages" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="logilab" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="common" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="SpikingDeepRLControl" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="SpikingDeepRLControl" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -426,14 +544,30 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="huangbo_ws" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="florian" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SpikingDeepRLControl" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SpikingDeepRLControl" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="code" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -453,26 +587,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.Q_network_snn_nengDL_v1">
-    <configuration default="false" name="snn_network_v1" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/huangbo_ws/networks" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="SpikingDeepRLControl" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/huangbo_ws/networks/snn_network_v1.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="Python.learning_save_weights">
     <configuration default="false" name="Q_network_snn_v1" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -544,6 +659,25 @@
       <module name="SpikingDeepRLControl" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/code/Q_network_snn_nengDL_v1.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="learning_save_weights" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/huangbo_ws/florian" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="SpikingDeepRLControl" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/huangbo_ws/florian/learning_save_weights.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -698,19 +832,19 @@
       <method />
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Python.snn_network_v1" />
-      <item index="1" class="java.lang.String" itemvalue="Python.Q_network_snn_v1" />
-      <item index="2" class="java.lang.String" itemvalue="Python.nengo_dl_end2end" />
-      <item index="3" class="java.lang.String" itemvalue="Python.Q_network_snn_nengoDL" />
-      <item index="4" class="java.lang.String" itemvalue="Python.Q_network_snn_nengDL_v1" />
+      <item index="0" class="java.lang.String" itemvalue="Python.Q_network_snn_v1" />
+      <item index="1" class="java.lang.String" itemvalue="Python.nengo_dl_end2end" />
+      <item index="2" class="java.lang.String" itemvalue="Python.Q_network_snn_nengoDL" />
+      <item index="3" class="java.lang.String" itemvalue="Python.Q_network_snn_nengDL_v1" />
+      <item index="4" class="java.lang.String" itemvalue="Python.learning_save_weights" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.Q_network_snn_nengDL_v1" />
-        <item index="1" class="java.lang.String" itemvalue="Python.Q_network_snn_v1" />
-        <item index="2" class="java.lang.String" itemvalue="Python.Q_network_snn_nengoDL" />
-        <item index="3" class="java.lang.String" itemvalue="Python.nengo_dl_end2end" />
-        <item index="4" class="java.lang.String" itemvalue="Python.snn_network_v1" />
+        <item index="0" class="java.lang.String" itemvalue="Python.learning_save_weights" />
+        <item index="1" class="java.lang.String" itemvalue="Python.Q_network_snn_nengDL_v1" />
+        <item index="2" class="java.lang.String" itemvalue="Python.Q_network_snn_v1" />
+        <item index="3" class="java.lang.String" itemvalue="Python.Q_network_snn_nengoDL" />
+        <item index="4" class="java.lang.String" itemvalue="Python.nengo_dl_end2end" />
       </list>
     </recent_temporary>
   </component>
@@ -744,9 +878,9 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32985386" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22964509" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22964509" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32985386" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.286582" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29320818" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -797,20 +931,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/nengo_deep_learning/single_layer_nengo_dl.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="36" column="0" lean-forward="true" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/nengo_deep_learning/training_Achain_ensemble.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="802">
-          <caret line="57" column="23" lean-forward="false" selection-start-line="57" selection-start-column="23" selection-end-line="57" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///usr/local/lib/python2.7/dist-packages/keras/models.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
@@ -888,9 +1008,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="422">
           <caret line="274" column="8" lean-forward="false" selection-start-line="274" selection-start-column="8" selection-end-line="274" selection-end-column="8" />
-          <folding>
-            <element signature="e#0#38#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1070,7 +1187,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="430">
           <caret line="252" column="0" lean-forward="true" selection-start-line="252" selection-start-column="0" selection-end-line="252" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1085,7 +1201,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="248">
           <caret line="340" column="74" lean-forward="false" selection-start-line="340" selection-start-column="71" selection-end-line="340" selection-end-column="74" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1093,13 +1208,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1926">
           <caret line="113" column="0" lean-forward="false" selection-start-line="113" selection-start-column="0" selection-end-line="115" selection-end-column="62" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/code/Q_network_snn_v1.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1548">
-          <caret line="88" column="0" lean-forward="false" selection-start-line="88" selection-start-column="0" selection-end-line="92" selection-end-column="74" />
         </state>
       </provider>
     </entry>
@@ -1114,16 +1222,39 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="672">
           <caret line="48" column="66" lean-forward="false" selection-start-line="48" selection-start-column="17" selection-end-line="48" selection-end-column="66" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/code/Q_network_snn_nengDL_v1.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1548">
-          <caret line="149" column="0" lean-forward="true" selection-start-line="149" selection-start-column="0" selection-end-line="149" selection-end-column="0" />
+        <state relative-caret-position="867">
+          <caret line="149" column="0" lean-forward="false" selection-start-line="149" selection-start-column="0" selection-end-line="149" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code/Q_network_snn_v1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/huangbo_ws/florian/learning_save_weights.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="540">
+          <caret line="33" column="63" lean-forward="false" selection-start-line="33" selection-start-column="54" selection-end-line="33" selection-end-column="63" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/huangbo_ws/florian/mountain_car.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2556">
+          <caret line="234" column="37" lean-forward="true" selection-start-line="234" selection-start-column="37" selection-end-line="234" selection-end-column="37" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
           </folding>
         </state>
       </provider>
