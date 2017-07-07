@@ -64,8 +64,8 @@ class Nengo_Arm_Sim(nengo.Node):
         self.max_eps = max_eps
         # self.all_rewards = []
 
-        super(Nengo_Arm_Sim, self).__init__(label=self.name, output=self.tick,
-                                            size_in=len(self.actions), size_out=3)
+        super(Nengo_Arm_Sim, self).__init__(label="fuck", output=self.tick,
+                                            size_in=len(self.actions), size_out=2)
 
         # initialize openai gym environment
         self.env = env
@@ -127,11 +127,11 @@ class Nengo_Arm_Sim(nengo.Node):
 
 
 class QLearn1(nengo.Network):
-    def __init__(self, aigym, t_past=0.1, t_now=0.005, gamma=0.9, init_state=[0, 0], learning_rate=1e-4):
+    def __init__(self, aigym, t_past=0.1, t_now=0.005, gamma=0.9, init_state=[0, 0, 0], learning_rate=1e-4):
         super(QLearn1, self).__init__()
         with self:
 
-            self.desired_action = nengo.Ensemble(n_neurons=300, dimensions=2, radius=2.0)
+            self.desired_action = nengo.Ensemble(n_neurons=300, dimensions=3, radius=2.0)
             nengo.Connection(self.desired_action, self.desired_action, synapse=0.1)
 
             self.state = nengo.Ensemble(n_neurons=300, dimensions=1, radius=1.5)
@@ -139,15 +139,15 @@ class QLearn1(nengo.Network):
             def selection(t, x):
                 choice = np.argmax(x)
 
-                result = np.zeros(2)
+                result = np.zeros(3)
                 result[choice] = 1
                 return result
 
-            self.select = nengo.Node(selection, size_in=2)
+            self.select = nengo.Node(selection, size_in=1)
 
             nengo.Connection(self.select, self.desired_action)
 
-            self.q = nengo.Node(None, size_in=2)
+            self.q = nengo.Node(None, size_in=3)
 
             def initial_q(state):
                 return init_state
@@ -162,7 +162,7 @@ class QLearn1(nengo.Network):
             nengo.Connection(self.reward, self.reward_array[-1])
             nengo.Connection(self.select, self.reward_array[:-1])
 
-            self.error = nengo.Node(None, size_in=2)
+            self.error = nengo.Node(None, size_in=3)
 
             nengo.Connection(self.reward_array, self.error, synapse=t_past)
             nengo.Connection(self.q, self.error, synapse=t_now, transform=gamma)
@@ -170,15 +170,13 @@ class QLearn1(nengo.Network):
 
             nengo.Connection(self.error, self.conn.learning_rule, transform=-1)
 
-        import pdb
-        pdb.set_trace()
         nengo.Connection(aigym[:-1], self.state)
         nengo.Connection(aigym[-1], self.reward)
         nengo.Connection(self.desired_action[0], aigym[0])
         nengo.Connection(self.desired_action[1], aigym[2])
 
 
-class MountainCarTrial(pytry.NengoTrial):
+class ArmTrial(pytry.NengoTrial):
     def params(self):
         # self.param('number of neurons in state', N_state=500)
         self.param('maximal number of epochs', max_eps=5000)
@@ -192,8 +190,21 @@ class MountainCarTrial(pytry.NengoTrial):
     def model(self, p):
         model = nengo.Network(seed=2)
         with model:
-            self.mc = Nengo_Arm_Sim(actions=[0, 1, 2], mean_solved=p.mean_solved, mean_cancel=-500, max_eps=p.max_eps)
-            #self.ql = QLearn(aigym=self.mc, t_past=p.t_past, t_now=p.t_now, gamma=p.gamma, init_state = p.init_state)
+            resolution_in_degree = 10 * np.ones(1)  # Discretization Resolution in Degree
+            state_action_space = StateActionSpace_RobotArm(resolution_in_degree)  # Encode the joint to state
+
+            reward_func = Reward()  # The rule of reward function
+            goal_func = Goal((-3, 0))
+            env = RobotArmEnv(
+                state_action_space,
+                reward_func,
+                goal_func,
+                if_simulator=True,
+                if_visual=True,
+                dim=1
+            )
+            self.mc = Nengo_Arm_Sim([0, 1, 2], env, mean_solved=p.mean_solved, mean_cancel=-500, max_eps=p.max_eps)
+            #  self.ql = QLearn(aigym=self.mc, t_past=p.t_past, t_now=p.t_now, gamma=p.gamma, init_state = p.init_state)
             self.ql = QLearn1(aigym=self.mc, t_past=p.t_past, t_now=p.t_now, gamma=p.gamma, init_state=p.init_state, learning_rate=p.learning_rate)
 
         return model
@@ -221,58 +232,13 @@ def train_dqn(
     observation_phase,
     exploration_phase
 ):
-    resolution_in_degree = 10 * np.ones(
-        args.dimension)  # Discretization Resolution in Degree
-    state_action_space = StateActionSpace_RobotArm(
-        resolution_in_degree)  # Encode the joint to state
-
-    reward_func = Reward()  # The rule of reward function
-    goal_func = Goal((-3, 0))
-    env = RobotArmEnv(
-        state_action_space,
-        reward_func,
-        goal_func,
-        if_simulator=if_simulator,
-        if_visual=if_visual,
-        dim=joint_dim
-    )
-
-    model = nengo.Network(seed=2)
-    b_toy_cmd = False
-
-    with model:
-        mc = Nengo_Arm_Sim(actions=[0, 1, 2])
-        ql = QLearn1(aigym=mc)
-
-        if b_toy_cmd:
-            def input_func(t):
-                result = [0] * 3
-                index = int(np.random.rand(1, 1) * 2)
-
-                if index > 0:
-                    index = 2
-
-                result[index] = 1
-
-                return result
-
-            stim = nengo.Node(input_func)
-
-            nengo.Connection(stim, mc)
-
-    b_pytry = True
-    if not b_pytry:
-        sim = nengo.Simulator(model, progress_bar=False)
-        while not mc.solved:
-            sim.run(5)
-    else:
-        for t_past in [0.1]:
-            for t_now in [0.005]:
-                for gamma in [0.9]:
-                    # for init_state in [[0,0,0], [0.5,0, 0.5]]:
-                    for init_state in [[0, 0], [0.5, 0.5]]:
-                        for learning_rate in [1e-3, 1e-4, 1e-5]:
-                            MountainCarTrial().run(t_past=t_past, t_now=t_now, gamma=gamma, init_state=init_state, verbose=False)
+    for t_past in [0.1]:
+        for t_now in [0.005]:
+            for gamma in [0.9]:
+                # for init_state in [[0,0,0], [0.5,0, 0.5]]:
+                for init_state in [[0, 0, 0], [0.5, 0.5, 0.5]]:
+                    for learning_rate in [1e-3, 1e-4, 1e-5]:
+                        ArmTrial().run(t_past=t_past, t_now=t_now, gamma=gamma, init_state=init_state, verbose=False)
 
 
 def main():
