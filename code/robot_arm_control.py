@@ -47,7 +47,7 @@ args = parser.parse_args()
 
 
 class Nengo_Arm_Sim(nengo.Node):
-    def __init__(self, actions, env, mean_solved=-110, mean_cancel=-500, max_eps=10000, max_trials_per_ep=36):
+    def __init__(self, actions, env, mean_solved=0, mean_cancel=-500, max_eps=10000, max_trials_per_ep=36, b_render=True):
         self.actions = actions
         self.done = False
         self.solved = False
@@ -62,6 +62,7 @@ class Nengo_Arm_Sim(nengo.Node):
         self.mean_cancel = mean_cancel
         self.cancel = False
         self.max_eps = max_eps
+        self.b_render = b_render
         # self.all_rewards = []
 
         super(Nengo_Arm_Sim, self).__init__(label="fuck", output=self.tick,
@@ -69,27 +70,29 @@ class Nengo_Arm_Sim(nengo.Node):
 
         # initialize openai gym environment
         self.env = env
+        self.env.reset()
 
     def tick(self, t, x):
-        self.num_trials += 1
-        if self.num_trials > self.max_trials_per_ep:
-            self.reached_max_trials = True
-        action = np.argmax(x)
-        ob, reward, done, _ = self.env.step([action])
-        rval = [item for item in ob]
-        rval.append(reward)
-        if self.b_render:
-            self.env.render()
-
-        self.position = ob[0]
-
-        if self.position > 0.5:
-            self.done = True
-
         if self.done or self.reached_max_trials:
             if self.reached_max_trials:
                 print 'reset env because current episode took to much trials to complete (avoid unfinite loop)'
             self.reset()
+
+        self.num_trials += 1
+        if self.num_trials > self.max_trials_per_ep:
+            self.reached_max_trials = True
+        action = np.argmax(x)
+
+        ob, reward, self.done = self.env.step([action])
+
+        rval = [item for item in ob]
+        rval.append(reward)
+        # if self.b_render:
+        #     self.env.render()
+
+        self.position = ob[0]
+        # if self.position > 0.5:
+            # self.done = True
 
         return rval
 
@@ -143,7 +146,7 @@ class QLearn1(nengo.Network):
                 result[choice] = 1
                 return result
 
-            self.select = nengo.Node(selection, size_in=1)
+            self.select = nengo.Node(selection, size_in=3)
 
             nengo.Connection(self.select, self.desired_action)
 
@@ -152,13 +155,16 @@ class QLearn1(nengo.Network):
             def initial_q(state):
                 return init_state
 
-            self.conn = nengo.Connection(self.state, self.q, function=initial_q,
-                                         learning_rule_type=nengo.PES(learning_rate=learning_rate, pre_tau=t_past))
+            self.conn = nengo.Connection(self.state,
+                                         self.q,
+                                         function=initial_q,
+                                         learning_rule_type=nengo.PES(learning_rate=learning_rate, pre_tau=t_past)
+                                         )
             nengo.Connection(self.q, self.select)
 
             self.reward = nengo.Node(None, size_in=1)
 
-            self.reward_array = nengo.Node(lambda t, x: x[:-1] * x[-1], size_in=3)
+            self.reward_array = nengo.Node(lambda t, x: x[:-1] * x[-1], size_in=4)
             nengo.Connection(self.reward, self.reward_array[-1])
             nengo.Connection(self.select, self.reward_array[:-1])
 
@@ -167,7 +173,6 @@ class QLearn1(nengo.Network):
             nengo.Connection(self.reward_array, self.error, synapse=t_past)
             nengo.Connection(self.q, self.error, synapse=t_now, transform=gamma)
             nengo.Connection(self.q, self.error, synapse=t_past, transform=-1)
-
             nengo.Connection(self.error, self.conn.learning_rule, transform=-1)
 
         nengo.Connection(aigym[:-1], self.state)
@@ -203,11 +208,14 @@ class ArmTrial(pytry.NengoTrial):
                 if_visual=True,
                 dim=1
             )
-            self.mc = Nengo_Arm_Sim([0, 1, 2], env, mean_solved=p.mean_solved, mean_cancel=-500, max_eps=p.max_eps)
+
+            self.mc = Nengo_Arm_Sim([0, 1, 2], env, mean_solved=0, mean_cancel=-500, max_eps=p.max_eps)
             #  self.ql = QLearn(aigym=self.mc, t_past=p.t_past, t_now=p.t_now, gamma=p.gamma, init_state = p.init_state)
-            self.ql = QLearn1(aigym=self.mc, t_past=p.t_past, t_now=p.t_now, gamma=p.gamma, init_state=p.init_state, learning_rate=p.learning_rate)
+            self.ql = QLearn1(aigym=self.mc, t_past=p.t_past, t_now=p.t_now,
+                              gamma=p.gamma, init_state=p.init_state, learning_rate=p.learning_rate)
 
         return model
+
 
     def evaluate(self, p, sim, plt):
         while not self.mc.reached_max_eps and not self.mc.cancel:

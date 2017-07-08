@@ -5,7 +5,8 @@ import pytry
 
 
 class OpenAIGym(nengo.Node):
-    def __init__(self, actions, name='MountainCar-v0', mean_solved=-110, mean_cancel=-500, max_eps=10000, max_trials_per_ep=2000, b_render=True):
+    def __init__(self, actions, name='MountainCar-v0', mean_solved=-110, mean_cancel=-500,
+                 max_eps=10000, max_trials_per_ep=2000, b_render=True):
         self.actions = actions
         self.name = name
         self.b_render = b_render
@@ -36,8 +37,12 @@ class OpenAIGym(nengo.Node):
         if self.num_trials > self.max_trials_per_ep:
             self.reached_max_trials = True
         action = np.argmax(x)
+
+        #print 'the q value:', x
         ob, reward, done, _ = self.env.step(action)
+
         rval = [item for item in ob]
+
         rval.append(reward)
         if self.b_render:
             self.env.render()
@@ -93,33 +98,45 @@ class QLearn(nengo.Network):
         with self:
 
             self.desired_action = nengo.Ensemble(n_neurons=300, dimensions=3, radius=2.0)
-            nengo.Connection(self.desired_action, self.desired_action, synapse=0.1)
-
+            #nengo.Connection(self.desired_action, self.desired_action, synapse=0.1)
             self.state = nengo.Ensemble(n_neurons=300, dimensions=2, radius=1.5)
 
             def selection(t, x):
                 choice = np.argmax(x)
-
                 result = np.zeros(3)
                 result[choice] = 1
                 return result
 
             self.select = nengo.Node(selection, size_in=3)
-
+            '''
+            output : callable, array_like, or None
+                     Function that transforms the Node inputs into outputs,
+                     a constant output value, or None to transmit signals unchanged.
+            size_in : int, optional (Default: 0)
+                      The number of dimensions of the input data parameter.
+            size_out : int, optional (Default: None)
+                       The size of the output signal. If None, it will be determined
+                       based on the values of ``output`` and ``size_in``.
+            '''
             nengo.Connection(self.select, self.desired_action)
-
             self.q = nengo.Node(None, size_in=3)
 
             def initial_q(state):
                 return init_state
 
-            self.conn = nengo.Connection(self.state, self.q, function=initial_q,
-                                         learning_rule_type=nengo.PES(pre_tau=t_past))
+            self.conn = nengo.Connection(self.state,
+                                         self.q,
+                                         function=initial_q,
+                                         learning_rule_type=nengo.PES(pre_tau=t_past)
+                                         )
             nengo.Connection(self.q, self.select)
 
             self.reward = nengo.Node(None, size_in=1)
-
             self.reward_array = nengo.Node(lambda t, x: x[:-1] * x[-1], size_in=4)
+            '''
+            reward_array: input [q1, q2, q3, reward]
+                          output [q1*reward, q2*reward, q3*reward]
+            '''
             nengo.Connection(self.reward, self.reward_array[-1])
             nengo.Connection(self.select, self.reward_array[:-1])
 
@@ -128,7 +145,6 @@ class QLearn(nengo.Network):
             nengo.Connection(self.reward_array, self.error, synapse=t_past)
             nengo.Connection(self.q, self.error, synapse=t_now, transform=gamma)
             nengo.Connection(self.q, self.error, synapse=t_past, transform=-1)
-
             nengo.Connection(self.error, self.conn.learning_rule, transform=-1)
 
         nengo.Connection(aigym[:-1], self.state)
@@ -142,32 +158,35 @@ class QLearn1(nengo.Network):
         with self:
 
             self.desired_action = nengo.Ensemble(n_neurons=300, dimensions=2, radius=2.0)
-            nengo.Connection(self.desired_action, self.desired_action, synapse=0.1)
-
+            #nengo.Connection(self.desired_action, self.desired_action, synapse=0.1)
             self.state = nengo.Ensemble(n_neurons=300, dimensions=2, radius=1.5)
 
             def selection(t, x):
+                '''
+                :param t: time
+                :param x: q value
+                :return: the selected action
+                '''
                 choice = np.argmax(x)
-
                 result = np.zeros(2)
                 result[choice] = 1
                 return result
 
             self.select = nengo.Node(selection, size_in=2)
-
             nengo.Connection(self.select, self.desired_action)
-
             self.q = nengo.Node(None, size_in=2)
 
             def initial_q(state):
                 return init_state
 
-            self.conn = nengo.Connection(self.state, self.q, function=initial_q,
-                                         learning_rule_type=nengo.PES(learning_rate=learning_rate, pre_tau=t_past))
+            self.conn = nengo.Connection(self.state,
+                                         self.q,
+                                         function=initial_q,
+                                         learning_rule_type=nengo.PES(learning_rate=learning_rate, pre_tau=t_past)
+                                         )
             nengo.Connection(self.q, self.select)
 
             self.reward = nengo.Node(None, size_in=1)
-
             self.reward_array = nengo.Node(lambda t, x: x[:-1] * x[-1], size_in=3)
             nengo.Connection(self.reward, self.reward_array[-1])
             nengo.Connection(self.select, self.reward_array[:-1])
@@ -177,11 +196,15 @@ class QLearn1(nengo.Network):
             nengo.Connection(self.reward_array, self.error, synapse=t_past)
             nengo.Connection(self.q, self.error, synapse=t_now, transform=gamma)
             nengo.Connection(self.q, self.error, synapse=t_past, transform=-1)
-
             nengo.Connection(self.error, self.conn.learning_rule, transform=-1)
 
-        import pdb
-        pdb.set_trace()
+            # print aigym
+            # print aigym[:-1]
+            # print aigym[-1]
+            # print aigym[0]
+            # print aigym[2]
+
+
         nengo.Connection(aigym[:-1], self.state)
         nengo.Connection(aigym[-1], self.reward)
         nengo.Connection(self.desired_action[0], aigym[0])

@@ -22,13 +22,6 @@ class Reward(object):
 
         return:
             reward accordingto the setting above """
+        if np.linalg.norm(current_coor-  goal_coor) < 0.52:
+            return 1
         return -np.linalg.norm(goal_coor - current_coor)
-
-
-def main():
-    reward = Reward()
-    print reward.evlt((-1, 1), (1, 1), (0, 1))
-
-
-if __name__ == '__main__':
-    main()

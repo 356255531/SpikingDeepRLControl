@@ -64,7 +64,7 @@ class RobotArmEnv(object):
         else:
             self._arm = RobotArm()
 
-    def init_game(self):
+    def reset(self):
         """
         usage:
             random init the robot arm """
@@ -123,6 +123,9 @@ class RobotArmEnv(object):
             return [0]
         else:
             return [2]
+
+    def close(self):
+        pass
 
 
 def main():
