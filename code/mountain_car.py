@@ -25,8 +25,11 @@ class OpenAIGym(nengo.Node):
         self.max_eps = max_eps
         # self.all_rewards = []
 
-        super(OpenAIGym, self).__init__(label=self.name, output=self.tick,
-                                        size_in=len(self.actions), size_out=3)
+        super(OpenAIGym, self).__init__(label=self.name,
+                                        output=self.tick,
+                                        size_in=len(self.actions),
+                                        size_out=3
+                                        )
 
         # initialize openai gym environment
         self.env = gym.make(self.name)
@@ -105,6 +108,7 @@ class QLearn(nengo.Network):
                 choice = np.argmax(x)
                 result = np.zeros(3)
                 result[choice] = 1
+                # [0, 1, 0, 0, 0, 1]
                 return result
 
             self.select = nengo.Node(selection, size_in=3)
@@ -147,13 +151,14 @@ class QLearn(nengo.Network):
             nengo.Connection(self.q, self.error, synapse=t_past, transform=-1)
             nengo.Connection(self.error, self.conn.learning_rule, transform=-1)
 
+
         nengo.Connection(aigym[:-1], self.state)
         nengo.Connection(aigym[-1], self.reward)
         nengo.Connection(self.desired_action, aigym)
 
 
 class QLearn1(nengo.Network):
-    def __init__(self, aigym, t_past=0.1, t_now=0.005, gamma=0.9, init_state=[0, 0], learning_rate=1e-4):
+    def __init__(self, aigym, t_past=0.1, t_now=0.05, gamma=0.9, init_state=[0, 0], learning_rate=1e-4):
         super(QLearn1, self).__init__()
         with self:
 
@@ -226,8 +231,8 @@ class MountainCarTrial(pytry.NengoTrial):
         model = nengo.Network(seed=2)
         with model:
             self.mc = OpenAIGym(actions=[0, 1, 2], name='MountainCar-v0', mean_solved=p.mean_solved, mean_cancel=-500, max_eps=p.max_eps, b_render=False)
-            #self.ql = QLearn(aigym=self.mc, t_past=p.t_past, t_now=p.t_now, gamma=p.gamma, init_state = p.init_state)
-            self.ql = QLearn1(aigym=self.mc, t_past=p.t_past, t_now=p.t_now, gamma=p.gamma, init_state=p.init_state, learning_rate=p.learning_rate)
+            self.ql = QLearn(aigym=self.mc, t_past=p.t_past, t_now=p.t_now, gamma=p.gamma, init_state = [0,0,0])
+            #self.ql = QLearn1(aigym=self.mc, t_past=p.t_past, t_now=p.t_now, gamma=p.gamma, init_state=p.init_state, learning_rate=p.learning_rate)
 
         return model
 

@@ -28,7 +28,7 @@ class Goal(object):
 
         return:
                 bool, if the given state is goal state """
-        return np.linalg.norm(current_coor - self._goal_coor) < 1
+        return np.linalg.norm(current_coor - self._goal_coor) < 2
 
     def return_goal_coor(self):
         return self._goal_coor
