@@ -141,7 +141,7 @@ class VirtualArm(object):
         for coor in self._end_coor:
             plt.plot(
                 coor[0], coor[1],
-                'ro', color='vk',
+                'ro', color='k',
                 markersize=markersize, markeredgewidth=linewidth)
 
         plt.plot(self._goal_coor[0], self._goal_coor[1], 'ro', markersize=markersize, markeredgewidth=linewidth)
@@ -153,11 +153,11 @@ class VirtualArm(object):
             return
         if self._dim == 2:
             Jacobian = np.array([
-                [-np.sin(self._arm_angulars_in_degree[0] / PI) * ARM_LENGTH_1 - ARM_LENGTH_2 * np.sin(self._arm_angulars_in_degree[0] / PI + self._arm_angulars_in_degree[1] / PI),
-                 -ARM_LENGTH_2 * np.sin(self._arm_angulars_in_degree[0] / PI + self._arm_angulars_in_degree[1] / PI)],
+                [-np.sin(self._arm_angulars_in_degree[0] / 180) * ARM_LENGTH_1 - ARM_LENGTH_2 * np.sin(self._arm_angulars_in_degree[0] / 180 + self._arm_angulars_in_degree[1] / 180),
+                 -ARM_LENGTH_2 * np.sin(self._arm_angulars_in_degree[0] / 180 + self._arm_angulars_in_degree[1] / 180)],
 
-                [np.cos(self._arm_angulars_in_degree[0] / PI) * ARM_LENGTH_1 + ARM_LENGTH_2 * np.cos(self._arm_angulars_in_degree[0] / PI + self._arm_angulars_in_degree[1] / PI),
-                 ARM_LENGTH_2 * np.cos(self._arm_angulars_in_degree[0] + self._arm_angulars_in_degree[1] / PI)]
+                [np.cos(self._arm_angulars_in_degree[0] / 180) * ARM_LENGTH_1 + ARM_LENGTH_2 * np.cos(self._arm_angulars_in_degree[0] / 180 + self._arm_angulars_in_degree[1] / 180),
+                 ARM_LENGTH_2 * np.cos(self._arm_angulars_in_degree[0] / 180 + self._arm_angulars_in_degree[1] / 180)]
             ])
         return Jacobian
 

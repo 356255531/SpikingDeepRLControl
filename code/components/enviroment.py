@@ -58,7 +58,7 @@ class RobotArmEnv(object):
         if if_simulator:
             self._arm = VirtualArm(
                 dim=self._dim,
-                goal_coor=(-3, 0),
+                goal_coor=self._goal_func.return_goal_coor(),
                 if_visual=self._if_visual
             )
         else:
@@ -118,15 +118,16 @@ class RobotArmEnv(object):
     def get_jacobi_action(self):
         J = self._arm.get_jocobian()
         distance = self._goal_func.return_goal_coor() - self._arm.read_end_coor()
-        action_in_degree = np.dot(np.linalg.inv(J), distance)
-        action = np.array([], dtype=int)
-        action_handler = lambda action: [2] if action > 0 else [0]
-        for single_action_in_degree in action_in_degree:
+        action_in_degree = np.dot(np.linalg.pinv(J), distance)
 
-            action = np.append(
-                action,
-                action_handler(single_action_in_degree)
-            )
+        action_idx = np.argmax(np.abs(action_in_degree))
+
+        action = np.zeros(2)
+
+        if action_in_degree[action_idx] > 0:
+            action[action_idx] = 0
+        else:
+            action[action_idx] = 2
 
         return action
 
@@ -135,11 +136,11 @@ class RobotArmEnv(object):
 
 
 def main():
-    resolution_in_degree = 60 * np.ones(2)  # Discretization Resolution in Degree
+    resolution_in_degree = 10 * np.ones(2)  # Discretization Resolution in Degree
     state_action_space = StateActionSpace_RobotArm(resolution_in_degree)  # Encode the joint to state
 
     reward_func = Reward()  # The rule of reward function
-    goal_func = Goal((-3, 0))
+    goal_func = Goal((-5, 3))
     env = RobotArmEnv(
         state_action_space,
         reward_func,
@@ -152,7 +153,7 @@ def main():
     done = False
     while not done:
         action = env.get_jacobi_action()
-        state, reward, done = env.step([1, 0])
+        state, reward, done = env.step(action)
         print state, reward, done
         if done:
             break
