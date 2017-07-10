@@ -116,20 +116,28 @@ class RobotArmEnv(object):
         return state
 
     def get_jacobi_action(self):
-        arm_readout = self._arm.read_joint_degree()
-        state = self._state_action_space.degree_to_state(arm_readout)
+        J = self._arm.get_jocobian()
+        distance = self._goal_func.return_goal_coor() - self._arm.read_end_coor()
+        action_in_degree = np.dot(np.linalg.inv(J), distance)
+        action = np.array([], dtype=int)
+        action_handler = lambda action: [2] if action > 0 else [0]
+        for single_action_in_degree in action_in_degree:
 
-        if state[0] > 0:
-            return [0]
-        else:
-            return [2]
+            action = np.append(
+                action,
+                action_handler(single_action_in_degree)
+            )
+
+        return action
 
     def close(self):
         pass
 
 
 def main():
-    state_action_space = StateActionSpace_RobotArm()
+    resolution_in_degree = 60 * np.ones(2)  # Discretization Resolution in Degree
+    state_action_space = StateActionSpace_RobotArm(resolution_in_degree)  # Encode the joint to state
+
     reward_func = Reward()  # The rule of reward function
     goal_func = Goal((-3, 0))
     env = RobotArmEnv(
@@ -138,12 +146,13 @@ def main():
         goal_func,
         if_simulator=True,
         if_visual=True,
-        dim=1
+        dim=2
     )
-    env.init_game()
+    env.reset()
     done = False
     while not done:
-        state, reward, done = env.step(np.array([rd.randint(0, 2)]))
+        action = env.get_jacobi_action()
+        state, reward, done = env.step([1, 0])
         print state, reward, done
         if done:
             break
