@@ -31,13 +31,13 @@ parser.add_argument("-r", "--learning_rate", nargs="?", const=1,
 parser.add_argument("-bs", "--batch_size", nargs="?", const=1,
                     type=int, help="The training batch size", default=128)
 parser.add_argument("-bf", "--bellman_factor", nargs="?", const=1,
-                    type=float, help="Bellman factor", default=0.9)
+                    type=float, help="Bellman factor", default=0.5)
 parser.add_argument("-l", "--memory_limit", nargs="?", const=1,
                     type=int, help="The limit of display memory", default=50000)
 parser.add_argument("-eml", "--episode_max_len", nargs="?", const=1,
-                    type=int, help="The maximal length of a episode", default=36)
+                    type=int, help="The maximal length of a episode", default=30)
 parser.add_argument("-e", "--epsilon", nargs="?", const=1,
-                    type=float, help="Epsilon value of policy selection", default=0.5)
+                    type=float, help="Epsilon value of policy selection", default=1)
 parser.add_argument("-ef", "--epsilon_final", nargs="?", const=1,
                     type=float, help="Final epsilon value", default=0.05)
 parser.add_argument("-ed", "--epsilon_decay", nargs="?", const=1,
@@ -88,8 +88,6 @@ def train_dqn(
     # Create memory_pool
     display_memory = Memory(memory_limit)
 
-    pdb.set_trace()
-
     dqn = ANN(joint_dim, learning_rate)  # ann
     dqn.load_weights(weight_path, "dqn_weights")  # ann
 
@@ -102,7 +100,7 @@ def train_dqn(
     while 1:
         num_episode += 1
 
-        state = env.init_game()
+        state = env.reset()
         done = False
 
         episode_step = 0

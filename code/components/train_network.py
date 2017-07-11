@@ -20,11 +20,9 @@ def batch_parser(batch):
 def action_to_idx(actions, dim, batch_size):
     actions_idx = np.zeros([batch_size, 3 ** dim])
     for idx, action in enumerate(actions):
-        sum = 0
-        for i in xrange(dim, 1, -1):
-            sum += 3 ** (i - 1) * action[dim - i]
-        sum += action[-1]
-        actions_idx[idx][sum] = 1
+        sum = 3 * actions[idx][0]
+        sum += actions[idx][1]
+        actions_idx[idx][int(sum)] = 1
 
     return actions_idx
 

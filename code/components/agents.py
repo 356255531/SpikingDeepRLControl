@@ -1,6 +1,5 @@
 __auther__ = "zhiwei"
 import numpy as np
-import operator
 import matplotlib.pyplot as plt
 
 ARM_LENGTH_1 = 3.0
@@ -82,7 +81,7 @@ class VirtualArm(object):
             self._goal_coor = goal_coor
 
         if start_angular is None:
-            self._arm_angulars_in_degree = np.random.randint(36, size=[self._dim]) * 10
+            self._arm_angulars_in_degree = np.random.randint(0, 36, size=[self._dim]) * 10
             # self._arm_angulars_in_degree = np.zeros(self._dim)
         else:
             self._arm_angulars_in_degree = start_angular
@@ -147,6 +146,20 @@ class VirtualArm(object):
 
         plt.plot(self._goal_coor[0], self._goal_coor[1], 'ro', markersize=markersize, markeredgewidth=linewidth)
         plt.pause(0.01)
+
+    def get_jocobian(self):
+        if self._dim == 1:
+            print "No need to use Jacobian control"
+            return
+        if self._dim == 2:
+            Jacobian = np.array([
+                [-np.sin(self._arm_angulars_in_degree[0] / 180) * ARM_LENGTH_1 - ARM_LENGTH_2 * np.sin(self._arm_angulars_in_degree[0] / 180 + self._arm_angulars_in_degree[1] / 180),
+                 -ARM_LENGTH_2 * np.sin(self._arm_angulars_in_degree[0] / 180 + self._arm_angulars_in_degree[1] / 180)],
+
+                [np.cos(self._arm_angulars_in_degree[0] / 180) * ARM_LENGTH_1 + ARM_LENGTH_2 * np.cos(self._arm_angulars_in_degree[0] / 180 + self._arm_angulars_in_degree[1] / 180),
+                 ARM_LENGTH_2 * np.cos(self._arm_angulars_in_degree[0] / 180 + self._arm_angulars_in_degree[1] / 180)]
+            ])
+        return Jacobian
 
 
 class RobotArm(object):

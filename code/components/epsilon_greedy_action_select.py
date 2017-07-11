@@ -32,9 +32,10 @@ def epsilon_greedy_action_select(
         dqn_output = DQN_Q_approximator.predict(np.array([state]))  # ann
         action_idx = np.argmax(dqn_output[0])
         action = np.array([], dtype=int)
-        for i in xrange(dim, 0, -1):
-            action = np.append(action, [action_idx / 3 ** (i - 1)])
-            action_idx /= 3 ** (i - 1)
+
+        action = np.append(action, [action_idx / 3])
+        action_idx %= 3
+        action = np.append(action, [action_idx])
         return action
 
 
