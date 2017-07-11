@@ -50,7 +50,7 @@ args = parser.parse_args()
 class Nengo_Arm_Sim(nengo.Node):
     def __init__(self, actions, env,
                  name="Robot_Arm", mean_solved=0,
-                 mean_cancel=0, max_eps=20000, max_trials_per_ep=200,
+                 mean_cancel=0, max_eps=20000, max_trials_per_ep=100,
                  epsilon=0.9, b_render=True):
         self.actions = actions
         self.done = False
@@ -118,7 +118,7 @@ class Nengo_Arm_Sim(nengo.Node):
                 self.last_hundred_rewards[:-1] = self.last_hundred_rewards[1:]
                 self.last_hundred_rewards[-1] = ep_reward
                 self.mean_reward = np.mean(self.last_hundred_rewards)
-                #print 'mean reward over last 100 episodes: ', self.mean_reward
+                # print 'mean reward over last 100 episodes: ', self.mean_reward
                 if self.mean_reward > self.mean_solved:
                     self.solved = True
                     print 'solved problem after ', self.num_eps, ' episodes with mean'
@@ -126,19 +126,21 @@ class Nengo_Arm_Sim(nengo.Node):
                     self.cancel = True
             self.num_eps += 1
 
-            #if self.num_eps % 5 == 0:
+            # if self.num_eps % 5 == 0:
             self.epsilon *= self.decay
             print '---------------current epsilon:---------------', self.epsilon
 
             self.num_trials = 0
             self.reached_max_trials = False
             self.env.reset()
+            if self.num_eps > 15000:
+                self.env._arm._if_visual = True
         else:
             if self.reached_max_eps:
                 print 'reached maximal number of episodes, so close env unsolved'
             if self.cancel:
                 print 'cancel due to poor learning performance'
-            self.env.close()
+            self.env.reset()
 
 
 class QLearn(nengo.Network):
@@ -147,8 +149,6 @@ class QLearn(nengo.Network):
                  learning_rate=1e-3,
                  ):
         super(QLearn, self).__init__()
-
-
 
         with self:
 
@@ -172,24 +172,21 @@ class QLearn(nengo.Network):
                     choice = np.argmax(x)
                     result[choice] = 1
 
+                # if aigym.num_eps > 100 and aigym.num_eps % 100 == 0:
+                #     print '-------------------start to save model----------------------------------'
+                #     print 'current step', aigym.num_eps
 
-                if aigym.num_eps > 100 and aigym.num_eps%100==0:
-                    print '-------------------start to save model----------------------------------'
-                    print 'current step', aigym.num_eps
+                #     self.sim = nengo.Simulator(ArmTrial.model)
+                #     self.sim.run(time_in_seconds=20)
+                #     with h5py.File(self.save_weight_path, 'w') as hf:
+                #         hf.create_dataset('weights',
+                #                           data=self.sim.data[self.conn_p][len(self.sim.trange()) - 1, :, :],
+                #                           compression="gzip",
+                #                           compression_opts=9)
 
-                    self.sim = nengo.Simulator(ArmTrial.model)
-                    self.sim.run(time_in_seconds=20)
-                    with h5py.File(self.save_weight_path, 'w') as hf:
-                        hf.create_dataset('weights',
-                                          data=self.sim.data[self.conn_p][len(self.sim.trange()) - 1, :, :],
-                                          compression="gzip",
-                                          compression_opts=9)
-
-                    print '-------------------model is saved----------------------------------'
-
+                #     print '-------------------model is saved----------------------------------'
 
                 return result
-
 
             self.select = nengo.Node(selection, size_in=9)
             nengo.Connection(self.select, self.desired_action)
@@ -229,7 +226,7 @@ class QLearn(nengo.Network):
 class ArmTrial(pytry.NengoTrial):
     def params(self):
         # self.param('number of neurons in state', N_state=500)
-        self.param('maximal number of epochs', max_eps=5000)
+        self.param('maximal number of epochs', max_eps=20000)
         self.param('mean when the problem is considered solved', mean_solved=-110)
         self.param('past time interval for q-update', t_past=0.1)
         self.param('now time interval for q-update', t_now=0.005)
@@ -262,8 +259,6 @@ class ArmTrial(pytry.NengoTrial):
                              init_state=np.zeros(9),
                              learning_rate=p.learning_rate
                              )
-
-
 
         return self.model
 

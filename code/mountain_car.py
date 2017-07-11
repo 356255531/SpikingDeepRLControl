@@ -236,6 +236,7 @@ class MountainCarTrial(pytry.NengoTrial):
             self.mc = OpenAIGym(actions=[0, 1, 2], name='MountainCar-v0', mean_solved=p.mean_solved, mean_cancel=-500, max_eps=p.max_eps, b_render=False)
             self.ql = QLearn(aigym=self.mc, t_past=p.t_past, t_now=p.t_now, gamma=p.gamma, init_state = [0,0,0])
             #self.ql = QLearn1(aigym=self.mc, t_past=p.t_past, t_now=p.t_now, gamma=p.gamma, init_state=p.init_state, learning_rate=p.learning_rate)
+            print "fuck"
 
         return model
 
