@@ -47,7 +47,7 @@ args = parser.parse_args()
 
 
 class Nengo_Arm_Sim(nengo.Node):
-    def __init__(self, actions, env, mean_solved=0, mean_cancel=0, max_eps=10000, max_trials_per_ep=20, b_render=True):
+    def __init__(self, actions, env, name="Robot_Arm", mean_solved=0, mean_cancel=0, max_eps=10000, max_trials_per_ep=20, b_render=True):
         self.actions = actions
         self.done = False
         self.solved = False
@@ -98,7 +98,7 @@ class Nengo_Arm_Sim(nengo.Node):
 
         # self.position = ob[0]
         # if self.position > 0.5:
-            # self.done = True
+        # self.done = True
 
         return rval
 
@@ -221,15 +221,51 @@ class ArmTrial(pytry.NengoTrial):
             self.mc = Nengo_Arm_Sim([0, 1, 2], env, mean_solved=0, mean_cancel=-500, max_eps=p.max_eps)
             # self.ql = QLearn(aigym=self.mc, t_past=p.t_past, t_now=p.t_now, gamma=p.gamma, init_state = p.init_state)
             self.ql = QLearn(aigym=self.mc, t_past=p.t_past, t_now=p.t_now,
-                              gamma=p.gamma, init_state=np.zeros(9), learning_rate=p.learning_rate)
+                             gamma=p.gamma, init_state=np.zeros(9), learning_rate=p.learning_rate)
 
         return model
-
 
     def evaluate(self, p, sim, plt):
         while not self.mc.reached_max_eps and not self.mc.cancel:
             sim.run(2)
         return dict(solved=self.mc.solved, episodes=self.mc.num_eps, last_hundred_rewards=self.mc.last_hundred_rewards)
+
+
+model = nengo.Network(seed=2)
+b_toy_cmd = True
+with model:
+    resolution_in_degree = 60 * np.ones(2)  # Discretization Resolution in Degree
+    state_action_space = StateActionSpace_RobotArm(resolution_in_degree)  # Encode the joint to state
+
+    reward_func = Reward()  # The rule of reward function
+    goal_func = Goal((-3, 0))
+    env = RobotArmEnv(
+        state_action_space,
+        reward_func,
+        goal_func,
+        if_simulator=True,
+        if_visual=False,
+        dim=2
+    )
+    mc = Nengo_Arm_Sim([0, 1, 2], env, mean_solved=0, mean_cancel=-500, max_eps=10000)
+    ql = QLearn(aigym=mc, t_past=0.1, t_now=0.005,
+                gamma=0.9, init_state=np.zeros(9), learning_rate=1e-5)
+
+    if b_toy_cmd:
+        def input_func(t):
+            result = [0] * 3
+            index = int(np.random.rand(1, 1) * 2)
+
+            if index > 0:
+                index = 2
+
+            result[index] = 1
+
+            return result
+
+        stim = nengo.Node(input_func)
+
+        nengo.Connection(stim, mc)
 
 
 def train_dqn(
