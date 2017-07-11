@@ -5,8 +5,11 @@ import pytry
 
 
 class OpenAIGym(nengo.Node):
-    def __init__(self, actions, name='MountainCar-v0', mean_solved=-110, mean_cancel=-500,
-                 max_eps=10000, max_trials_per_ep=2000, b_render=True):
+    def __init__(self, actions, name='MountainCar-v0',
+                 mean_solved=-110, mean_cancel=-500,
+                 max_eps=10000, max_trials_per_ep=2000,
+                 b_render=True
+                 ):
         self.actions = actions
         self.name = name
         self.b_render = b_render

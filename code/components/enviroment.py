@@ -80,7 +80,7 @@ class RobotArmEnv(object):
 
         return self._state
 
-    def step(self, action):
+    def step(self, action_idx):
         """
         args:
             action, int
@@ -92,6 +92,9 @@ class RobotArmEnv(object):
             raise ValueError("Episode ended, please reinitialize.")
 
         self._prev_state = self._state
+
+        action_idx = np.argmax(action_idx)
+        action = np.array([action_idx / 3, action_idx % 3], dtype=int)
 
         self._state = self._perform_action(action)
 

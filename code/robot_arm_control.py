@@ -133,7 +133,6 @@ class Nengo_Arm_Sim(nengo.Node):
 class QLearn(nengo.Network):
     def __init__(self, aigym, t_past=0.1, t_now=0.005, gamma=0.9, init_state=[0, 0, 0], learning_rate=1e-4):
         super(QLearn, self).__init__()
-        self.epsilon = 0.9
 
         with self:
 
@@ -143,17 +142,9 @@ class QLearn(nengo.Network):
             self.state = nengo.Ensemble(n_neurons=300, dimensions=1, radius=1.5)
 
             def selection(t, x):
-
                 result = np.zeros(3)
-                if np.random.uniform() < self.epsilon:
-                    choice = np.random.randint(0, 3)
-                    result[choice] = 1
-                else:
-                    choice = np.argmax(x)
-                    result = np.zeros(3)
-                    result[choice] = 1
-                self.epsilon = self.epsilon * 0.99
-                print 'curren epsilon', self.epsilon
+                choice = np.argmax(x)
+                result[choice] = 1
                 return result
 
             self.select = nengo.Node(selection, size_in=3)
