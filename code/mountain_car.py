@@ -44,7 +44,7 @@ class OpenAIGym(nengo.Node):
             self.reached_max_trials = True
         action = np.argmax(x)
 
-        #print 'the q value:', x
+        # print 'the q value:', x
         ob, reward, done, _ = self.env.step(action)
 
         rval = [item for item in ob]
@@ -154,7 +154,6 @@ class QLearn(nengo.Network):
             nengo.Connection(self.q, self.error, synapse=t_past, transform=-1)
             nengo.Connection(self.error, self.conn.learning_rule, transform=-1)
 
-
         nengo.Connection(aigym[:-1], self.state)
         nengo.Connection(aigym[-1], self.reward)
         nengo.Connection(self.desired_action, aigym)
@@ -212,7 +211,6 @@ class QLearn1(nengo.Network):
             # print aigym[0]
             # print aigym[2]
 
-
         nengo.Connection(aigym[:-1], self.state)
         nengo.Connection(aigym[-1], self.reward)
         nengo.Connection(self.desired_action[0], aigym[0])
@@ -234,7 +232,7 @@ class MountainCarTrial(pytry.NengoTrial):
         model = nengo.Network(seed=2)
         with model:
             self.mc = OpenAIGym(actions=[0, 1, 2], name='MountainCar-v0', mean_solved=p.mean_solved, mean_cancel=-500, max_eps=p.max_eps, b_render=False)
-            self.ql = QLearn(aigym=self.mc, t_past=p.t_past, t_now=p.t_now, gamma=p.gamma, init_state = [0,0,0])
+            self.ql = QLearn(aigym=self.mc, t_past=p.t_past, t_now=p.t_now, gamma=p.gamma, init_state=[0, 0, 0])
             #self.ql = QLearn1(aigym=self.mc, t_past=p.t_past, t_now=p.t_now, gamma=p.gamma, init_state=p.init_state, learning_rate=p.learning_rate)
             print "fuck"
 
@@ -246,40 +244,11 @@ class MountainCarTrial(pytry.NengoTrial):
         return dict(solved=self.mc.solved, episodes=self.mc.num_eps, last_hundred_rewards=self.mc.last_hundred_rewards)
 
 
-model = nengo.Network(seed=2)
-b_toy_cmd = False
-
-with model:
-    mc = OpenAIGym(actions=[0, 1, 2], name='MountainCar-v0')
-    ql = QLearn1(aigym=mc)
-
-    if b_toy_cmd:
-        def input_func(t):
-            result = [0] * 3
-            index = int(np.random.rand(1, 1) * 2)
-
-            if index > 0:
-                index = 2
-
-            result[index] = 1
-
-            return result
-
-        stim = nengo.Node(input_func)
-
-        nengo.Connection(stim, mc)
-
 if __name__ == '__main__':
-    b_pytry = True
-    if not b_pytry:
-        sim = nengo.Simulator(model, progress_bar=False)
-        while not mc.solved:
-            sim.run(5)
-    else:
-        for t_past in [0.1]:
-            for t_now in [0.005]:
-                for gamma in [0.9]:
-                    # for init_state in [[0,0,0], [0.5,0, 0.5]]:
-                    for init_state in [[0, 0], [0.5, 0.5]]:
-                        for learning_rate in [1e-3, 1e-4, 1e-5]:
-                            MountainCarTrial().run(t_past=t_past, t_now=t_now, gamma=gamma, init_state=init_state, verbose=False)
+    for t_past in [0.1]:
+        for t_now in [0.005]:
+            for gamma in [0.9]:
+                # for init_state in [[0,0,0], [0.5,0, 0.5]]:
+                for init_state in [[0, 0]]:
+                    for learning_rate in [1e-5]:
+                        MountainCarTrial().run(t_past=t_past, t_now=t_now, gamma=gamma, init_state=init_state, verbose=False)

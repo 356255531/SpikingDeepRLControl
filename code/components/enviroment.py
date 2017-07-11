@@ -143,7 +143,7 @@ def main():
     state_action_space = StateActionSpace_RobotArm(resolution_in_degree)  # Encode the joint to state
 
     reward_func = Reward()  # The rule of reward function
-    goal_func = Goal((-5, 3))
+    goal_func = Goal((-3, 0))
     env = RobotArmEnv(
         state_action_space,
         reward_func,
@@ -157,7 +157,7 @@ def main():
     while not done:
         action = env.get_jacobi_action()
         state, reward, done = env.step(action)
-        print state, reward, done
+        print action
         if done:
             break
 

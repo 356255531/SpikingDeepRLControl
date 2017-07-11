@@ -49,8 +49,8 @@ args = parser.parse_args()
 
 class Nengo_Arm_Sim(nengo.Node):
     def __init__(self, actions, env,
-                 name="Robot_Arm", mean_solved=0,
-                 mean_cancel=0, max_eps=20000, max_trials_per_ep=100,
+                 name="Robot_Arm", mean_solved=-100,
+                 mean_cancel=0, max_eps=20000, max_trials_per_ep=50,
                  epsilon=0.9, b_render=True):
         self.actions = actions
         self.done = False
@@ -69,9 +69,11 @@ class Nengo_Arm_Sim(nengo.Node):
         self.b_render = b_render
 
         self.epsilon = epsilon
-        self.decay = 0.9999
+        self.decay = 0.999
 
-        # self.all_rewards = []
+        self.total_reward = 0
+
+        self.all_rewards = []
 
         super(Nengo_Arm_Sim, self).__init__(label="fuck", output=self.tick,
                                             size_in=9, size_out=3)
@@ -81,25 +83,23 @@ class Nengo_Arm_Sim(nengo.Node):
         self.env.reset()
 
     def tick(self, t, x):
-        if self.done or self.reached_max_trials:
-            if self.reached_max_trials:
-                print 'reset env because current episode took to much trials to complete (avoid unfinite loop)'
-            self.reset()
-
         self.num_trials += 1
         if self.num_trials > self.max_trials_per_ep:
             self.reached_max_trials = True
 
         action_idx = np.argmax(x)
-        action = np.array([])
-        action = np.append(action, action_idx / 3)
-        action_idx /= 3
-        action = np.append(action, action_idx)
+        action = np.array([action_idx / 3, action_idx % 3])
 
         ob, reward, self.done = self.env.step(action)
+        self.total_reward += reward
 
         rval = [item for item in ob]
         rval.append(reward)
+
+        if self.done or self.reached_max_trials:
+            if self.reached_max_trials:
+                print 'reset env because current episode took to much trials to complete (avoid unfinite loop)'
+            self.reset()
 
         return rval
 
@@ -109,16 +109,15 @@ class Nengo_Arm_Sim(nengo.Node):
             if self.num_eps > self.max_eps:
                 self.reached_max_eps = True
             self.done = False
-            ep_reward = -1 * self.num_trials
-            print 'reward of this episode: ', ep_reward
-            # self.all_rewards.append(ep_reward)
+            print 'reward of this episode: ', self.total_reward
+            self.all_rewards.append(self.total_reward)
             if self.num_eps < 100:
-                self.last_hundred_rewards[self.num_eps] = ep_reward
+                self.last_hundred_rewards[self.num_eps] = self.total_reward
             else:
                 self.last_hundred_rewards[:-1] = self.last_hundred_rewards[1:]
-                self.last_hundred_rewards[-1] = ep_reward
+                self.last_hundred_rewards[-1] = self.total_reward
                 self.mean_reward = np.mean(self.last_hundred_rewards)
-                # print 'mean reward over last 100 episodes: ', self.mean_reward
+                print 'mean reward over last 100 episodes: ', self.mean_reward
                 if self.mean_reward > self.mean_solved:
                     self.solved = True
                     print 'solved problem after ', self.num_eps, ' episodes with mean'
@@ -133,7 +132,8 @@ class Nengo_Arm_Sim(nengo.Node):
             self.num_trials = 0
             self.reached_max_trials = False
             self.env.reset()
-            if self.num_eps > 15000:
+            self.total_reward = 0
+            if self.num_eps > 4500:
                 self.env._arm._if_visual = True
         else:
             if self.reached_max_eps:
@@ -141,50 +141,32 @@ class Nengo_Arm_Sim(nengo.Node):
             if self.cancel:
                 print 'cancel due to poor learning performance'
             self.env.reset()
+            self.total_reward = 0
 
 
 class QLearn(nengo.Network):
     def __init__(self, aigym, t_past=0.1, t_now=0.005,
-                 gamma=0.9, init_state=np.zeros(9),
-                 learning_rate=1e-3,
+                 gamma=0.9, init_state=np.zeros(9)
                  ):
         super(QLearn, self).__init__()
 
         with self:
-
-            self.save_weight_path = '/home/huangbo/Desktop/weights/model.h5'
-
             self.desired_action = nengo.Ensemble(n_neurons=300, dimensions=9, radius=2.0)
-            nengo.Connection(self.desired_action, self.desired_action, synapse=0.1)
+            # nengo.Connection(self.desired_action, self.desired_action, synapse=0.1)
             self.state = nengo.Ensemble(n_neurons=300, dimensions=2, radius=1.5)
 
             def selection(t, x):
                 result = np.zeros(9)
-                if np.random.uniform() < aigym.epsilon:
-
-                    if np.random.uniform() < 0.5:
-                        result[np.random.randint(0, 9)] = 1
-                    else:
-                        action = aigym.env.get_jacobi_action()
-                        sum = action[0] * 3 + action[1]
-                        result[int(sum)] = 1
-                else:
-                    choice = np.argmax(x)
-                    result[choice] = 1
-
-                # if aigym.num_eps > 100 and aigym.num_eps % 100 == 0:
-                #     print '-------------------start to save model----------------------------------'
-                #     print 'current step', aigym.num_eps
-
-                #     self.sim = nengo.Simulator(ArmTrial.model)
-                #     self.sim.run(time_in_seconds=20)
-                #     with h5py.File(self.save_weight_path, 'w') as hf:
-                #         hf.create_dataset('weights',
-                #                           data=self.sim.data[self.conn_p][len(self.sim.trange()) - 1, :, :],
-                #                           compression="gzip",
-                #                           compression_opts=9)
-
-                #     print '-------------------model is saved----------------------------------'
+                # if np.random.uniform() < aigym.epsilon:
+                #     if np.random.uniform() < 0.5:
+                #         result[np.random.randint(0, 9)] = 1
+                #     else:
+                #         action = aigym.env.get_jacobi_action()
+                #         sum = action[0] * 3 + action[1]
+                #         result[int(sum)] = 1
+                # else:
+                choice = np.argmax(x)
+                result[choice] = 1
 
                 return result
 
@@ -202,11 +184,11 @@ class QLearn(nengo.Network):
                                                                       pre_tau=t_past)
                                          )
 
-            self.conn_p = nengo.Probe(self.conn, 'weights')
+            # self.conn_p = nengo.Probe(self.conn, 'weights')
 
             nengo.Connection(self.q, self.select)
-            self.reward = nengo.Node(None, size_in=1)
 
+            self.reward = nengo.Node(None, size_in=1)
             self.reward_array = nengo.Node(lambda t, x: x[:-1] * x[-1], size_in=10)
             nengo.Connection(self.reward, self.reward_array[-1])
             nengo.Connection(self.select, self.reward_array[:-1])
@@ -227,7 +209,7 @@ class ArmTrial(pytry.NengoTrial):
     def params(self):
         # self.param('number of neurons in state', N_state=500)
         self.param('maximal number of epochs', max_eps=20000)
-        self.param('mean when the problem is considered solved', mean_solved=-110)
+        self.param('mean when the problem is considered solved', mean_solved=-100)
         self.param('past time interval for q-update', t_past=0.1)
         self.param('now time interval for q-update', t_now=0.005)
         self.param('gamma parameter for q-update', gamma=0.9)
@@ -235,8 +217,8 @@ class ArmTrial(pytry.NengoTrial):
         self.param('learning rate of the PES learning connection', learning_rate=1e-4)
 
     def model(self, p):
-        self.model = nengo.Network(seed=2)
-        with self.model:
+        model = nengo.Network(seed=2)
+        with model:
             resolution_in_degree = 10 * np.ones(2)  # Discretization Resolution in Degree
             state_action_space = StateActionSpace_RobotArm(resolution_in_degree)  # Encode the joint to state
 
@@ -251,16 +233,15 @@ class ArmTrial(pytry.NengoTrial):
                 dim=2
             )
 
-            self.mc = Nengo_Arm_Sim([0, 1, 2], env, mean_solved=0, mean_cancel=-500, max_eps=p.max_eps)
+            self.mc = Nengo_Arm_Sim([0, 1, 2], env, mean_solved=-100, mean_cancel=-500, max_eps=p.max_eps)
             self.ql = QLearn(aigym=self.mc,
                              t_past=p.t_past,
                              t_now=p.t_now,
                              gamma=p.gamma,
-                             init_state=np.zeros(9),
-                             learning_rate=p.learning_rate
+                             init_state=np.zeros(9)
                              )
 
-        return self.model
+        return model
 
     def evaluate(self, p, sim, plt):
         while not self.mc.reached_max_eps and not self.mc.cancel:
@@ -268,66 +249,11 @@ class ArmTrial(pytry.NengoTrial):
         return dict(solved=self.mc.solved, episodes=self.mc.num_eps, last_hundred_rewards=self.mc.last_hundred_rewards)
 
 
-def train_dqn(
-    if_simulator,
-    joint_dim,
-    if_train,
-    weight_path,
-    if_visual,
-    learning_rate,
-    batch_size,
-    bellman_factor,
-    memory_limit,
-    episode_max_len,
-    epsilon,
-    epsilon_decay_factor,
-    epsilon_final,
-    observation_phase,
-    exploration_phase
-):
+if __name__ == '__main__':
     for t_past in [0.1]:
         for t_now in [0.005]:
             for gamma in [0.9]:
                 # for init_state in [[0,0,0], [0.5,0, 0.5]]:
-                for init_state in [[0, 0, 0], [0.5, 0.5, 0.5]]:
-                    for learning_rate in [1e-3, 1e-4, 1e-5]:
+                for init_state in [[0, 0]]:
+                    for learning_rate in [1e-5]:
                         ArmTrial().run(t_past=t_past, t_now=t_now, gamma=gamma, init_state=init_state, verbose=False)
-
-
-def main():
-    if_simulator = args.simulator
-    joint_dim = args.dimension
-    if_train = args.train
-    weight_path = args.path
-    if_visual = args.visualization
-    learning_rate = args.learning_rate
-    batch_size = args.batch_size
-    bellman_factor = args.bellman_factor
-    memory_limit = args.memory_limit
-    episode_max_len = args.episode_max_len
-    epsilon = args.epsilon
-    epsilon_decay_factor = args.epsilon_decay
-    epsilon_final = args.epsilon_final
-    observation_phase = args.observation_phase
-    exploration_phase = args.exploration_phase
-    train_dqn(
-        if_simulator,
-        joint_dim,
-        if_train,
-        weight_path,
-        if_visual,
-        learning_rate,
-        batch_size,
-        bellman_factor,
-        memory_limit,
-        episode_max_len,
-        epsilon,
-        epsilon_decay_factor,
-        epsilon_final,
-        observation_phase,
-        exploration_phase
-    )
-
-
-if __name__ == '__main__':
-    main()
