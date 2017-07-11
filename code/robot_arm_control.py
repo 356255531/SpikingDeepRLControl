@@ -75,6 +75,7 @@ def train_dqn(
 
     reward_func = Reward()  # The rule of reward function
     goal_func = Goal((-3, 0))
+
     env = RobotArmEnv(
         state_action_space,
         reward_func,
@@ -86,6 +87,8 @@ def train_dqn(
 
     # Create memory_pool
     display_memory = Memory(memory_limit)
+
+    pdb.set_trace()
 
     dqn = ANN(joint_dim, learning_rate)  # ann
     dqn.load_weights(weight_path, "dqn_weights")  # ann
