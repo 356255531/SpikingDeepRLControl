@@ -57,6 +57,8 @@ class VirtualArm(object):
             start_angular = np.zeros(self._dim)
         self.init(start_angular)
 
+        self.visited_points = []
+
     def _refresh_joint_coor(self):
         """
         init(start_angular, goal_coor):
@@ -81,8 +83,8 @@ class VirtualArm(object):
             self._goal_coor = goal_coor
 
         if start_angular is None:
-            self._arm_angulars_in_degree = np.random.randint(0, 36, size=[self._dim]) * 10
-            # self._arm_angulars_in_degree = np.zeros(self._dim)
+            # self._arm_angulars_in_degree = np.random.randint(0, 36, size=[self._dim]) * 10
+            self._arm_angulars_in_degree = np.zeros(self._dim)
         else:
             self._arm_angulars_in_degree = start_angular
 
@@ -90,6 +92,7 @@ class VirtualArm(object):
 
         if self._if_visual:
             try:
+                self.visited_points = []
                 self._visualize()
             except:
                 import pdb
@@ -125,7 +128,6 @@ class VirtualArm(object):
         return self._end_coor[-1]
 
     def _visualize(self):
-
         linewidth = 1
         markersize = 3
 
@@ -137,6 +139,18 @@ class VirtualArm(object):
                 [self._end_coor[i][0], self._end_coor[i + 1][0]],
                 [self._end_coor[i][1], self._end_coor[i + 1][1]],
                 'k', linewidth=linewidth)
+
+        current_visited_point = self._end_coor[-1]
+        self.visited_points.append(current_visited_point)
+
+        for coor_idx, coor in enumerate(self.visited_points):
+            if (coor_idx != 0):
+                plt.plot([self.visited_points[coor_idx - 1][0], self.visited_points[coor_idx][0]],
+                         [self.visited_points[coor_idx - 1][1], self.visited_points[coor_idx][1]], 'b', lw=2)
+            plt.plot(
+                coor[0], coor[1],
+                'ro', color='b',
+                markersize=markersize, markeredgewidth=linewidth)
 
         for coor in self._end_coor:
             plt.plot(

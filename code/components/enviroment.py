@@ -80,7 +80,7 @@ class RobotArmEnv(object):
 
         return self._state
 
-    def step(self, action_idx):
+    def step(self, action):
         """
         args:
             action, int
@@ -93,9 +93,8 @@ class RobotArmEnv(object):
 
         self._prev_state = self._state
 
-        action_idx = np.argmax(action_idx)
-        action = np.array([action_idx / 3, action_idx % 3], dtype=int)
-
+        if action[0] != 0 and action[1] != 0:
+            raise ValueError
         self._state = self._perform_action(action)
 
         current_end_coor = self._arm.read_end_coor()
