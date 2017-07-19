@@ -1,6 +1,41 @@
 import nengo
 import numpy as np
 
+
+class LoadFrom(nengo.solvers.Solver):
+    def __init__(self, filename, weights=False):
+        super(LoadFrom, self).__init__(weights=weights)
+        self.filename = filename
+
+    def __call__(self, A, Y, rng=None, E=None):
+        if self.weights:
+            shape = (A.shape[1], E.shape[1])
+        else:
+            shape = (A.shape[1], Y.shape[1])
+        try:
+            value = np.load(self.filename)
+            assert value.shape == shape
+        except IOError:
+            value = np.zeros(shape)
+        return value, {}
+
+
+# helper to create the LoadFrom solver and the needed probe and do the saving
+class WeightSaver(object):
+    def __init__(self, connection, filename, sample_every=1.0, weights=False):
+        assert isinstance(connection.pre, nengo.Ensemble)
+        if not filename.endswith('.npy'):
+            filename = filename + '.npy'
+        self.filename = filename
+        connection.solver = LoadFrom(self.filename, weights=weights)
+        self.probe = nengo.Probe(connection, 'weights', sample_every=sample_every)
+        self.connection = connection
+
+    def save(self, sim):
+        np.save(self.filename, sim.data[self.probe][-1].T)
+        print "weights saved"
+
+
 class Q_network:
 
     def __init__(self, input_shape, output_shape, nb_hidden, encoder, decoder):
@@ -37,19 +72,8 @@ class Q_network:
         :return: 
         '''
 
-        try:
-            encoders = np.load(self.encoder)
-        except IOError:
-            rng = np.random.RandomState(1)
-            encoders = rng.normal(size=(self.nb_hidden, self.input_shape))
 
-        try:
-            decoder = np.load(self.decoder)
-        except IOError:
-            rng = np.random.RandomState(1)
-            decoder = rng.normal(size=(self.nb_hidden, self.output_shape))
-
-        #encoders = self.encoder_initialization()
+        encoders = self.encoder_initialization()
         solver = nengo.solvers.LstsqL2(reg=0.01)
 
         model = nengo.Network(seed=3)
@@ -61,23 +85,28 @@ class Q_network:
                                           max_rates=nengo.dists.Choice([100]),
                                           encoders=encoders,
                                           )
+
             output = nengo.Node(size_in=self.output_shape)
             conn = nengo.Connection(input_neuron,
                                     output,
                                     synapse=None,
-                                    #transform=decoder.T,
                                     eval_points=train_data,
                                     function=train_targets,
                                     solver=solver
                                     )
             #encoders_weights = nengo.Probe(input_neuron.encoders, "encoders_weights", sample_every=1.0)
-            conn_weights = nengo.Probe(conn, 'weights', sample_every=1.0)
+            #conn_weights = nengo.Probe(conn, 'weights', sample_every=1.0)
+            with nengo.Simulator(model) as sim:
+                sim.run(3)
+                ws = WeightSaver(conn, 'my_weights')  # add this line
+                ws.save(sim)
 
-        with nengo.Simulator(model) as sim:
-            sim.run(3)
-        #save the connection weights after training
-        np.save(self.encoder, sim.data[input_neuron].encoders)
-        np.save(self.decoder, sim.data[conn_weights][-1].T)
+
+        # with nengo.Simulator(model) as sim:
+        #     sim.run(3)
+        # #save the connection weights after training
+        # np.save(self.encoder, sim.data[input_neuron].encoders)
+        # np.save(self.decoder, sim.data[conn_weights][-1].T)
 
     def predict(self, input):
         '''
@@ -85,18 +114,9 @@ class Q_network:
         :param input: input must be a numpy array, system state and action paars, shape = (dim_sample)
         :return: the q values
         '''
-        try:
-            encoders = np.load(self.encoder)
-        except IOError:
-            rng = np.random.RandomState(1)
-            encoders = rng.normal(size=(self.nb_hidden, self.input_shape))
 
-        try:
-            decoder = np.load(self.decoder)
-        except IOError:
-            rng = np.random.RandomState(1)
-            decoder = rng.normal(size=(self.nb_hidden, self.output_shape))
-
+        encoders = self.encoder_initialization()
+        decoder = np.load('/home/huangbo/SpikingDeepRLControl/code/my_weights.npy')
         model = nengo.Network(seed=3)
         with model:
             input_neuron = nengo.Ensemble(n_neurons=self.nb_hidden,
@@ -126,8 +146,12 @@ if __name__ == '__main__':
     # data pre-processing
     X_train = X_train.reshape(X_train.shape[0], -1) / 255.  # normalize
     X_test = X_test.reshape(X_test.shape[0], -1) / 255.  # normalize
-    y_train = np_utils.to_categorical(y_train, nb_classes=10)
-    y_test = np_utils.to_categorical(y_test, nb_classes=10)
+    y_train = np_utils.to_categorical(y_train, num_classes=10)
+    y_test = np_utils.to_categorical(y_test, num_classes=10)
+
+    print X_train.shape
+    print y_train.shape
+
 
 
     model = Q_network(input_shape=28*28, output_shape=10, nb_hidden=1000,
