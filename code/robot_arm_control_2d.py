@@ -49,8 +49,8 @@ args = parser.parse_args()
 
 class Nengo_Arm_Sim(nengo.Node):
     def __init__(self, actions, env,
-                 name="Robot_Arm", mean_solved=-100,
-                 mean_cancel=-10000, max_eps=10000, max_trials_per_ep=2000,
+                 name="Robot_Arm", mean_solved=0,
+                 mean_cancel=-10000, max_eps=20000, max_trials_per_ep=100,
                  epsilon=0.9, b_render=True):
         self.actions = actions
         self.done = False
@@ -69,18 +69,20 @@ class Nengo_Arm_Sim(nengo.Node):
         self.b_render = b_render
 
         self.epsilon = epsilon
-        self.decay = 0.999
+        self.decay = 0.99
 
         self.total_reward = 0
 
         self.all_rewards = []
 
         super(Nengo_Arm_Sim, self).__init__(label="fuck", output=self.tick,
-                                            size_in=6, size_out=3)
+                                            size_in=4, size_out=3)
 
         # initialize openai gym environment
         self.env = env
         self.env.reset()
+
+        self.if_done_record = 0
 
     def tick(self, t, x):
         self.num_trials += 1
@@ -88,12 +90,23 @@ class Nengo_Arm_Sim(nengo.Node):
             self.reached_max_trials = True
 
         action_idx = np.argmax(x)
-        if action_idx > 2:
-            action = np.array([0, action_idx - 3])
-        else:
-            action = np.array([action_idx, 0])
+        action = np.ones(2)
+
+        if action_idx == 0:
+            action[0] = 0
+
+        if action_idx == 1:
+            action[0] = 2
+
+        if action_idx == 2:
+            action[1] = 0
+
+        if action_idx == 3:
+            action[1] = 2
 
         ob, reward, self.done = self.env.step(action)
+        if self.done:
+            self.if_done_record += 1
         self.total_reward += reward
 
         rval = [item for item in ob]
@@ -111,6 +124,7 @@ class Nengo_Arm_Sim(nengo.Node):
             print "resetting after episode ", self.num_eps
             if self.num_eps > self.max_eps:
                 self.reached_max_eps = True
+
             self.done = False
             print 'reward of this episode: ', self.total_reward
             self.all_rewards.append(self.total_reward)
@@ -121,8 +135,9 @@ class Nengo_Arm_Sim(nengo.Node):
                 self.last_hundred_rewards[-1] = self.total_reward
                 self.mean_reward = np.mean(self.last_hundred_rewards)
                 print 'mean reward over last 100 episodes: ', self.mean_reward
+                print 'succ rate', self.if_done_record * 1.0 / self.num_eps
                 if self.mean_reward > self.mean_solved:
-                    self.solved = True
+                    self.solved = True0
                     print 'solved problem after ', self.num_eps, ' episodes with mean'
                 elif self.mean_reward <= self.mean_cancel:
                     self.cancel = True
@@ -136,7 +151,7 @@ class Nengo_Arm_Sim(nengo.Node):
             self.reached_max_trials = False
             self.env.reset()
             self.total_reward = 0
-            if self.num_eps > -1:
+            if self.num_eps > 10000:
                 self.env._arm._if_visual = True
         else:
             if self.reached_max_eps:
@@ -149,36 +164,39 @@ class Nengo_Arm_Sim(nengo.Node):
 
 class QLearn(nengo.Network):
     def __init__(self, aigym, t_past=0.1, t_now=0.005,
-                 gamma=0.9, init_state=np.zeros(6)
+                 gamma=0.9, init_state=np.zeros(4)
                  ):
         super(QLearn, self).__init__()
 
         with self:
-            self.desired_action = nengo.Ensemble(n_neurons=300, dimensions=6, radius=2.0)
+            self.desired_action = nengo.Ensemble(n_neurons=5000, dimensions=4, radius=2.0)
             # nengo.Connection(self.desired_action, self.desired_action, synapse=0.1)
-            self.state = nengo.Ensemble(n_neurons=300, dimensions=2, radius=1.5)
+            self.state = nengo.Ensemble(n_neurons=5000, dimensions=2, radius=1)
 
             def selection(t, x):
-                result = np.zeros(6)
-                # if np.random.uniform() < 1:
-                #     if np.random.uniform() < 0:
-                #         result[np.random.randint(0, 6)] = 1
-                #     else:
-                action = aigym.env.get_jacobi_action()
-                if action[0] == 0:
-                    sum = 3 + action[1]
+                result = np.zeros(4)
+                if np.random.rand() < aigym.epsilon:
+                    if np.random.rand() < 0.5:
+                        result[np.random.randint(0, 4)] = 1
+                    else:
+                        action = aigym.env.get_jacobi_action()
+                        if action[0] == 0:
+                            result[0] = 1
+                        if action[0] == 2:
+                            result[1] = 1
+                        if action[1] == 0:
+                            result[2] = 1
+                        if action[1] == 2:
+                            result[3] = 1
                 else:
-                    sum = action[0]
-                result[int(sum)] = 1
-                # else:
-                #     choice = np.argmax(x)
-                #     result[choice] = 1
+                    choice = np.argmax(x)
+                    result[choice] = 1
 
                 return result
 
-            self.select = nengo.Node(selection, size_in=6)
+            self.select = nengo.Node(selection, size_in=4)
             nengo.Connection(self.select, self.desired_action)
-            self.q = nengo.Node(None, size_in=6)
+            self.q = nengo.Node(None, size_in=4)
 
             def initial_q(state):
                 return init_state
@@ -195,11 +213,11 @@ class QLearn(nengo.Network):
             nengo.Connection(self.q, self.select)
 
             self.reward = nengo.Node(None, size_in=1)
-            self.reward_array = nengo.Node(lambda t, x: x[:-1] * x[-1], size_in=7)
+            self.reward_array = nengo.Node(lambda t, x: x[:-1] * x[-1], size_in=5)
             nengo.Connection(self.reward, self.reward_array[-1])
             nengo.Connection(self.select, self.reward_array[:-1])
 
-            self.error = nengo.Node(None, size_in=6)
+            self.error = nengo.Node(None, size_in=4)
 
             nengo.Connection(self.reward_array, self.error, synapse=t_past)
             nengo.Connection(self.q, self.error, synapse=t_now, transform=gamma)
@@ -239,12 +257,12 @@ class ArmTrial(pytry.NengoTrial):
                 dim=2
             )
 
-            self.mc = Nengo_Arm_Sim([0, 1, 2], env, mean_solved=-100, mean_cancel=-10000, max_eps=p.max_eps)
+            self.mc = Nengo_Arm_Sim([0, 1, 2], env, mean_solved=-100, mean_cancel=-10000, max_eps=20000)
             self.ql = QLearn(aigym=self.mc,
                              t_past=p.t_past,
                              t_now=p.t_now,
                              gamma=p.gamma,
-                             init_state=np.zeros(6)
+                             init_state=np.zeros(4)
                              )
 
         return model
@@ -258,7 +276,7 @@ class ArmTrial(pytry.NengoTrial):
 if __name__ == '__main__':
     for t_past in [0.1]:
         for t_now in [0.005]:
-            for gamma in [0.9]:
+            for gamma in [0.99]:
                 # for init_state in [[0,0,0], [0.5,0, 0.5]]:
                 for init_state in [[0, 0]]:
                     for learning_rate in [1e-5]:

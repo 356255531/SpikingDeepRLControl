@@ -93,8 +93,9 @@ class RobotArmEnv(object):
 
         self._prev_state = self._state
 
-        if action[0] != 0 and action[1] != 0:
+        if action[0] != 1 and action[1] != 1:
             raise ValueError
+
         self._state = self._perform_action(action)
 
         current_end_coor = self._arm.read_end_coor()
@@ -124,7 +125,7 @@ class RobotArmEnv(object):
 
         action_idx = np.argmax(np.abs(action_in_degree))
 
-        action = np.zeros(2)
+        action = np.ones(2)
 
         if action_in_degree[action_idx] > 0:
             action[action_idx] = 0
