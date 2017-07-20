@@ -91,7 +91,7 @@ class Q_network:
         if os.path.isfile(self.weights_path):
             conn_weights = np.load(self.weights_path).T
         else:
-            conn_weights = np.random.rand(self.output_shape, self.input_shape)
+            conn_weights = np.random.rand(self.output_shape, self.input_shape).T
 
         return np.dot(acts, conn_weights)
 
