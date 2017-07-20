@@ -84,9 +84,16 @@ class Q_network:
         :return: the q values
         '''
 
+
         with self.sim:
             _, acts = nengo.utils.ensemble.tuning_curves(self.pre, self.sim, inputs=evl_input)
-        return np.dot(acts, np.load(self.weights_path).T)
+
+        if os.path.isfile(self.weights_path):
+            conn_weights = np.load(self.weights_path).T
+        else:
+            conn_weights = np.random.rand(self.output_shape, self.input_shape)
+
+        return np.dot(acts, conn_weights)
 
 
 if __name__ == '__main__':
