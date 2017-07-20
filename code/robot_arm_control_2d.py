@@ -69,7 +69,7 @@ class Nengo_Arm_Sim(nengo.Node):
         self.b_render = b_render
 
         self.epsilon = epsilon
-        self.decay = 0.99
+        self.decay = 0.99999
 
         self.total_reward = 0
 
@@ -169,9 +169,9 @@ class QLearn(nengo.Network):
         super(QLearn, self).__init__()
 
         with self:
-            self.desired_action = nengo.Ensemble(n_neurons=5000, dimensions=4, radius=2.0)
+            self.desired_action = nengo.Ensemble(n_neurons=2000, dimensions=4, radius=2.0)
             # nengo.Connection(self.desired_action, self.desired_action, synapse=0.1)
-            self.state = nengo.Ensemble(n_neurons=5000, dimensions=2, radius=1)
+            self.state = nengo.Ensemble(n_neurons=2000, dimensions=2, radius=1)
 
             def selection(t, x):
                 result = np.zeros(4)

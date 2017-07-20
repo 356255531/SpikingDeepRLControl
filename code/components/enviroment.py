@@ -128,9 +128,9 @@ class RobotArmEnv(object):
         action = np.ones(2)
 
         if action_in_degree[action_idx] > 0:
-            action[action_idx] = 0
-        else:
             action[action_idx] = 2
+        else:
+            action[action_idx] = 0
 
         return action
 
