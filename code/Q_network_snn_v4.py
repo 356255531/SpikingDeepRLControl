@@ -31,29 +31,25 @@ class Q_network:
         :return: 
         '''
 
-        self.model = nengo.Network(seed=1)
-
-        with self.model:
-
+        model = nengo.Network(seed=1)
+        with model:
             input = nengo.Node(nengo.processes.PresentInput(train_data, self.presentation_time))
             output = nengo.Node(nengo.processes.PresentInput(train_targets, self.presentation_time))
 
-            self.pre = nengo.Ensemble(n_neurons=self.nb_hidden, dimensions=self.input_shape)
+            pre = nengo.Ensemble(n_neurons=self.nb_hidden, dimensions=self.input_shape)
             post = nengo.Node(size_in=self.output_shape)
             error = nengo.Node(size_in=self.output_shape)
 
 
-            nengo.Connection(input, self.pre)
+            nengo.Connection(input, pre)
             nengo.Connection(output, error, transform = -1)
             nengo.Connection(post, error, transform = 1)
-
-            self.output = nengo.Probe(post)
 
             if os.path.isfile(self.weights_path):
                 # data file with weights exists, so initialize learning connection with those weights
                 weights = np.load(self.weights_path)
                 print '------load the weights-------'
-                learn_conn = nengo.Connection(self.pre.neurons, post, transform=weights, learning_rule_type=nengo.PES())
+                learn_conn = nengo.Connection(pre.neurons, post, transform=weights, learning_rule_type=nengo.PES())
                 nengo.Connection(error, learn_conn.learning_rule)
 
             else:
@@ -62,19 +58,14 @@ class Q_network:
 
                 print '------learning from random init-------'
 
-                learn_conn = nengo.Connection(self.pre, post, function=init_func, learning_rule_type=nengo.PES())
+                learn_conn = nengo.Connection(pre, post, function=init_func, learning_rule_type=nengo.PES())
                 nengo.Connection(error, learn_conn.learning_rule)
-
             conn_p = nengo.Probe(learn_conn, 'weights')
 
-        self.sim = nengo.Simulator(self.model)
-
-        with  self.sim:
-            # #self.sim.run_steps(train_data.shape[0])
-            self.sim.run(int(train_data.shape[0]*0.1))
-
-            weights = self.sim.data[conn_p][len(self.sim.trange()) - 1, :, :]
-            np.save(self.weights_path, weights)
+        sim = nengo.Simulator(model, seed=1)
+        sim.run(int(train_data.shape[0]*0.1))
+        weights = sim.data[conn_p][len(sim.trange()) - 1, :, :]
+        np.save(self.weights_path, weights)
 
 
     def predict(self, evl_input):
@@ -84,16 +75,45 @@ class Q_network:
         :return: the q values
         '''
 
+        model = nengo.Network(seed=2)
+        with model:
+            input = nengo.Node(nengo.processes.PresentInput(evl_input, self.presentation_time))
 
-        with self.sim:
-            _, acts = nengo.utils.ensemble.tuning_curves(self.pre, self.sim, inputs=evl_input)
+            pre = nengo.Ensemble(n_neurons=self.nb_hidden, dimensions=self.input_shape)
+            post = nengo.Node(size_in=self.output_shape)
+            nengo.Connection(input, pre)
 
-        if os.path.isfile(self.weights_path):
-            conn_weights = np.load(self.weights_path).T
-        else:
-            conn_weights = np.random.rand(self.output_shape, self.input_shape).T
+            post_p = nengo.Probe(post)
 
-        return np.dot(acts, conn_weights)
+
+            if os.path.isfile(self.weights_path):
+                # data file with weights exists, so initialize learning connection with those weights
+                weights = np.load(self.weights_path)
+                nengo.Connection(pre.neurons, post, transform=weights, learning_rule_type=nengo.PES())
+
+            else:
+                def init_func(x):
+                    return np.zeros(self.output_shape)
+                nengo.Connection(pre, post, function=init_func, learning_rule_type=nengo.PES())
+
+
+        sim = nengo.Simulator(model, seed=2)
+        sim.run_steps(10)
+
+        prediction = sim.data[post_p]
+
+        return prediction[-1, :]
+
+
+        # _, acts = nengo.utils.ensemble.tuning_curves(pre, sim, inputs=evl_input)
+        #
+        # if os.path.isfile(self.weights_path):
+        #     conn_weights = np.load(self.weights_path).T
+        # else:
+        #     print "random init weights"
+        #     conn_weights = np.random.rand(self.output_shape, self.input_shape).T
+        #
+        # return np.dot(acts, conn_weights)
 
 
 if __name__ == '__main__':
@@ -112,7 +132,9 @@ if __name__ == '__main__':
     print y_train.shape
 
 
-    model = Q_network(input_shape=28*28, output_shape=10, nb_hidden=1000,
+    model = Q_network(input_shape=28*28,
+                      output_shape=10,
+                      nb_hidden=1000,
                       weights_path='/home/huangbo/SpikingDeepRLControl/code/weights.npy')
 
 
@@ -123,15 +145,18 @@ if __name__ == '__main__':
         # training
         model.train_network(X_train[idx:idx+batch_size, :], y_train[idx:idx+batch_size, :])
 
-        #a = np.random.randint(0,10000)
-        evl_point = X_test[0:100, :]
-        #evl_point = evl_point[np.newaxis, :]
+        a = np.random.randint(0,10000)
+        evl_point = X_test[a, :]
+        evl_point = evl_point[np.newaxis, :]
 
         prediction = model.predict(evl_point)
 
 
-        acc = accuracy_score(np.argmax(y_test[0:100, :], axis=1), np.argmax(prediction, axis=1))
-        print "the test acc is:", acc
+        print np.argmax(y_test[a, :])
+        print np.argmax(prediction)
+
+        #acc = accuracy_score(np.argmax(y_test[a, :]), np.argmax(prediction))
+        #print "the test acc is:", acc
         # print 'the gt:', np.argmax(gt)
         # print 'prediction',  np.argmax(prediction)
 
